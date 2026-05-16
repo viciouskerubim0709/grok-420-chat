@@ -70,13 +70,41 @@ with st.sidebar:
 
     st.divider()
 
-# 대화 목록
+    # 대화 목록 + 삭제 버튼
+    to_delete = None
     for sid, chat in list(st.session_state.chats.items()):
-        if st.button(chat["title"], key=sid, use_container_width=True):
-            st.session_state.current_session = sid
-            st.rerun()
+        col1, col2 = st.columns([8, 1])
 
-    st.divider()
+        with col1:
+            if st.button(chat["title"], key=f"select_{sid}", use_container_width=True):
+                st.session_state.current_session = sid
+                st.rerun()
+
+        with col2:
+            if st.button("🗑️", key=f"delete_{sid}", help="이 대화 삭제"):
+                to_delete = sid
+
+    # 삭제 처리
+    if to_delete:
+        # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
+        if to_delete == st.session_state.current_session:
+            remaining = [s for s in st.session_state.chats.keys() if s != to_delete]
+            if remaining:
+                st.session_state.current_session = remaining[0]
+            else:
+                # 마지막 하나 남았을 때 → 새 대화 자동 생성
+                new_id = str(uuid.uuid4())
+                st.session_state.chats[new_id] = {
+                    "title": "💖 첫 대화",
+                    "messages": []
+                }
+                st.session_state.current_session = new_id
+
+        # 실제 삭제
+        del st.session_state.chats[to_delete]
+        save_chats()  # ← 파일에도 바로 반영
+        st.rerun()
+
 
     # 저장 / 내보내기 버튼
     if st.button("💾 현재 대화 다운로드", use_container_width=True):
