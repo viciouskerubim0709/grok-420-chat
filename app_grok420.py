@@ -105,6 +105,7 @@ with st.sidebar:
         save_chats()  # ← 파일에도 바로 반영
         st.rerun()
 
+    st.divider()
 
     # 저장 / 내보내기 버튼
     if st.button("💾 현재 대화 다운로드", use_container_width=True):
