@@ -106,12 +106,6 @@ with st.sidebar:
         save_chats()  # ← 파일에도 바로 반영
         st.rerun()
 
-    # 대화 목록
-    for sid, chat in list(st.session_state.chats.items()):
-        if st.button(chat["title"], key=sid, use_container_width=True):
-            st.session_state.current_session = sid
-            st.rerun()
-
     st.divider()
 
     # 저장 / 내보내기 버튼
