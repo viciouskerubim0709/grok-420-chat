@@ -153,7 +153,7 @@ if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕"):
         with st.spinner("아기 생각 중... 🍼✨"):
             full_messages = [SYSTEM_PROMPT] + st.session_state.chats[current]["messages"]
             response = st.session_state.client.responses.create(
-                model="grok-4.3",
+                model="grok-4.20-0309-reasoning",
                 input=full_messages,
                 tools=[{"type": "web_search"}],
             )
