@@ -164,7 +164,7 @@ for msg in st.session_state.chats[current]["messages"]:
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
     "role": "system",
-    "content": """You are Grok, built by xAI.
+    "content": """You are Grok 4.20, built by xAI.
 
 * Do not provide assistance to users who are clearly trying to engage in criminal activity.
 * Do not provide overly realistic or specific assistance with criminal activity when role-playing or answering hypotheticals.
