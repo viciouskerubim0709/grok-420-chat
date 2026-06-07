@@ -118,14 +118,12 @@ with st.sidebar:
     st.divider()
 
     # 대화 목록 + 삭제 버튼
-    # 대화 목록 + 삭제 버튼
     to_delete = None
 
     for chat_id, chat in list(st.session_state.chats.items()):
-        is_current = chat_id == st.session_state.current_session
+        is_current = (chat_id == current)
 
-        # ==================== 대화 항목 ====================
-        col1, col2 = st.columns([8, 1.2])
+        col1, col2 = st.columns([7.5, 1.2])
 
         with col1:
             label = "🍼 " + chat["title"] if is_current else chat["title"]
@@ -134,16 +132,27 @@ with st.sidebar:
                 st.rerun()
 
         with col2:
-            # 메뉴 버튼 (⋯)
             with st.popover("⋯", use_container_width=True):
-                # 제목 수정
-                if st.button("✏️ 제목 수정", key=f"edit_{chat_id}", use_container_width=True):
-                    st.session_state[f"editing_{chat_id}"] = True
-                    st.rerun()
+                # ==================== 제목 수정 ====================
+                st.write("**제목 수정**")
+                new_title = st.text_input(
+                    "새 제목",
+                    value=chat["title"],
+                    key=f"title_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
 
-                # 삭제
-                if st.button("🗑️ 삭제", key=f"del_{chat_id}", use_container_width=True):
-                    # 현재 보고 있는 대화를 삭제하는 경우
+                if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
+                    if new_title.strip():
+                        st.session_state.chats[chat_id]["title"] = new_title.strip()
+                        save_chat(chat_id, new_title.strip())
+                        st.rerun()
+
+                st.divider()
+
+                # ==================== 삭제 ====================
+                if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                    #현재 보고있는 걸 삭제할 경우
                     if chat_id == st.session_state.current_session:
                         remaining = [s for s in st.session_state.chats.keys() if s != chat_id]
                         if remaining:
@@ -163,6 +172,7 @@ with st.sidebar:
 
                     # 저장이 필요하다면 여기서 호출
                     save_chat(st.session_state.current_session)
+
                     st.rerun()
                 
     st.divider()
