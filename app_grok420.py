@@ -104,6 +104,20 @@ if "client" not in st.session_state:
         base_url="https://api.x.ai/v1"
     )
 
+# ====================== 사이드바 ======================
+with st.sidebar:
+    st.title("📜 대화 기록")
+    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
+        new_id = str(uuid.uuid4())
+        st.session_state.chats[new_id] = {"title": f"대화 {len(st.session_state.chats) + 1}",
+                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
+        st.session_state.current_session = new_id
+        save_chat(new_id)
+        st.rerun()
+
+    st.divider()
+
+    # 대화 목록 + 삭제 버튼
     to_delete = None
 
     for chat_id, chat in list(st.session_state.chats.items()):
@@ -171,9 +185,7 @@ if "client" not in st.session_state:
                     st.session_state[f"editing_{chat_id}"] = False
                     st.rerun()
             break  # 한 번에 하나만 수정
-
-
-    # 삭제 처리
+# 삭제 처리
     if to_delete:
         # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
         if to_delete == st.session_state.current_session:
