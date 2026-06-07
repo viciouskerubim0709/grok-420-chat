@@ -107,7 +107,6 @@ if "client" not in st.session_state:
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
-
     if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": f"대화 {len(st.session_state.chats) + 1}",
@@ -190,7 +189,7 @@ with st.sidebar:
 
         # 실제 삭제
         del st.session_state.chats[to_delete]
-        save_chats()  # ← 파일에도 바로 반영
+        save_chat(current)
         st.rerun()
 
     st.divider()
