@@ -27,7 +27,6 @@ if not st.session_state.password_correct:
 # ====================== 비밀번호 맞으면 아래부터 정상 실행 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
-st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
 # ====================== 대화 저장 파일 ======================
 CHATS_FILE = "chats.json"
