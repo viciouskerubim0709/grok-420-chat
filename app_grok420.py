@@ -130,7 +130,7 @@ with st.sidebar:
                 key=f"edit_input_{chat_id}",
                 label_visibility="collapsed"
             )
-            col1, col2 = st.columns([3, 1])
+            col1, col2 = st.columns([8, 1])
             with col1:
                 if st.button("✅ 저장", key=f"save_{chat_id}"):
                     st.session_state.chats[chat_id]["title"] = new_title
