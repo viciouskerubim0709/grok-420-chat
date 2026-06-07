@@ -132,6 +132,37 @@ with st.sidebar:
             if st.button("🗑️", key=f"delete_{sid}", help="이 대화 삭제"):
                 to_delete = sid
 
+        # 제목 수정 모드
+        if st.session_state.get(f"editing_{chat_id}", False):
+            new_title = st.text_input(
+                "제목 수정",
+                value=chat["title"],
+                key=f"edit_input_{chat_id}",
+                label_visibility="collapsed"
+            )
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                if st.button("✅ 저장", key=f"save_{chat_id}"):
+                    st.session_state.chats[chat_id]["title"] = new_title
+                    save_chat(chat_id, new_title)
+                    st.session_state[f"editing_{chat_id}"] = False
+                    st.rerun()
+            with col2:
+                if st.button("❌ 취소", key=f"cancel_{chat_id}"):
+                    st.session_state[f"editing_{chat_id}"] = False
+                    st.rerun()
+        else:
+            # 일반 제목 표시
+            label = "→ " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                st.session_state.current_session = chat_id
+                st.rerun()
+
+            # 수정 버튼 (작게)
+            if st.button("✏️", key=f"editbtn_{chat_id}", help="제목 수정"):
+                st.session_state[f"editing_{chat_id}"] = True
+                st.rerun()
+    
     # 삭제 처리
     if to_delete:
         # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
