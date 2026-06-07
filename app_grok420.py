@@ -143,7 +143,7 @@ with st.sidebar:
                     st.rerun()
         else:
             # 일반 제목 표시
-            col1, col2 = st.columns([6, 4])
+            col1, col2 = st.columns([8, 1])
             with col1:
                 label = "→ " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
