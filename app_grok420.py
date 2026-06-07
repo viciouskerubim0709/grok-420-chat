@@ -1,37 +1,8 @@
 import streamlit as st
-import streamlit.components.v1 as components
 from openai import OpenAI
 import uuid
 import json
 import os
-
-# ====================== 비밀번호 보호 위쪽에 추가 ======================
-def disable_c_key():
-    components.html(
-        """
-        <script>
-            document.addEventListener('keydown', function(e) {
-                if ((e.key === 'c' || e.key === 'C') && !e.ctrlKey && !e.metaKey) {
-                    const active = document.activeElement;
-                    const tag = active ? active.tagName.toLowerCase() : '';
-
-                    // textarea, input, contenteditable 안에서는 정상 작동하게 허용
-                    if (tag === 'textarea' || tag === 'input' || 
-                        (active && active.isContentEditable)) {
-                        return true;
-                    }
-
-                    // 그 외에는 C 키 무시 (Clear Cache 방지)
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    return false;
-                }
-            }, true);
-        </script>
-        """,
-        height=0,
-    )
-
 
 # ====================== 비밀번호 보호 (나만 사용!) ======================
 
