@@ -105,20 +105,22 @@ if "client" not in st.session_state:
     )
 
 # ====================== 사이드바 ======================
+
 with st.sidebar:
     st.title("📜 대화 기록")
 
     if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
-        st.session_state.chats[new_id] = {"title": f"대화 {len(st.session_state.chats) + 1}",
-                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
+        st.session_state.chats[new_id] = {
+            "title": f"대화 {len(st.session_state.chats) + 1}",
+            "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
+        }
         st.session_state.current_session = new_id
-        save_chat(new_id)
+        save_chat(...)  # 기존 함수 호출
         st.rerun()
 
     st.divider()
 
-    # 대화 목록 + 삭제 버튼
     to_delete = None
     edited_chat = None
 
@@ -172,27 +174,6 @@ with st.sidebar:
                     st.rerun()
             break  # 한 번에 하나의 수정만 열리게
 
-    # 삭제 처리
-    if to_delete:
-        # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
-        if to_delete == st.session_state.current_session:
-            remaining = [s for s in st.session_state.chats.keys() if s != to_delete]
-            if remaining:
-                st.session_state.current_session = remaining[0]
-            else:
-                # 마지막 하나 남았을 때 → 새 대화 자동 생성
-                new_id = str(uuid.uuid4())
-                st.session_state.chats[new_id] = {
-                    "title": "첫 대화💖",
-                    "messages": []
-                }
-                st.session_state.current_session = new_id
-
-        # 실제 삭제
-        del st.session_state.chats[to_delete]
-        save_chat(current)   # ← 이걸로 교체  # ← 파일에도 바로 반영
-        st.rerun()
-        
     st.divider()
     
     # 저장 / 내보내기 버튼
