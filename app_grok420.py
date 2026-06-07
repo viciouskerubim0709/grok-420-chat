@@ -119,13 +119,11 @@ with st.sidebar:
 
     # 대화 목록 + 삭제 버튼
     to_delete = None
-    edited_chat = None
 
     for chat_id, chat in list(st.session_state.chats.items()):
-        is_current = chat_id == st.session_state.current_session
+        is_current = (chat_id == current)
 
-        # ==================== 대화 항목 ====================
-        col1, col2 = st.columns([8, 1.2])
+        col1, col2 = st.columns([7.5, 1.2])
 
         with col1:
             label = "🍼 " + chat["title"] if is_current else chat["title"]
@@ -134,62 +132,45 @@ with st.sidebar:
                 st.rerun()
 
         with col2:
-            # 메뉴 버튼 (⋯)
             with st.popover("⋯", use_container_width=True):
-                # 제목 수정
-                if st.button("✏️ 제목 수정", key=f"edit_{chat_id}", use_container_width=True):
-                    st.session_state[f"editing_{chat_id}"] = True
-                    st.rerun()
+                # ==================== 제목 수정 ====================
+                st.write("**제목 수정**")
+                new_title = st.text_input(
+                    "새 제목",
+                    value=chat["title"],
+                    key=f"title_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
 
-                # 삭제
-                if st.button("🗑️ 삭제", key=f"del_{chat_id}", use_container_width=True):
-                    # 현재 보고 있는 대화를 삭제하는 경우
-                    if chat_id == st.session_state.current_session:
-                        remaining = [s for s in st.session_state.chats.keys() if s != chat_id]
-                        if remaining:
-                            st.session_state.current_session = remaining[0]
-                        else:
-                            # 마지막 대화였을 때 새 대화 자동 생성
-                            new_id = str(uuid.uuid4())
-                            st.session_state.chats[new_id] = {
-                                "title": "💖 첫 대화",
-                                "messages": []
-                            }
-                            st.session_state.current_session = new_id
+                if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
+                    if new_title.strip():
+                        st.session_state.chats[chat_id]["title"] = new_title.strip()
+                        save_chat(chat_id, new_title.strip())
+                        st.rerun()
 
-                    # 실제 삭제
-                    if chat_id in st.session_state.chats:
-                        del st.session_state.chats[chat_id]
+                st.divider()
 
-                    # 저장이 필요하다면 여기서 호출
-                    # save_chat(...)
+                # ==================== 삭제 ====================
+                if st.button("🗑️ 이 대화 삭제", type="secondary", use_container_width=True):
+                    to_delete = chat_id
 
-                    st.rerun()
+    # ====================== 삭제 처리 ======================
+    if to_delete:
+        if to_delete == st.session_state.current_session:
+            remaining = [cid for cid in st.session_state.chats.keys() if cid != to_delete]
+            if remaining:
+                st.session_state.current_session = remaining[0]
+            else:
+                # 마지막 하나였다면 새로 생성
+                new_id = str(uuid.uuid4())
+                st.session_state.chats[new_id] = {
+                    "title": "💖 첫 대화",
+                    "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
+                st.session_state.current_session = new_id
 
-    # ==================== 제목 수정 모드 ====================
-    for chat_id, chat in list(st.session_state.chats.items()):
-        if st.session_state.get(f"editing_{chat_id}", False):
-            st.divider()  # 구분선으로 수정 모드 강조 (선택사항)
-
-            new_title = st.text_input(
-                "새 제목",
-                value=chat["title"],
-                key=f"edit_input_{chat_id}",
-                label_visibility="visible"
-            )
-
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("✅ 저장", key=f"save_{chat_id}", type="primary"):
-                    st.session_state.chats[chat_id]["title"] = new_title
-                    # save_chat(chat_id, new_title)
-                    st.session_state[f"editing_{chat_id}"] = False
-                    st.rerun()
-            with col2:
-                if st.button("❌ 취소", key=f"cancel_{chat_id}"):
-                    st.session_state[f"editing_{chat_id}"] = False
-                    st.rerun()
-            break  # 한 번에 하나의 수정만 열리게
+        del st.session_state.chats[to_delete]
+        save_chat(st.session_state.current_session)   # 현재 남은 채팅 저장
+        st.rerun()
 
     st.divider()
     
