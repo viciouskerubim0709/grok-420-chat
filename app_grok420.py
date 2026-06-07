@@ -171,7 +171,7 @@ with st.sidebar:
                         del st.session_state.chats[chat_id]
 
                     # 저장이 필요하다면 여기서 호출
-                    save_chat(st.session_state.current_session)
+                    #save_chat(st.session_state.current_session)
 
                     st.rerun()
                 
