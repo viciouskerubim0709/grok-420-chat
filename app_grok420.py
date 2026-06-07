@@ -53,7 +53,7 @@ def create_default_chat():
     """처음 시작할 때 기본 채팅 생성"""
     first_id = str(uuid.uuid4())
     st.session_state.chats[first_id] = {
-        "title": "💖 첫 대화",
+        "title": "첫 대화💖",
         "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
     }
     st.session_state.current_session = first_id
@@ -169,7 +169,7 @@ with st.sidebar:
                 # 마지막 하나 남았을 때 → 새 대화 자동 생성
                 new_id = str(uuid.uuid4())
                 st.session_state.chats[new_id] = {
-                    "title": "💖 첫 대화",
+                    "title": "첫 대화💖",
                     "messages": []
                 }
                 st.session_state.current_session = new_id
