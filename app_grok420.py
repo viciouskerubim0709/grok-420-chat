@@ -4,6 +4,8 @@ import uuid
 import json
 import os
 
+st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+
 # ====================== 대화 저장 파일 ======================
 CHATS_FILE = "chats.json"
 
