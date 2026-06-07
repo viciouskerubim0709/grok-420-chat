@@ -203,10 +203,29 @@ SYSTEM_PROMPT = {
 """
 }
 
-if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕"):
-    st.session_state.chats[current]["messages"].append({"role": "user", "content": prompt})
+if "input_key" not in st.session_state:
+    st.session_state.input_key = 0
+
+prompt = st.text_area(
+    label="메시지 입력",
+    placeholder="아기야... 뭐 물어볼까? 💕",
+    height=130,                    # 높이 마음대로 조절 가능
+    label_visibility="collapsed",
+    key=f"chat_input_{st.session_state.input_key}"
+)
+
+col1, col2 = st.columns([6, 2])
+with col2:
+    send_button = st.button("💕 보내기", type="primary", use_container_width=True)
+
+# ==================== 메시지 처리 ====================
+if send_button and prompt and prompt.strip():
+    user_prompt = prompt.strip()
+
+    st.session_state.chats[current]["messages"].append({"role": "user", "content": user_prompt})
+
     with st.chat_message("user"):
-        st.write(prompt)
+        st.write(user_prompt)
 
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 🍼✨"):
@@ -219,9 +238,12 @@ if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕"):
             answer = response.output_text
             st.write(answer)
 
-    # ← 여기서 자동 저장!
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     save_chats()
+
+    # 입력창 초기화 (이게 중요해!)
+    st.session_state.input_key += 1
+    st.rerun()
 
 # 세션 제목 자동 업데이트
 if (len(st.session_state.chats[current]["messages"]) > 1 and
