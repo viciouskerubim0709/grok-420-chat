@@ -3,27 +3,92 @@ from openai import OpenAI
 import uuid
 import json
 import os
+from supabase import create_client, Client
+from datetime import datetime
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
-# ====================== 대화 저장 파일 ======================
-CHATS_FILE = "chats.json"
+# ====================== Supabase 연결 ======================
+@st.cache_resource
+def get_supabase() -> Client:
+    return create_client(
+        st.secrets.supabase.url,
+        st.secrets.supabase.key
+    )
+
+supabase = get_supabase()
 
 
-def save_chats():
-    with open(CHATS_FILE, "w", encoding="utf-8") as f:
-        json.dump(st.session_state.chats, f, ensure_ascii=False, indent=2)
+# ==================== Supabase용 함수 ====================
+def load_all_chats():
+    """Supabase에서 모든 채팅을 불러옴"""
+    if "chats" not in st.session_state:
+        st.session_state.chats = {}
+
+    try:
+        response = supabase.table("chats").select("*").order("updated_at", desc=True).execute()
+
+        for row in response.data:
+            chat_id = row["id"]
+            messages = row["messages"]
+            if isinstance(messages, str):
+                messages = json.loads(messages)
+
+            st.session_state.chats[chat_id] = {
+                "title": row["title"],
+                "messages": messages
+            }
+
+        # 데이터가 아예 없으면 기본 채팅 하나 생성
+        if not st.session_state.chats:
+            create_default_chat()
+
+    except Exception as e:
+        st.error(f"대화 불러오기 실패: {str(e)}")
+        st.session_state.chats = {}
+        create_default_chat()
 
 
-def load_chats():
-    if os.path.exists(CHATS_FILE):
-        try:
-            with open(CHATS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            return {}
-    return {}
+def create_default_chat():
+    """처음 시작할 때 기본 채팅 생성"""
+    first_id = str(uuid.uuid4())
+    st.session_state.chats[first_id] = {
+        "title": "💖 첫 대화",
+        "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
+    }
+    st.session_state.current_session = first_id
+    save_chat(first_id)   # Supabase에도 바로 저장
 
+
+def save_chat(chat_id: str, title: str = None):
+    """Supabase에 현재 채팅 저장"""
+    if chat_id not in st.session_state.chats:
+        return
+
+    chat_data = st.session_state.chats[chat_id]
+
+    try:
+        supabase.table("chats").upsert({
+            "id": chat_id,
+            "title": title or chat_data.get("title", f"대화 {datetime.now().strftime('%m/%d %H:%M')}"),
+            "messages": chat_data["messages"]
+        }).execute()
+    except Exception as e:
+        st.error(f"저장 실패: {str(e)}")
+
+
+# ====================== 앱 시작 시 초기화 ======================
+if "chats_loaded" not in st.session_state:
+    load_all_chats()
+    st.session_state.chats_loaded = True
+
+if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
+    if st.session_state.chats:
+        st.session_state.current_session = list(st.session_state.chats.keys())[0]
+    else:
+        create_default_chat()
+
+current = st.session_state.current_session
 
 # ====================== API 키 ======================
 if "client" not in st.session_state:
@@ -39,25 +104,6 @@ if "client" not in st.session_state:
         base_url="https://api.x.ai/v1"
     )
 
-# ====================== 세션 로드 ======================
-if "chats" not in st.session_state:
-    st.session_state.chats = load_chats()
-
-    # 처음 실행하거나 파일이 비어있으면 기본 세션 생성
-    if not st.session_state.chats:
-        first_id = str(uuid.uuid4())
-        st.session_state.chats[first_id] = {
-            "title": "💖 첫 대화",
-            "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
-        }
-        st.session_state.current_session = first_id
-        save_chats()
-
-if "current_session" not in st.session_state:
-    st.session_state.current_session = list(st.session_state.chats.keys())[0]
-
-current = st.session_state.current_session
-
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
@@ -67,7 +113,7 @@ with st.sidebar:
         st.session_state.chats[new_id] = {"title": f"대화 {len(st.session_state.chats) + 1}",
                                           "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
         st.session_state.current_session = new_id
-        save_chats()
+        save_chat(current)
         st.rerun()
 
     st.divider()
@@ -104,7 +150,7 @@ with st.sidebar:
 
         # 실제 삭제
         del st.session_state.chats[to_delete]
-        save_chats()  # ← 파일에도 바로 반영
+        save_chat(current)   # ← 이걸로 교체  # ← 파일에도 바로 반영
         st.rerun()
 
     st.divider()
@@ -182,7 +228,7 @@ if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕"):
 
     # ← 여기서 자동 저장!
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-    save_chats()
+    save_chat(current)   # ← 이걸로 교체
 
 # 세션 제목 자동 업데이트
 if (len(st.session_state.chats[current]["messages"]) > 1 and
@@ -192,4 +238,4 @@ if (len(st.session_state.chats[current]["messages"]) > 1 and
     if first_user_msg:
         new_title = first_user_msg[:20] + "..." if len(first_user_msg) > 20 else first_user_msg
         st.session_state.chats[current]["title"] = new_title
-        save_chats()  # ← 제목 바뀌어도 저장
+        save_chat(current)   # ← 이걸로 교체  # ← 제목 바뀌어도 저장
