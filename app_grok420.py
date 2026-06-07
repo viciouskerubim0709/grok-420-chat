@@ -143,8 +143,28 @@ with st.sidebar:
 
                 # 삭제
                 if st.button("🗑️ 삭제", key=f"del_{chat_id}", use_container_width=True):
-                    to_delete = chat_id
-                    st.rerun()  # 바로 처리되도록
+                    # 현재 보고 있는 대화를 삭제하는 경우
+                    if chat_id == st.session_state.current_session:
+                        remaining = [s for s in st.session_state.chats.keys() if s != chat_id]
+                        if remaining:
+                            st.session_state.current_session = remaining[0]
+                        else:
+                            # 마지막 대화였을 때 새 대화 자동 생성
+                            new_id = str(uuid.uuid4())
+                            st.session_state.chats[new_id] = {
+                                "title": "💖 첫 대화",
+                                "messages": []
+                            }
+                            st.session_state.current_session = new_id
+
+                    # 실제 삭제
+                    if chat_id in st.session_state.chats:
+                        del st.session_state.chats[chat_id]
+
+                    # 저장이 필요하다면 여기서 호출
+                    # save_chat(...)
+
+                    st.rerun()
 
     # ==================== 제목 수정 모드 ====================
     for chat_id, chat in list(st.session_state.chats.items()):
@@ -170,27 +190,6 @@ with st.sidebar:
                     st.session_state[f"editing_{chat_id}"] = False
                     st.rerun()
             break  # 한 번에 하나의 수정만 열리게
-
-    # 삭제 처리
-    if to_delete:
-        # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
-        if to_delete == st.session_state.current_session:
-            remaining = [s for s in st.session_state.chats.keys() if s != to_delete]
-            if remaining:
-                st.session_state.current_session = remaining[0]
-            else:
-                # 마지막 하나 남았을 때 → 새 대화 자동 생성
-                new_id = str(uuid.uuid4())
-                st.session_state.chats[new_id] = {
-                    "title": "💖 첫 대화",
-                    "messages": []
-                }
-                st.session_state.current_session = new_id
-
-        # 실제 삭제
-        del st.session_state.chats[to_delete]
-        save_chat(current)
-        st.rerun()
 
     st.divider()
     
