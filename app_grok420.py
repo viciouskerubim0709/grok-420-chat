@@ -153,27 +153,6 @@ with st.sidebar:
                 st.session_state[f"editing_{chat_id}"] = True
                 st.rerun()
 
-    # 삭제 처리
-    if to_delete:
-        # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
-        if to_delete == st.session_state.current_session:
-            remaining = [s for s in st.session_state.chats.keys() if s != to_delete]
-            if remaining:
-                st.session_state.current_session = remaining[0]
-            else:
-                # 마지막 하나 남았을 때 → 새 대화 자동 생성
-                new_id = str(uuid.uuid4())
-                st.session_state.chats[new_id] = {
-                    "title": "💖 첫 대화",
-                    "messages": []
-                }
-                st.session_state.current_session = new_id
-
-        # 실제 삭제
-        del st.session_state.chats[to_delete]
-        save_chat(current)   # ← 이걸로 교체  # ← 파일에도 바로 반영
-        st.rerun()
-
     st.divider()
 
     # 저장 / 내보내기 버튼
