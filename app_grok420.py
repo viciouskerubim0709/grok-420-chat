@@ -117,7 +117,17 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    
+
+    # 대화 목록 + 삭제 + 제목수정 버튼
+    to_delete = None
+    for chat_id, chat in list(st.session_state.chats.items()):
+        is_current = chat_id == current
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.button(chat["title"], key=f"select_{chat_id}", use_container_width=True):
+                st.session_state.current_session = chat_id
+                st.rerun()
+
         with col2:
             # 대화삭제 모드
             if st.button("🗑️", key=f"delete_{chat_id}", help="이 대화 삭제"):
@@ -147,7 +157,7 @@ with st.sidebar:
                 if st.button("✏️", key=f"editbtn_{chat_id}", help="제목 수정"):
                     st.session_state[f"editing_{chat_id}"] = True
                     st.rerun()
-
+                    
     # 삭제 처리
     if to_delete:
         # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
