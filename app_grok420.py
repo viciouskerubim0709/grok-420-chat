@@ -171,8 +171,6 @@ with st.sidebar:
                     st.session_state[f"editing_{chat_id}"] = False
                     st.rerun()
             break  # 한 번에 하나의 수정만 열리게
-            
-    st.divider()
 
     # 삭제 처리
     if to_delete:
@@ -196,7 +194,6 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    
     
     # 저장 / 내보내기 버튼
     if st.button("💾 현재 대화 다운로드", use_container_width=True):
