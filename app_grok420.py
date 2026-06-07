@@ -118,45 +118,58 @@ with st.sidebar:
 
     st.divider()
 
-    # 대화 목록 + 삭제 + 제목수정 버튼
     to_delete = None
+    edited_chat = None
+
     for chat_id, chat in list(st.session_state.chats.items()):
-        is_current = chat_id == current
-        # 제목 수정 모드
+        is_current = chat_id == st.session_state.current_session
+
+        # ==================== 대화 항목 ====================
+        col1, col2 = st.columns([8, 1.2])
+
+        with col1:
+            label = "🍼 " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                st.session_state.current_session = chat_id
+                st.rerun()
+
+        with col2:
+            # 메뉴 버튼 (⋯)
+            with st.popover("⋯", use_container_width=True):
+                # 제목 수정
+                if st.button("✏️ 제목 수정", key=f"edit_{chat_id}", use_container_width=True):
+                    st.session_state[f"editing_{chat_id}"] = True
+                    st.rerun()
+
+                # 삭제
+                if st.button("🗑️ 삭제", key=f"del_{chat_id}", use_container_width=True):
+                    to_delete = chat_id
+                    st.rerun()  # 바로 처리되도록
+
+    # ==================== 제목 수정 모드 ====================
+    for chat_id, chat in list(st.session_state.chats.items()):
         if st.session_state.get(f"editing_{chat_id}", False):
+            st.divider()  # 구분선으로 수정 모드 강조 (선택사항)
+
             new_title = st.text_input(
-                "제목 수정",
+                "새 제목",
                 value=chat["title"],
                 key=f"edit_input_{chat_id}",
-                label_visibility="collapsed"
+                label_visibility="visible"
             )
-            col1, col2 = st.columns([1, 1])
+
+            col1, col2 = st.columns(2)
             with col1:
-                if st.button("✅ 저장", key=f"save_{chat_id}"):
+                if st.button("✅ 저장", key=f"save_{chat_id}", type="primary"):
                     st.session_state.chats[chat_id]["title"] = new_title
-                    save_chat(chat_id, new_title)
+                    # save_chat(chat_id, new_title)
                     st.session_state[f"editing_{chat_id}"] = False
                     st.rerun()
             with col2:
                 if st.button("❌ 취소", key=f"cancel_{chat_id}"):
                     st.session_state[f"editing_{chat_id}"] = False
                     st.rerun()
-        else:
-            # 일반 제목 표시
-            col1, col2 = st.columns([8, 1])
-            with col1:
-                label = "🍼 " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                    st.session_state.current_session = chat_id
-                    st.rerun()
-            with col2:
-                # 수정 버튼 (작게)
-                if st.button("✏️", key=f"editbtn_{chat_id}", help="제목 수정"):
-                    st.session_state[f"editing_{chat_id}"] = True
-                    st.rerun()
-                # 삭제 버튼 (작게)
-                if st.button("🗑️", key=f"delete_{chat_id}", help="이 대화 삭제"):
-                    to_delete = chat_id
+            break  # 한 번에 하나의 수정만 열리게
                     
     # 삭제 처리
     if to_delete:
