@@ -161,8 +161,6 @@ for chat_id, chat in list(st.session_state.chats.items()):
                     del st.session_state.chats[chat_id]
 
                 # 저장이 필요하다면 여기서 호출
-                save_chat(st.session_state.current_session) 
-
                 st.rerun()
                 
     st.divider()
