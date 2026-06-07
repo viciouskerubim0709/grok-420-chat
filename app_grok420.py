@@ -118,43 +118,75 @@ with st.sidebar:
 
     st.divider()
     
-    # 대화 목록 + 삭제 버튼
+    # 대화 목록 + 삭제 + 제목수정 버튼
+    to_delete = None
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = chat_id == current
-
-        # 제목 수정 모드
-        if st.session_state.get(f"editing_{chat_id}", False):
-            new_title = st.text_input(
-                "제목 수정",
-                value=chat["title"],
-                key=f"edit_input_{chat_id}",
-                label_visibility="collapsed"
-            )
-            col1, col2 = st.columns([1, 1])
-            with col1:
-                if st.button("✅ 저장", key=f"save_{chat_id}"):
-                    st.session_state.chats[chat_id]["title"] = new_title
-                    save_chat(chat_id, new_title)
-                    st.session_state[f"editing_{chat_id}"] = False
-                    st.rerun()
-            with col2:
-                if st.button("❌ 취소", key=f"cancel_{chat_id}"):
-                    st.session_state[f"editing_{chat_id}"] = False
-                    st.rerun()
-        else:
-            # 일반 제목 표시
-            label = "→ " + chat["title"] if is_current else chat["title"]
-            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.button(chat["title"], key=f"select_{chat_id}", use_container_width=True):
                 st.session_state.current_session = chat_id
                 st.rerun()
 
-            # 수정 버튼 (작게)
-            if st.button("✏️", key=f"editbtn_{chat_id}", help="제목 수정"):
-                st.session_state[f"editing_{chat_id}"] = True
-                st.rerun()
+        with col2:
+            # 대화삭제 모드
+            if st.button("🗑️", key=f"delete_{chat_id}", help="이 대화 삭제"):
+                to_delete = chat_id
+
+            # 제목 수정 모드
+            if st.session_state.get(f"editing_{chat_id}", False):
+                new_title = st.text_input(
+                    "제목 수정",
+                    value=chat["title"],
+                    key=f"edit_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
+                col1, col2 = st.columns([1, 1])
+                with col1:
+                    if st.button("✅ 저장", key=f"save_{chat_id}"):
+                        st.session_state.chats[chat_id]["title"] = new_title
+                        save_chat(chat_id, new_title)
+                        st.session_state[f"editing_{chat_id}"] = False
+                        st.rerun()
+                with col2:
+                    if st.button("❌ 취소", key=f"cancel_{chat_id}"):
+                        st.session_state[f"editing_{chat_id}"] = False
+                        st.rerun()
+            else:
+                # 일반 제목 표시
+                label = "→ " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                    st.session_state.current_session = chat_id
+                    st.rerun()
+
+                # 수정 버튼 (작게)
+                if st.button("✏️", key=f"editbtn_{chat_id}", help="제목 수정"):
+                    st.session_state[f"editing_{chat_id}"] = True
+                    st.rerun()
+
+    # 삭제 처리
+    if to_delete:
+        # 현재 보고 있는 대화를 지우려고 하면 다른 대화로 자동 이동
+        if to_delete == st.session_state.current_session:
+            remaining = [s for s in st.session_state.chats.keys() if s != to_delete]
+            if remaining:
+                st.session_state.current_session = remaining[0]
+            else:
+                # 마지막 하나 남았을 때 → 새 대화 자동 생성
+                new_id = str(uuid.uuid4())
+                st.session_state.chats[new_id] = {
+                    "title": "💖 첫 대화",
+                    "messages": []
+                }
+                st.session_state.current_session = new_id
+
+        # 실제 삭제
+        del st.session_state.chats[to_delete]
+        save_chat(current)   # ← 이걸로 교체  # ← 파일에도 바로 반영
+        st.rerun()
 
     st.divider()
-
+    
     # 저장 / 내보내기 버튼
     if st.button("💾 현재 대화 다운로드", use_container_width=True):
         chat_data = st.session_state.chats[current]
