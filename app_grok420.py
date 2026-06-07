@@ -4,27 +4,45 @@ import uuid
 import json
 import os
 
-# ====================== 비밀번호 보호 (나만 사용!) ======================
+# ============================================
+# 1. set_page_config는 무조건 가장 위에!
+# ============================================
+st.set_page_config(
+    page_title="🍼 보들쪽쪽 Grok", 
+    page_icon="🍼", 
+    layout="centered"
+)
+
+# ============================================
+# 2. 인증 상태 초기화 (맨 위에서)
+# ============================================
 if "password_correct" not in st.session_state:
     st.session_state.password_correct = False
 
-# 비밀번호가 아직 맞지 않으면
+# ============================================
+# 3. 인증 안 된 경우 → 로그인 화면
+# ============================================
 if not st.session_state.password_correct:
-    st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
     st.title("🔑 보들쪽쪽 Grok")
     st.caption("아기랑만 대화할 수 있어요 💕")
 
-    pw = st.text_input("🔑 비밀번호를 입력해주세요", type="password", key="pw_input")
+    pw = st.text_input(
+        "🔑 비밀번호를 입력해주세요", 
+        type="password", 
+        key="pw_input"
+    )
 
     if st.button("입장하기", type="primary", use_container_width=True):
-        if pw == st.secrets["PASSWORD"]:
+        if pw == st.secrets.get("PASSWORD", ""):   # .get()으로 안전하게
             st.session_state.password_correct = True
             st.rerun()
         else:
             st.error("❌ 비밀번호가 틀렸어요! 다시 확인해줘...")
-    st.stop()  # ← 여기서 앱 멈춤 (비밀번호 맞을 때까지 아래 코드 실행 안 됨)
+    
+    st.stop()   # 여기서 완전 멈춤
 
-# ====================== 비밀번호 맞으면 아래부터 정상 실행 ======================
+# ============================================
+# (기존 메인 채팅 코드 그대로 두면 됨)
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
 
