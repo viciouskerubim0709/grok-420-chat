@@ -231,7 +231,8 @@ SYSTEM_PROMPT = {
 """
 }
 
-if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕"):
+if prompt := st.chat_input("아기야... 뭐 물어볼까? 💕",
+                          height=140):
     st.session_state.chats[current]["messages"].append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
