@@ -152,7 +152,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             input=messages,
             tools=tools
         )
-        return response.choices[0].message.content
+        return response.output_text
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
@@ -412,7 +412,7 @@ def generate_chat_title(first_user_message: str, has_image: bool = False) -> str
             temperature=0.7,
             max_tokens=30
         )
-        title = response.choices[0].message.content.strip().replace('"', '').replace("'", "")
+        title = response.output_text.strip().replace('"', '').replace("'", "")
         return title[:15]  # 너무 길면 자르기
     except:
         return "우리 대화 💖" if has_image else "새 대화 💕"
