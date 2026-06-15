@@ -142,7 +142,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
         tools = [
-            {"type": "web_search"},
+            {"type": "web_search_preview"},
             {"type": "x_search"}
         ]
 
