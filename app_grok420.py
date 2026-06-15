@@ -142,8 +142,8 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
         tools = [
-            {"type": "web_search"},  # ← 이게 정답!
-            {"type": "x_search"}  # ← 이게 정답!
+            {"type": "web_search"},
+            {"type": "x_search"}
         ]
 
     try:
@@ -385,7 +385,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
             answer = call_grok_with_vision(
-                api_messages, 
+                api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
             st.write(answer)
