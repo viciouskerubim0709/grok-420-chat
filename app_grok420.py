@@ -67,25 +67,37 @@ def create_default_chat():
 
 
 def save_chat(chat_id: str, title: str = None):
-    """Supabase에 현재 채팅 저장 + 자동 제목 생성"""
+    """Supabase에 현재 채팅 저장 + 자동 제목 생성 (안전 버전)"""
     if chat_id not in st.session_state.chats:
         return
 
     chat_data = st.session_state.chats[chat_id]
-    messages = chat_data["messages"]
+    messages = chat_data.get("messages", [])
 
-    # 제목이 없고 첫 사용자 메시지가 있다면 자동 생성
-    if not title and len(messages) >= 1:
-        first_user_msg = next((m for m in messages if m["role"] == "user"), None)
+    if not title and messages:
+        # 첫 번째 user 메시지 찾기
+        first_user_msg = next((m for m in messages if m.get("role") == "user"), None)
+
         if first_user_msg:
             has_image = "image_url" in first_user_msg
-            auto_title = generate_chat_title(first_user_msg["content"], has_image)
+
+            # content가 리스트인 경우 (Vision 메시지) 텍스트만 안전하게 추출
+            content = first_user_msg.get("content", "")
+            if isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict) and item.get("type") == "text":
+                        content = item.get("text", "")
+                        break
+            elif not isinstance(content, str):
+                content = str(content)
+
+            auto_title = generate_chat_title(content, has_image)
             title = auto_title
 
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": title or chat_data.get("title", "💖 우리 추억"),
+            "title": title or chat_data.get("title", "💖 우리 대화"),
             "messages": messages,
             "updated_at": datetime.utcnow().isoformat()
         }).execute()
@@ -398,21 +410,22 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
 
 # ==================== 자동 제목 생성 ====================
-def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
-    """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
+def generate_chat_title(text: str, has_image: bool = False) -> str:
+    """첫 메시지를 보고 귀여운 제목 생성 (안전 버전)"""
+    if not isinstance(text, str):
+        text = str(text)[:100]  # 리스트나 다른 타입이면 강제로 문자열로 변환
+
     try:
         if has_image:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
+            prompt = f"다음 메시지를 6자 이내로 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {text}"
         else:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
+            prompt = f"다음 메시지를 6자 이내로 귀엽고 따뜻한 제목으로 만들어줘: {text}"
 
-        response = st.session_state.client.chat.completions.create(
-            model="grok-4.20-0309-non-reasoning",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
-            max_tokens=30
+        response = st.session_state.client.responses.create(
+            model="grok-4.20-0309-reasoning",
+            input=[{"role": "user", "content": prompt}]
         )
         title = response.output_text.strip().replace('"', '').replace("'", "")
-        return title[:15]  # 너무 길면 자르기
+        return title[:12]   # 너무 길면 자르기
     except:
-        return "우리 대화 💖" if has_image else "새 대화 💕"
+        return "📸 우리 사진" if has_image else "💕 새 추억"
