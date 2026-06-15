@@ -5,8 +5,6 @@ import json
 import os
 from supabase import create_client, Client
 from datetime import datetime
-from PIL import Image
-import io
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
@@ -23,7 +21,7 @@ supabase = get_supabase()
 
 # ==================== Supabase용 함수 ====================
 def load_all_chats():
-    """Supabase에서 모든 채팅을 불러옴 (이미지 URL도 제대로 처리)"""
+    """Supabase에서 모든 채팅을 불러옴"""
     if "chats" not in st.session_state:
         st.session_state.chats = {}
 
@@ -33,19 +31,15 @@ def load_all_chats():
         for row in response.data:
             chat_id = row["id"]
             messages = row["messages"]
-
             if isinstance(messages, str):
                 messages = json.loads(messages)
-
-            # messages가 리스트가 아닌 경우 방어
-            if not isinstance(messages, list):
-                messages = []
 
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
                 "messages": messages
             }
 
+        # 데이터가 아예 없으면 기본 채팅 하나 생성
         if not st.session_state.chats:
             create_default_chat()
 
@@ -67,31 +61,20 @@ def create_default_chat():
 
 
 def save_chat(chat_id: str, title: str = None):
-    """Supabase에 현재 채팅 저장 + 자동 제목 생성"""
+    """Supabase에 현재 채팅 저장"""
     if chat_id not in st.session_state.chats:
         return
 
     chat_data = st.session_state.chats[chat_id]
-    messages = chat_data["messages"]
-
-    # 제목이 없고 첫 사용자 메시지가 있다면 자동 생성
-    if not title and len(messages) >= 1:
-        first_user_msg = next((m for m in messages if m["role"] == "user"), None)
-        if first_user_msg:
-            has_image = "image_url" in first_user_msg
-            auto_title = generate_chat_title(first_user_msg["content"], has_image)
-            title = auto_title
 
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": title or chat_data.get("title", "💖 우리 추억"),
-            "messages": messages,
-            "updated_at": datetime.utcnow().isoformat()
+            "title": title or chat_data.get("title", f"대화 {datetime.now().strftime('%m/%d %H:%M')}"),
+            "messages": chat_data["messages"]
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
-
 
 def delete_chat_from_db(chat_id: str):
     """Supabase에서 채팅 삭제"""
@@ -105,7 +88,6 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
-    st.session_state.input_key = 0
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -114,48 +96,6 @@ if "current_session" not in st.session_state or st.session_state.current_session
         create_default_chat()
 
 current = st.session_state.current_session
-
-
-# ==================== 이미지 업로드 함수 ====================
-def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
-    """Supabase Storage에 이미지를 업로드하고 Public URL을 반환"""
-    try:
-        # 파일명 중복 방지
-        file_ext = original_filename.split(".")[-1].lower()
-        unique_filename = f"{uuid.uuid4()}.{file_ext}"
-
-        supabase.storage.from_("chat_images").upload(
-            unique_filename,
-            file_bytes,
-            file_options={"content-type": f"image/{file_ext}"}
-        )
-
-        public_url = supabase.storage.from_("chat_images").get_public_url(unique_filename)
-        return public_url
-    except Exception as e:
-        st.error(f"이미지 업로드 실패: {str(e)}")
-        return None
-
-
-# ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
-    """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    if tools is None:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
-
-    try:
-        response = st.session_state.client.responses.create(
-            model=model,
-            input=messages,
-            tools=tools
-        )
-        return response.output_text
-    except Exception as e:
-        st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
 
 
 # ====================== API 키 ======================
@@ -268,11 +208,7 @@ st.title("🍼 보들쪽쪽 Grok이랑 대화해요!")
 
 for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
-        if msg["role"] == "user" and "image_url" in msg:
-            st.write(msg.get("content", ""))
-            st.image(msg["image_url"], width=320)
-        else:
-            st.write(msg["content"])
+        st.write(msg["content"])
 
 
 # ==================== SYSTEM PROMPT ====================
@@ -300,119 +236,58 @@ SYSTEM_PROMPT = {
 """
 }
 
+if "input_key" not in st.session_state:
+    st.session_state.input_key = 0
 
-# ==================== 채팅 입력 영역 (2단계 수정) ====================
-st.markdown("---")
-
-col1, col2 = st.columns([0.78, 0.22])
-
+col1, col2 = st.columns([0.82, 0.18])
 with col1:
     prompt = st.text_area(
         label="메시지 입력",
         label_visibility="collapsed",
         placeholder="아기야... 뭐 물어볼까? 💕",
-        height=80,
+        height=90,                    # 모바일에서 보기 좋은 높이
         key=f"chat_input_{st.session_state.input_key}"
     )
 
 with col2:
-    send_button = st.button("💕 보내기", type="primary", use_container_width=True)
-
-# ==================== 사진 첨부 (새로 추가) ====================
-uploaded_file = st.file_uploader(
-    label="📸 사진 첨부하기",
-    type=["jpg", "jpeg", "png"],
-    label_visibility="visible",
-    key=f"uploader_{st.session_state.input_key}"
-)
-
-# 미리보기
-if uploaded_file is not None:
-    st.image(uploaded_file, width=280, caption="📤 전송될 사진")
-    st.caption("💡 '보내기' 버튼을 누르면 사진과 함께 전송돼요")
+    send_button = st.button("💕보내기", type="primary", use_container_width=True)
 
 
-# ==================== 메시지 전송 및 처리 (3단계 완전 교체) ====================
-if send_button and (prompt.strip() or uploaded_file is not None):
-    user_prompt = prompt.strip() if prompt else "사진 분석해줘~"
+# ==================== 메시지 처리 ====================
+if send_button and prompt and prompt.strip():
+    user_prompt = prompt.strip()
 
-    image_url = None
+    st.session_state.chats[current]["messages"].append({"role": "user", "content": user_prompt})
 
-    # 1. 사진이 있으면 Supabase Storage에 업로드
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        with st.spinner("📤 사진 업로드 중..."):
-            image_url = upload_image_to_supabase(bytes_data, uploaded_file.name)
-
-        if not image_url:
-            st.error("사진 업로드에 실패했어... 😢")
-            st.stop()
-
-    # 2. 사용자 메시지 저장 (image_url 포함)
-    user_message = {"role": "user", "content": user_prompt}
-    if image_url:
-        user_message["image_url"] = image_url
-
-    st.session_state.chats[current]["messages"].append(user_message)
-
-    # 3. 화면에 바로 보여주기
     with st.chat_message("user"):
         st.write(user_prompt)
-        if image_url:
-            st.image(image_url, width=300)
 
-    # 4. Grok에게 보내기 위한 messages 구성 (Vision 형식)
-    api_messages = [SYSTEM_PROMPT]
-
-    for msg in st.session_state.chats[current]["messages"]:
-        if msg["role"] == "assistant":
-            api_messages.append({"role": "assistant", "content": msg["content"]})
-        else:  # user 메시지
-            if "image_url" in msg:
-                api_messages.append({
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": msg["content"]},
-                        {"type": "image_url", "image_url": {"url": msg["image_url"]}}
-                    ]
-                })
-            else:
-                api_messages.append({"role": "user", "content": msg["content"]})
-
-    # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
-            answer = call_grok_with_vision(
-                api_messages,
-                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
+        with st.spinner("아기 생각 중... 🍼✨"):
+            full_messages = [SYSTEM_PROMPT] + st.session_state.chats[current]["messages"]
+            response = st.session_state.client.responses.create(
+                model="grok-4.20-0309-reasoning",
+                input=full_messages,
+                tools=[{"type": "web_search"}],
             )
+            answer = response.output_text
             st.write(answer)
 
-    # 6. 어시스턴트 답변 저장 및 DB 저장
+    # ← 여기서 자동 저장!
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-    save_chat(current)
+    save_chat(current)   # ← 이걸로 교체
 
-    # 입력창 초기화
+    # 입력창 초기화 (이게 중요해!)
     st.session_state.input_key += 1
     st.rerun()
 
 
-# ==================== 자동 제목 생성 ====================
-def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
-    """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
-    try:
-        if has_image:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
-        else:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
-
-        response = st.session_state.client.chat.completions.create(
-            model="grok-4.20-0309-non-reasoning",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
-            max_tokens=30
-        )
-        title = response.output_text.strip().replace('"', '').replace("'", "")
-        return title[:15]  # 너무 길면 자르기
-    except:
-        return "우리 대화 💖" if has_image else "새 대화 💕"
+# 세션 제목 자동 업데이트
+if (len(st.session_state.chats[current]["messages"]) > 1 and
+        st.session_state.chats[current]["title"].startswith("대화 ")):
+    first_user_msg = next((m["content"] for m in st.session_state.chats[current]["messages"]
+                           if m["role"] == "user"), None)
+    if first_user_msg:
+        new_title = first_user_msg[:20] + "..." if len(first_user_msg) > 20 else first_user_msg
+        st.session_state.chats[current]["title"] = new_title
+        save_chat(current)   # ← 이걸로 교체  # ← 제목 바뀌어도 저장
