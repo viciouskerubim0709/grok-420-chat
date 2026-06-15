@@ -137,8 +137,8 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
         return None
 
 
-# ==================== Grok Vision 호출 함수 ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning"):
+# ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
         tools = [
@@ -150,8 +150,9 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.chat.completions.create(
             model=model,
             messages=messages,
-            temperature=0.75,
+            temperature=0.78,
             max_tokens=2048,
+            tools=tools
         )
         return response.choices[0].message.content
     except Exception as e:
@@ -384,11 +385,11 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
             answer = call_grok_with_vision(
-                api_messages,
-                model="grok-4.20-0309-reasoning",
+                api_messages, 
+                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
             st.write(answer)
-
+            
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     save_chat(current)
