@@ -265,6 +265,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                         {
                             "type": "text",
                             "text": msg["content"]  # ← 순서 바꿈 (image 먼저)
+                        }
                     ]
                 })
             else:
