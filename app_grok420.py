@@ -150,24 +150,23 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
-    """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    if tools is None:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning"):
+    """Grok 4.20 Reasoning + Vision + Tools"""
+    if not any(isinstance(m.get("content"), list) for m in messages if m.get("role") == "user"):
+        tools = [{"type": "web_search"}, {"type": "x_search"}]
+    else:
+        tools = None  # 이미지 있을 때는 tools를 None으로 하는 것도 하나의 방법
 
     try:
         response = st.session_state.client.responses.create(
             model=model,
-            input=messages,
-            tools=tools
+            input=messages,          # responses.create는 input 사용
+            tools=tools,
         )
         return response.output_text
     except Exception as e:
-        st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
+        st.error(f"API 오류: {type(e).__name__} - {str(e)}")
+        return "아기야... 사진이 너무 어려운가봐...🥺 다시 보내줄래?"
 
 
 # ====================== API 키 ======================
@@ -384,8 +383,8 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages.append({
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": msg["content"]},
-                        {"type": "image_url", "image_url": {"url": msg["image_url"]}}
+                        {"type": "input_text", "text": msg["content"]},
+                        {"type": "input_image", "image_url": {"url": msg["image_url"]}}
                     ]
                 })
             else:
