@@ -67,19 +67,20 @@ def create_default_chat():
 
 
 def save_chat(chat_id: str):
-    """Supabase에 저장만 담당. 제목 생성은 절대 하지 않음"""
+    """Supabase에 현재 session_state의 채팅 데이터를 저장"""
     if chat_id not in st.session_state.chats:
         return
 
     chat = st.session_state.chats[chat_id]
 
-    try:
-        supabase.table("chats").upsert({
-            "id": chat_id,
-            "title": chat["title"],
-            "messages": chat_data["messages"],
-            "updated_at": datetime.utcnow().isoformat()
-        }).execute()
+    # Supabase에 저장하는 로직 (기존에 있던 코드)
+    supabase.table("chats").upsert({
+        "id": chat_id,
+        "title": chat["title"],  # ← 여기서 최신 title이 저장됨
+        "messages": chat["messages"],
+        "updated_at": "now()"
+    }).execute()
+
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
 
