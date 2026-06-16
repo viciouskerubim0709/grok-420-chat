@@ -150,23 +150,40 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
-    """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    if tools is None:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
-
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning"):
+    """Grok 4.20 Reasoning + Vision + Tools 제대로 동작 버전"""
     try:
         response = st.session_state.client.responses.create(
             model=model,
-            input=messages,
-            tools=tools
+            input=messages,  # messages를 input으로 그대로 전달
+            tools=[
+                {"type": "web_search"},
+                {"type": "x_search"}
+            ]
         )
-        return response.output_text
+
+        # Responses API 응답 구조 처리 (2026년 기준)
+        if hasattr(response, "output_text") and response.output_text:
+            return response.output_text
+
+        # 대부분 이쪽으로 떨어짐
+        if hasattr(response, "output") and isinstance(response.output, list):
+            for item in response.output:
+                if hasattr(item, "content") and item.content:
+                    if isinstance(item.content, str):
+                        return item.content
+                    elif isinstance(item.content, list):
+                        # content가 list인 경우 (structured output 등)
+                        texts = [block.get("text", "") for block in item.content if
+                                 isinstance(block, dict) and block.get("type") == "text"]
+                        return "".join(texts)
+                if hasattr(item, "text") and item.text:
+                    return item.text
+
+        return str(response)  # 최후의 수단
+
     except Exception as e:
-        st.error(f"API 오류: {str(e)}")
+        st.error(f"API 오류: {type(e).__name__} - {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
 
 
@@ -390,7 +407,6 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 })
             else:
                 api_messages.append({"role": "user", "content": msg["content"]})
-
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
