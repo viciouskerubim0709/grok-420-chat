@@ -162,9 +162,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            tools=tools,
-            temperature=0.7,
-            max_output_tokens=8192
+            tools=tools
         )
         return response.output_text
     except Exception as e:
@@ -386,12 +384,20 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages.append({
                     "role": "user",
                     "content": [
-                        {"type": "image_url", "image_url": {"url": msg["image_url"]}},
-                        {"type": "text", "text": msg["content"]}
+                        {"type": "input_image", "image_url": msg["image_url"]},
+                        {"type": "input_text", "text": msg["content"]}
                     ]
                 })
             else:
-                api_messages.append({"role": "user", "content": msg["content"]})
+                api_messages.append({
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "input_text",
+                            "text": msg["content"]
+                        }
+                    ]
+                })
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
