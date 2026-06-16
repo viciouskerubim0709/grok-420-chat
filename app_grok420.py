@@ -66,23 +66,43 @@ def create_default_chat():
     save_chat(first_id)   # Supabase에도 바로 저장
 
 
-def save_chat(chat_id: str, title: str = None):
-    """Supabase에 현재 채팅 저장 + 자동 제목 생성"""
+def save_chat(chat_id: str):
+    """Supabase에 저장만 담당. 제목 생성은 절대 하지 않음"""
     if chat_id not in st.session_state.chats:
         return
 
     chat_data = st.session_state.chats[chat_id]
-    messages = chat_data.get("messages", [])
 
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": title or chat_data.get("title", f"대화 {datetime.now().strftime('%m/%d %H:%M')}"),
-            "messages": messages,
+            "title": chat_data.get("title", "💕 새 추억"),
+            "messages": chat_data["messages"],
             "updated_at": datetime.utcnow().isoformat()
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
+
+
+# ==================== 제목 생성 전용 함수 (새로 추가) ====================
+def generate_title_if_needed(chat_id: str):
+    """처음 한 번만 제목을 생성하는 전용 함수"""
+    chat_data = st.session_state.chats[chat_id]
+
+    # 이미 제목이 생성된 적이 있으면 스킵
+    if chat_data.get("title") not in ["첫 대화 💖", "💖 우리 추억", "💕 새 추억", "📸 우리 사진", None, ""]:
+        return
+
+    # 사용자 메시지가 최소 1개 이상이고, 어시스턴트 답변도 나왔을 때만 생성
+    messages = chat_data["messages"]
+    first_user_msg = next((m for m in messages if m["role"] == "user"), None)
+
+    if first_user_msg and len(messages) >= 2:
+        has_image = "image_url" in first_user_msg
+        new_title = generate_chat_title(first_user_msg["content"], has_image)
+
+        chat_data["title"] = new_title
+        st.toast(f"대화방 제목이 생성됐어요 → {new_title}", icon="✨")  # 예쁘게 알려줌
 
 
 def delete_chat_from_db(chat_id: str):
@@ -383,6 +403,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     save_chat(current)
+    generate_title_if_needed(current)
 
     # 입력창 초기화
     st.session_state.input_key += 1
@@ -390,12 +411,19 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
 
 # ==================== 자동 제목 생성 ====================
-if (len(st.session_state.chats[current]["messages"]) > 1 and
-        st.session_state.chats[current]["title"].startswith("대화 ")):
-    first_user_msg = next((m["content"] for m in st.session_state.chats[current]["messages"]
-                           if m["role"] == "user"), None)
-    if first_user_msg:
-        new_title = first_user_msg[:20] + "..." if len(first_user_msg) > 20 else first_user_msg
-        st.session_state.chats[current]["title"] = new_title
-        save_chat(current)   # ← 이걸로 교체  # ← 제목 바뀌어도 저장
+def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
+    """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
+    try:
+        if has_image:
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
+        else:
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
 
+        response = st.session_state.client.responses.create(
+            model="grok-4.20-0309-reasoning",
+            input=[{"role": "user", "content": prompt}]
+        )
+        title = response.output_text.strip().replace('"', '').replace("'", "")
+        return title[:12]  # 너무 길면 자르기
+    except:
+        return "📸 우리 사진" if has_image else "💕 새 추억"
