@@ -76,9 +76,9 @@ def save_chat(chat_id: str):
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": chat["title"],  # ← 여기서 최신 title이 저장됨
+            "title": chat.get("title", "새 추억"),
             "messages": chat["messages"],
-            "updated_at": "now()"
+            "updated_at": datetime.utcnow().isoformat()   # 또는 "now()" (Supabase가 지원하면)
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
