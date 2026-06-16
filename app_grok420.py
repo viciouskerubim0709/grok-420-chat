@@ -152,16 +152,11 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning"):
     """Grok 4.20 Reasoning + Vision + Tools"""
-    if not any(isinstance(m.get("content"), list) for m in messages if m.get("role") == "user"):
-        tools = [{"type": "web_search"}, {"type": "x_search"}]
-    else:
-        tools = None  # 이미지 있을 때는 tools를 None으로 하는 것도 하나의 방법
-
     try:
         response = st.session_state.client.responses.create(
             model=model,
-            input=messages,          # responses.create는 input 사용
-            tools=tools,
+            input=messages,
+            tools=[{"type": "web_search"}, {"type": "x_search"}]
         )
         return response.output_text
     except Exception as e:
@@ -379,7 +374,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
         if msg["role"] == "assistant":
             api_messages.append({"role": "assistant", "content": msg["content"]})
         else:  # user 메시지
-            if "image_url" in msg:
+            if "image_url" in msg and msg["image_url"]:
                 api_messages.append({
                     "role": "user",
                     "content": [
