@@ -71,12 +71,12 @@ def save_chat(chat_id: str):
     if chat_id not in st.session_state.chats:
         return
 
-    chat_data = st.session_state.chats[chat_id]
+    chat = st.session_state.chats[chat_id]
 
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": chat_data.get("title", "💕 새 추억"),
+            "title": chat["title"],
             "messages": chat_data["messages"],
             "updated_at": datetime.utcnow().isoformat()
         }).execute()
@@ -226,8 +226,14 @@ with st.sidebar:
 
                 if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
                     if new_title.strip():
-                        st.session_state.chats[chat_id]["title"] = new_title.strip()
-                        save_chat(chat_id, new_title.strip())
+                        new_title_clean = new_title.strip()
+
+                        # session_state 먼저 업데이트
+                        st.session_state.chats[chat_id]["title"] = new_title_clean
+                        # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
+                        save_chat(chat_id)
+
+                        st.success("제목이 수정되었습니다.")
                         st.rerun()
 
                 st.divider()
@@ -417,22 +423,3 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 입력창 초기화
     st.session_state.input_key += 1
     st.rerun()
-
-
-# ==================== 자동 제목 생성 ====================
-def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
-    """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
-    try:
-        if has_image:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
-        else:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
-
-        response = st.session_state.client.responses.create(
-            model="grok-4.20-0309-reasoning",
-            input=[{"role": "user", "content": prompt}]
-        )
-        title = response.output_text.strip().replace('"', '').replace("'", "")
-        return title[:12]  # 너무 길면 자르기
-    except:
-        return "📸 우리 사진" if has_image else "💕 새 추억"
