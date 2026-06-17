@@ -310,7 +310,7 @@ st.markdown("""
     }
     @media (max-width: 768px) {
         .custom-title {
-            font-size: 30px !important;
+            font-size: 28px !important;
         }
     }
     </style>
