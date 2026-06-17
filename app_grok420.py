@@ -310,7 +310,7 @@ js_code = """
             isMobile: window.innerWidth < 600,
             width: window.innerWidth
         };
-    })();
+    });
 """
 result = st_javascript(js_code)
 
