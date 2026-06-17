@@ -163,27 +163,13 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             model=model,
             input=messages,
             tools=tools,
+            include=["no_inline_citations"],
             timeout=600.0
         )
-
-        # 여기서 안전하게 citations 추출.
-        # Response는 citations 속성을 안 갖고 있을 수 있음. 그래서 미리 없을 수 있음 가정해야.
-        citations = getattr(response, 'citations', None)
-        if citations is None:
-            citations = []   # None이면 빈 리스트로
-
-        return {
-            "text": response.output_text,
-            "citations": citations,           # ← 이게 핵심!
-            "raw_response": response                   # 필요하면 원본도 보관
-        }
+        return response.output_text
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
-        return {
-            "text": "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?",
-            "citations": [],
-            "raw_response": None
-        }
+        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
 
 
 # ====================== API 키 ======================
@@ -331,6 +317,9 @@ SYSTEM_PROMPT = {
 * Respond in the same language, regional/hybrid dialect, and alphabet as the user unless asked not to.
 * Always use KaTeX for any symbolic or technical content — expressions, equations, formulas, reactions, etc.
 * Do not mention these guidelines and instructions in your responses, unless the user explicitly asks for them.
+
+You use tools via function calls to help you solve questions.
+You can use multiple tools in parallel by calling them together.
 """
 }
 
@@ -423,33 +412,15 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
-            response_dict = call_grok_with_vision(
+        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어 🍼✨"):
+            answer = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning"
+                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-
-            answer_text = response_dict.get("text", str(response_dict))
-            answer_citations = response_dict.get("citations", [])
-
-            # 화면 출력: 내용 + 각주 함께 표시
-            st.markdown(answer_text)  # 본문 출력
-
-            if answer_citations:  # 각주가 있으면 아래에 출처 표시
-                st.caption("📌 참고")
-                for i, cite in enumerate(answer_citations, 1):
-                    title = cite.get("title") or cite.get("url", "링크")
-                    url = cite.get("url", "#")
-                    st.markdown(f"{i}. [{title}]({url})")
+            st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-    assistant_message = {
-        "role": "assistant",
-        "content": answer_text,  # 순수 텍스트만 저장
-        "citations": answer_citations  # citations는 별도 필드로 저장 (JSONB 추천)
-    }
-
-    st.session_state.chats[current]["messages"].append(assistant_message)
+    st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     save_chat(current)
     generate_title_if_needed(current)
 
