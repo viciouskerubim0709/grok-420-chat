@@ -163,7 +163,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             model=model,
             input=messages,
             tools=tools,
-            include=["inline_citations"],
+            include=["no_inline_citations"],
             timeout=600.0
         )
         return {
