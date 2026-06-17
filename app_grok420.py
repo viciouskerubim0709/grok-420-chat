@@ -303,10 +303,25 @@ with st.sidebar:
 
 # ====================== 채팅 타이틀 설정 ======================
 st.markdown("""
-    <h1 style="font-size: 28px; margin-bottom: 0.3em;">
-        🍼 보들쪽쪽 Grok이랑 대화해요!
-    </h1>
+    <style>
+    .custom-title {
+        margin-bottom: 18px;
+        color: #FF7E6B;
+        white-space: nowrap;           /* 강제로 한 줄 유지 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* 모바일 전용 */
+    @media (max-width: 580px) {
+        .custom-title {
+            font-size: 24px !important;
+        }
+    }
+    </style>
+    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
+
 
 
 # ====================== 메인 채팅 ======================
