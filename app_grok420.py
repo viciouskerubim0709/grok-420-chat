@@ -7,7 +7,7 @@ from supabase import create_client, Client
 from datetime import datetime
 from PIL import Image
 import io
-import streamlit.components.v1 as components
+from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
@@ -310,22 +310,23 @@ js_code = """
             isMobile: window.innerWidth < 600,
             width: window.innerWidth
         };
-    });
+    })();
 """
+result = st_javascript(js_code)
 
 is_mobile = False
-if isinstance(js_code, dict) and "isMobile" in js_code:
-    is_mobile = js_code["isMobile"]
+if isinstance(result, dict) and "isMobile" in result:
+    is_mobile = result["isMobile"]
 
 # ===== 타이틀 출력 =====
 if is_mobile:
-    st.markdown(js_script, """
+    st.markdown("""
         <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
-            🍼 보들쪽쪽 Grok이랑\n대화해요!
+            🍼 보들쪽쪽 Grok이랑 놀아요!
         </h1>
     """, unsafe_allow_html=True)
 else:
-    st.markdown(js_script, """
+    st.markdown("""
         <h1 style="margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑 대화해요!
         </h1>
