@@ -308,9 +308,9 @@ st.markdown("""
         margin-bottom: 16px;
         color: #FF7E6B;
     }
-    @media (max-width: 300px) {
+    @media (max-width: 580px) {
         .custom-title {
-            font-size: 26px;
+            font-size: 26px !important;
         }
     }
     </style>
