@@ -11,44 +11,6 @@ from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
-# ===== 메인 타이틀 스타일 (강력 버전) =====
-st.markdown("""
-    <style>
-    /* Streamlit의 실제 title 요소를 강제로 타겟팅 */
-    .stApp h1, 
-    .stApp .stMarkdown h1,
-    [data-testid="stHeader"] h1,
-    .st-emotion-cache-1eg0yfo h1 {
-        color: #FF7E6B !important;
-        font-size: 29px !important;
-        font-weight: 700 !important;
-        margin-bottom: 20px !important;
-        white-space: nowrap !important;
-        line-height: 1.15 !important;
-    }
-    
-    /* 모바일 대응 */
-    @media (max-width: 580px) {
-        .stApp h1, 
-        .stApp .stMarkdown h1,
-        [data-testid="stHeader"] h1,
-        .st-emotion-cache-1eg0yfo h1 {
-            font-size: 24px !important;
-        }
-    }
-    
-    @media (max-width: 420px) {
-        .stApp h1, 
-        .stApp .stMarkdown h1 {
-            font-size: 22px !important;
-        }
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# ===== 타이틀 출력 =====
-st.markdown('<h1>🍼 보들쪽쪽 Grok이랑 대화해요!</h1>', unsafe_allow_html=True)
-
 
 # ====================== Supabase 연결 ======================
 @st.cache_resource
@@ -339,6 +301,21 @@ with st.sidebar:
             mime="application/json",
             use_container_width=True
         )
+
+# ====================== 타이틀 ======================
+st.markdown("""
+    <style>
+    .custom-title {
+        color: #FF7E6B !important;
+    }
+    @media (max-width: 768px) {
+        .custom-title {
+            font-size: 24px !important;
+        }
+    }
+    </style>
+    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
+""", unsafe_allow_html=True)
 
 
 # ====================== 메인 채팅 ======================
