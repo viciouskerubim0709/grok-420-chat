@@ -450,7 +450,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     assistant_message = {
         "role": "assistant",
         "content": answer_text,  # 순수 텍스트만 저장
-        "citations": citations  # citations는 별도 필드로 저장 (JSONB 추천)
+        "citations": answer_citations  # citations는 별도 필드로 저장 (JSONB 추천)
     }
 
     st.session_state.chats[current]["messages"].append(assistant_message)
