@@ -417,32 +417,43 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 🍼✨"):
-            response_dict = call_grok_with_vision(api_messages, model="grok-4.20-0309-reasoning")
+        with st.spinner("생각하는 중..."):
+            result = call_grok_with_vision(api_messages)
             
-            answer_text = response_dict.get("text", "")
-            answer_citations = response_dict.get("citations", [])
-    
-            # ==================== 디버깅 영역 ====================
-            st.subheader("🔍 디버깅 정보")
-            st.write(f"citations 개수: **{len(answer_citations)}**")
-            st.write(f"citations 타입: {type(answer_citations)}")
+            text = result.get("text", "")
+            raw_response = result.get("raw_response")
             
-            if answer_citations:
-                st.json(answer_citations)        # 실제 내용 확인
+            st.markdown(text)
+            
+            # ==================== 강력 디버깅 ====================
+            st.subheader("🔍 강력 디버깅 정보")
+            
+            if raw_response is None:
+                st.error("raw_response가 None입니다.")
             else:
-                st.warning("citations가 비어있습니다.")
-    
-            # 본문 출력
-            st.markdown(answer_text)
-            
-            # 출처 출력
-            if answer_citations:
-                st.caption("📌 참고 출처")
-                for i, cite in enumerate(answer_citations, 1):
-                    title = cite.get("title") or cite.get("url", "링크")
-                    url = cite.get("url") or "#"
-                    st.markdown(f"{i}. [{title}]({url})")
+                st.write(f"**raw_response 타입:** {type(raw_response)}")
+                
+                # 가능한 모든 속성 탐색
+                possible_attrs = ['citations', 'inline_citations', 'sources', 
+                                'search_results', 'tool_calls', 'references']
+                
+                found = False
+                for attr in possible_attrs:
+                    value = getattr(raw_response, attr, None)
+                    if value is not None:
+                        st.success(f"✅ `{attr}` 속성 발견! (타입: {type(value)})")
+                        st.write(f"길이: {len(value) if hasattr(value, '__len__') else '길이 측정 불가'}")
+                        st.json(value)
+                        found = True
+                
+                if not found:
+                    st.error("위 속성들 중 어떤 것도 response에 존재하지 않습니다.")
+                    
+                    # 최후의 수단: 모든 속성 출력
+                    st.caption("전체 속성 목록")
+                    attrs = [attr for attr in dir(raw_response) if not attr.startswith('_')]
+                    st.json(attrs)
+                    
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
