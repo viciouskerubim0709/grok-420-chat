@@ -313,7 +313,7 @@ js_code = """
         };
     })();
 """
-result = components(js_code)
+result = components.html(js_code)
 
 is_mobile = False
 if isinstance(result, dict) and "isMobile" in result:
