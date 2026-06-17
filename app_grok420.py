@@ -319,13 +319,13 @@ if isinstance(js_code, dict) and "isMobile" in js_code:
 
 # ===== 타이틀 출력 =====
 if is_mobile:
-    st.markdown(js_scrip, """
+    st.markdown(js_script, """
         <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑\n대화해요!
         </h1>
     """, unsafe_allow_html=True)
 else:
-    st.markdown(js_scrip, """
+    st.markdown(js_script, """
         <h1 style="margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑 대화해요!
         </h1>
