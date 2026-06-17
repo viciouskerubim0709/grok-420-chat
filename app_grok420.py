@@ -162,6 +162,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
+            return_citations=true,
             tools=tools,
             timeout=600.0
         )
