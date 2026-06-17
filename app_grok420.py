@@ -430,14 +430,14 @@ if send_button and (prompt.strip() or uploaded_file is not None):
             )
 
             answer_text = response_dict.get("text", str(response_dict))
-            citations = response_dict.get("citations", [])
+            answer_citations = response_dict.get("citations", [])
 
-            # 화면 출력
-            st.markdown(answer_text)
+            # 화면 출력: 내용 + 각주 함께 표시
+            st.markdown(answer_text)  # 본문 출력
 
-            if citations:  # 각주가 있으면 아래에 출처 표시
+            if answer_citations:  # 각주가 있으면 아래에 출처 표시
                 st.caption("📌 참고")
-                for i, cite in enumerate(citations, 1):
+                for i, cite in enumerate(answer_citations, 1):
                     title = cite.get("title") or cite.get("url", "링크")
                     url = cite.get("url", "#")
                     st.markdown(f"{i}. [{title}]({url})")
@@ -446,7 +446,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     assistant_message = {
         "role": "assistant",
         "content": answer_text,  # 순수 텍스트만 저장
-        "citations": citations  # citations는 별도 필드로 저장 (JSONB 추천)
+        "citations": answer_citations  # citations는 별도 필드로 저장 (JSONB 추천)
     }
 
     st.session_state.chats[current]["messages"].append(assistant_message)
