@@ -165,10 +165,18 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             tools=tools,
             timeout=600.0
         )
-        return response.output_text
+        return {
+            "text": response.output_text,
+            "citations": response.citations,           # ← 이게 핵심!
+            "raw_response": response                   # 필요하면 원본도 보관
+        }
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
+        return {
+            "text": "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?",
+            "citations": [],
+            "raw_response": None
+        }
 
 
 # ====================== API 키 ======================
