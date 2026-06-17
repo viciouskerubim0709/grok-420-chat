@@ -159,10 +159,8 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             model=model,
             input=messages,
             tools=tools,
-            return_citations=True,      # ← 최신 docs 기준으로 이걸로 변경
             timeout=600.0
         )
-
         citations = getattr(response, 'citations', None) or getattr(response, 'sources', []) or []
 
         return {
