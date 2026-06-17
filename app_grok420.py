@@ -417,14 +417,36 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
-            answer = call_grok_with_vision(
+            response = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
+                model="grok-4.20-0309-reasoning"
             )
-            st.write(answer)
+
+            if isinstance(response, dict) and "text" in response:
+                answer_text = response["text"]
+                citations = response.get("citations", [])
+            else:
+                answer_text = str(response)
+                citations = []
+
+            # 화면 출력: 내용 + 각주 함께 표시
+            st.markdown(answer_text)  # 본문 출력
+
+            if citations:  # 각주가 있으면 아래에 출처 표시
+                st.caption("📌 참고")
+                for i, cite in enumerate(citations, 1):
+                    title = cite.get("title") or cite.get("url", "링크")
+                    url = cite.get("url", "#")
+                    st.markdown(f"{i}. [{title}]({url})")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-    st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
+    assistant_message = {
+        "role": "assistant",
+        "content": answer_text,  # 순수 텍스트만 저장
+        "citations": citations  # citations는 별도 필드로 저장 (JSONB 추천)
+    }
+
+    st.session_state.chats[current]["messages"].append(assistant_message)
     save_chat(current)
     generate_title_if_needed(current)
 
