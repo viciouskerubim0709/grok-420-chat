@@ -322,7 +322,7 @@ if isinstance(result, dict) and "isMobile" in result:
 if is_mobile:
     st.markdown("""
         <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
-            🍼 보들쪽쪽 Grok이랑\n 대화해요!
+            🍼 보들쪽쪽 Grok이랑<br>대화해요!
         </h1>
     """, unsafe_allow_html=True)
 else:
