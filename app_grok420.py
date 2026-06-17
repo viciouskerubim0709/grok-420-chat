@@ -8,8 +8,7 @@ from datetime import datetime
 from PIL import Image
 import io
 import streamlit as st
-from streamlit_javascript import st_javascript
-
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
