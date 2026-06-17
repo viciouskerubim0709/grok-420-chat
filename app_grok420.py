@@ -305,31 +305,23 @@ with st.sidebar:
 st.markdown("""
     <style>
     .custom-title {
-        margin-bottom: 18px;
+        margin-bottom: 16px;
         color: #FF7E6B;
-        white-space: nowrap;           /* 강제로 한 줄 유지 */
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
+    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
     </style>
-    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
-""", unsafe_allow_html=True)
-
-# 모바일 전용
-st.markdown("""
+    
     <style>
-    @media (max-width: 580px) {
+    @media (max-width: 768px) {
         .custom-title {
-            font-size: 24px !important;
-            margin-bottom: 18px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
             color: #FF7E6B;
-            white-space: nowrap;          
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
+        <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
         </style>
-    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
-""", unsafe_allow_html=True)
+        }""", unsafe_allow_html=True)
 
 
 # ====================== 메인 채팅 ======================
