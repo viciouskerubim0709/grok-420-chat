@@ -7,7 +7,6 @@ from supabase import create_client, Client
 from datetime import datetime
 from PIL import Image
 import io
-import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -311,9 +310,9 @@ js_code = """
             isMobile: window.innerWidth < 600,
             width: window.innerWidth
         };
-    })();
+    });
 """
-result = components(js_code)
+result = components.html(js_code)
 
 is_mobile = False
 if isinstance(result, dict) and "isMobile" in result:
