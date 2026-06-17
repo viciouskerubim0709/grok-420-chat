@@ -166,18 +166,19 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             include=["no_inline_citations"],
             timeout=600.0
         )
-        return {
-            "text": response.output_text,
-            "citations": response.citations,  # ← 이게 핵심!
-            "raw_response": response          # 필요하면 원본도 보관
-        }
+
+        print("=== 디버깅 정보 ===")
+        print("Response dir:", [attr for attr in dir(response) if not attr.startswith('_')])
+        print("Has citations?:", hasattr(response, 'citations'))
+        print("Has inline_citations?:", hasattr(response, 'inline_citations'))
+        print("Citations:", getattr(response, 'citations', '없음'))
+        print("Inline Citations:", getattr(response, 'inline_citations', '없음'))
+        print("Output Text 미리보기:", response.output_text[:100])
+
+        return response.output_text
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
-        return {
-            "text": "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?",
-            "citations": [],
-            "raw_response": None
-        }
+        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
 
 
 # ====================== API 키 ======================
@@ -420,33 +421,15 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
-            response = call_grok_with_vision(
+        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어 🍼✨"):
+            answer = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning"
+                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-
-            answer_text = response.get("text", str(response))
-            answer_citations = response.get("citations")
-
-            # 화면 출력: 내용 + 각주 함께 표시
-            st.markdown(answer_text)  # 본문 출력
-
-            if answer_citations:  # 각주가 있으면 아래에 출처 표시
-                st.caption("📌 참고")
-                for i, cite in enumerate(answer_citations, 1):
-                    title = cite.get("title") or cite.get("url", "링크")
-                    url = cite.get("url", "#")
-                    st.markdown(f"{i}. [{title}]({url})")
+            st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-    assistant_message = {
-        "role": "assistant",
-        "content": answer_text,  # 순수 텍스트만 저장
-        "citations": answer_citations  # citations는 별도 필드로 저장 (JSONB 추천)
-    }
-
-    st.session_state.chats[current]["messages"].append(assistant_message)
+    st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     save_chat(current)
     generate_title_if_needed(current)
 
