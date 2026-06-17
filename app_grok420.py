@@ -439,8 +439,8 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-    save_chat(current)
     generate_title_if_needed(current)
+    save_chat(current)
 
     # 입력창 초기화
     st.session_state.input_key += 1
