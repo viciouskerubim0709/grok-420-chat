@@ -319,9 +319,9 @@ st.markdown("""
             margin-bottom: 16px;
             color: #FF7E6B;
         }
-        <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
+        <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑\n 대화해요!</h1>}
         </style>
-        }""", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 
 # ====================== 메인 채팅 ======================
