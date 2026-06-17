@@ -303,7 +303,7 @@ with st.sidebar:
 
 
 # ====================== 채팅 타이틀 설정 ======================
-st.markdown(
+st.markdown("""
     <style>
     .custom-title {
         margin-bottom: 16px;
@@ -315,7 +315,7 @@ st.markdown(
         }
     }
     </style>
-    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>, unsafe_allow_html=True)
+    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>""", unsafe_allow_html=True)
 
 
 # ====================== 메인 채팅 ======================
