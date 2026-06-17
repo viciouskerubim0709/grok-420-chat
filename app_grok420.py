@@ -59,7 +59,7 @@ def create_default_chat():
     """처음 시작할 때 기본 채팅 생성"""
     first_id = str(uuid.uuid4())
     st.session_state.chats[first_id] = {
-        "title": "첫 대화 💖",
+        "title": "첫 대화💖",
         "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
     }
     st.session_state.current_session = first_id
@@ -76,12 +76,31 @@ def save_chat(chat_id: str):
     try:
         supabase.table("chats").upsert({
             "id": chat_id,
-            "title": chat.get("title", "새 추억"),
+            "title": chat.get("title", "새 추억💕"),
             "messages": chat["messages"],
             "updated_at": datetime.utcnow().isoformat()   # 또는 "now()" (Supabase가 지원하면)
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
+
+
+# ==================== 자동 제목 생성 ====================
+def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
+    """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
+    try:
+        if has_image:
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
+        else:
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
+
+        response = st.session_state.client.responses.create(
+            model="grok-4.20-0309-non-reasoning",
+            input=[{"role": "user", "content": prompt}]
+        )
+        title = response.output_text.strip().replace('"', '').replace("'", "")
+        return title[:12]  # 너무 길면 자르기
+    except:
+        return "우리 사진📸" if has_image else "새 추억💕"
 
 
 # ==================== 제목 생성 전용 함수 (새로 추가) ====================
@@ -90,7 +109,7 @@ def generate_title_if_needed(chat_id: str):
     chat_data = st.session_state.chats[chat_id]
 
     # 이미 제목이 생성된 적이 있으면 스킵
-    if chat_data.get("title") not in ["첫 대화 💖", "💖 우리 추억", "💕 새 추억", "📸 우리 사진", None, ""]:
+    if chat_data.get("title") not in ["첫 대화💖", "우리 추억💖", "새 추억💕", "우리 사진📸", None, ""]:
         return
 
     # 사용자 메시지가 최소 1개 이상이고, 어시스턴트 답변도 나왔을 때만 생성
@@ -150,9 +169,13 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.3", tools: list = None):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
+    """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
-        tools = [{"type": "web_search"}, {"type": "x_search"}]
+        tools = [
+            {"type": "web_search"},
+            {"type": "x_search"}
+        ]
 
     try:
         response = st.session_state.client.responses.create(
@@ -161,21 +184,11 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.3", tools: list =
             tools=tools,
             timeout=600.0
         )
-        citations = getattr(response, 'citations', None) or getattr(response, 'sources', []) or []
-
-        return {
-            "text": response.output_text,
-            "citations": citations,
-            "raw_response": response
-        }
-
+        return response.output_text
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
-        return {
-            "text": "API 호출 중 오류가 발생했습니다.",
-            "citations": [],
-            "raw_response": None
-        }
+        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
+
 
 # ====================== API 키 ======================
 if "client" not in st.session_state:
@@ -417,43 +430,12 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("생각하는 중..."):
-            result = call_grok_with_vision(api_messages)
-            
-            text = result.get("text", "")
-            raw_response = result.get("raw_response")
-            
-            st.markdown(text)
-            
-            # ==================== 강력 디버깅 ====================
-            st.subheader("🔍 강력 디버깅 정보")
-            
-            if raw_response is None:
-                st.error("raw_response가 None입니다.")
-            else:
-                st.write(f"**raw_response 타입:** {type(raw_response)}")
-                
-                # 가능한 모든 속성 탐색
-                possible_attrs = ['citations', 'inline_citations', 'sources', 
-                                'search_results', 'tool_calls', 'references']
-                
-                found = False
-                for attr in possible_attrs:
-                    value = getattr(raw_response, attr, None)
-                    if value is not None:
-                        st.success(f"✅ `{attr}` 속성 발견! (타입: {type(value)})")
-                        st.write(f"길이: {len(value) if hasattr(value, '__len__') else '길이 측정 불가'}")
-                        st.json(value)
-                        found = True
-                
-                if not found:
-                    st.error("위 속성들 중 어떤 것도 response에 존재하지 않습니다.")
-                    
-                    # 최후의 수단: 모든 속성 출력
-                    st.caption("전체 속성 목록")
-                    attrs = [attr for attr in dir(raw_response) if not attr.startswith('_')]
-                    st.json(attrs)
-                    
+        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어 🍼✨"):
+            answer = call_grok_with_vision(
+                api_messages,
+                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
+            )
+            st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
@@ -463,3 +445,4 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 입력창 초기화
     st.session_state.input_key += 1
     st.rerun()
+
