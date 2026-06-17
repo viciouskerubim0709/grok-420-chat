@@ -163,22 +163,54 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             model=model,
             input=messages,
             tools=tools,
-            include=["no_inline_citations"],
+            # include=["no_inline_citations"],   # ← 지금은 완전히 주석 처리
             timeout=600.0
         )
 
-        print("=== 디버깅 정보 ===")
-        print("Response dir:", [attr for attr in dir(response) if not attr.startswith('_')])
-        print("Has citations?:", hasattr(response, 'citations'))
-        print("Has inline_citations?:", hasattr(response, 'inline_citations'))
-        print("Citations:", getattr(response, 'citations', '없음'))
-        print("Inline Citations:", getattr(response, 'inline_citations', '없음'))
-        print("Output Text 미리보기:", response.output_text[:100])
+        # 디버깅 정보 수집
+        debug_info = {
+            "model_used": model,
+            "response_type": str(type(response)),
+            "has_citations": hasattr(response, 'citations'),
+            "has_inline_citations": hasattr(response, 'inline_citations'),
+            "citations_value": getattr(response, 'citations', "속성 없음"),
+            "inline_citations_value": getattr(response, 'inline_citations', "속성 없음"),
+            "output_text_length": len(response.output_text) if hasattr(response, 'output_text') else 0,
+            "output_preview": (response.output_text[:200] + "...") if hasattr(response, 'output_text') else "output_text 없음"
+        }
 
-        return response.output_text
+        # 화면에 무조건 보이게 출력
+        st.subheader("🔍 Grok API 디버깅 정보")
+        st.json(debug_info)
+        
+        if "output_text" in dir(response):
+            st.markdown("**답변 본문:**")
+            st.markdown(response.output_text)
+
+        # citations 안전하게 추출
+        citations = []
+        if hasattr(response, 'citations') and response.citations:
+            citations = response.citations
+        elif hasattr(response, 'inline_citations') and response.inline_citations:
+            citations = response.inline_citations
+
+        return {
+            "text": response.output_text,
+            "citations": citations,
+            "raw_response": response
+        }
+
     except Exception as e:
-        st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
+        st.error(f"API 호출 오류: {str(e)}")
+        st.error("에러 타입: " + type(e).__name__)
+        import traceback
+        st.code(traceback.format_exc(), language="python")
+        
+        return {
+            "text": "아기야... API 호출하다가 또 넘어졌어 ㅠㅠ",
+            "citations": [],
+            "raw_response": None
+        }
 
 
 # ====================== API 키 ======================
