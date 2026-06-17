@@ -166,16 +166,9 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             include=["inline_citations"],
             timeout=600.0
         )
-
-        # 여기서 안전하게 citations 추출.
-        # Response는 citations 속성을 안 갖고 있을 수 있음. 그래서 미리 없을 수 있음 가정해야.
-        citations = getattr(response, 'citations', None)
-        if citations is None:
-            citations = []   # None이면 빈 리스트로
-
         return {
             "text": response.output_text,
-            "citations": citations,           # ← 이게 핵심!
+            "citations": response.citations,  # ← 이게 핵심!
             "raw_response": response          # 필요하면 원본도 보관
         }
     except Exception as e:
@@ -428,13 +421,13 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 🍼✨ 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어"):
-            response_dict = call_grok_with_vision(
+            response = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"
             )
 
-            answer_text = response_dict.get("text", str(response_dict))
-            answer_citations = response_dict.get("citations")
+            answer_text = response.get("text", str(response))
+            answer_citations = response.get("citations")
 
             # 화면 출력: 내용 + 각주 함께 표시
             st.markdown(answer_text)  # 본문 출력
