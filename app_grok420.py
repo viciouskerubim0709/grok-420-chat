@@ -312,21 +312,20 @@ js_code = """
         };
     });
 """
-result = components(js_code)
 
 is_mobile = False
-if isinstance(result, dict) and "isMobile" in result:
-    is_mobile = result["isMobile"]
+if isinstance(js_code, dict) and "isMobile" in js_code:
+    is_mobile = js_code["isMobile"]
 
 # ===== 타이틀 출력 =====
 if is_mobile:
-    st.markdown("""
+    st.markdown(js_scrip, """
         <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑\n대화해요!
         </h1>
     """, unsafe_allow_html=True)
 else:
-    st.markdown("""
+    st.markdown(js_scrip, """
         <h1 style="margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑 대화해요!
         </h1>
