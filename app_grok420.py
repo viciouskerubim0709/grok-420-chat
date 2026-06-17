@@ -305,19 +305,32 @@ with st.sidebar:
 st.markdown("""
     <style>
     .custom-title {
-        font-size: 28px;
+        font-size: 29px;
         font-weight: 700;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
         color: #FF7E6B;
+        white-space: nowrap;           /* 강제로 한 줄 유지 */
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
-    @media (max-width: 768px) {
+    
+    /* 모바일 전용 */
+    @media (max-width: 580px) {
         .custom-title {
-            font-size: 24px;
+            font-size: 24px !important;
+        }
+    }
+    
+    /* 아주 작은 화면 대응 */
+    @media (max-width: 380px) {
+        .custom-title {
+            font-size: 22px !important;
         }
     }
     </style>
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
+
 
 # ====================== 메인 채팅 ======================
 for msg in st.session_state.chats[current]["messages"]:
