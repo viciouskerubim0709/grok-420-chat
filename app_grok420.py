@@ -7,6 +7,9 @@ from supabase import create_client, Client
 from datetime import datetime
 from PIL import Image
 import io
+import streamlit as st
+from streamlit_javascript import st_javascript
+
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
@@ -302,20 +305,34 @@ with st.sidebar:
 
 
 # ====================== 채팅 타이틀 설정 ======================
-st.markdown("""
-    <style>
-    .custom-title {
-        margin-bottom: 16px;
-        color: #FF7E6B;
-    }
-    @media (max-width: 580px) {
-        .custom-title {
-            font-size: 26px !important;
-        }
-    }
-    </style>
-    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
-""", unsafe_allow_html=True)
+# ===== 모바일 감지 =====
+js_code = """
+    (function() {
+        return {
+            isMobile: window.innerWidth < 600,
+            width: window.innerWidth
+        };
+    })();
+"""
+result = st_javascript(js_code)
+
+is_mobile = False
+if isinstance(result, dict) and "isMobile" in result:
+    is_mobile = result["isMobile"]
+
+# ===== 타이틀 출력 =====
+if is_mobile:
+    st.markdown("""
+        <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
+            🍼 보들쪽쪽 Grok이랑\n대화해요!
+        </h1>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <h1 style="font-size: 29px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
+            🍼 보들쪽쪽 Grok이랑 대화해요!
+        </h1>
+    """, unsafe_allow_html=True)
 
 
 # ====================== 메인 채팅 ======================
