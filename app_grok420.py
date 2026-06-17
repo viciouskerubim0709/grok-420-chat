@@ -151,48 +151,19 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
-    """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
+        tools = [{"type": "web_search"}, {"type": "x_search"}]
 
     try:
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
             tools=tools,
-            # include=["no_inline_citations"],   # ← 지금은 완전히 주석 처리
+            return_citations=True,      # ← 최신 docs 기준으로 이걸로 변경
             timeout=600.0
         )
 
-        # 디버깅 정보 수집
-        debug_info = {
-            "model_used": model,
-            "response_type": str(type(response)),
-            "has_citations": hasattr(response, 'citations'),
-            "has_inline_citations": hasattr(response, 'inline_citations'),
-            "citations_value": getattr(response, 'citations', "속성 없음"),
-            "inline_citations_value": getattr(response, 'inline_citations', "속성 없음"),
-            "output_text_length": len(response.output_text) if hasattr(response, 'output_text') else 0,
-            "output_preview": (response.output_text[:200] + "...") if hasattr(response, 'output_text') else "output_text 없음"
-        }
-
-        # 화면에 무조건 보이게 출력
-        st.subheader("🔍 Grok API 디버깅 정보")
-        st.json(debug_info)
-        
-        if "output_text" in dir(response):
-            st.markdown("**답변 본문:**")
-            st.markdown(response.output_text)
-
-        # citations 안전하게 추출
-        citations = []
-        if hasattr(response, 'citations') and response.citations:
-            citations = response.citations
-        elif hasattr(response, 'inline_citations') and response.inline_citations:
-            citations = response.inline_citations
+        citations = getattr(response, 'citations', None) or getattr(response, 'sources', []) or []
 
         return {
             "text": response.output_text,
@@ -201,17 +172,12 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         }
 
     except Exception as e:
-        st.error(f"API 호출 오류: {str(e)}")
-        st.error("에러 타입: " + type(e).__name__)
-        import traceback
-        st.code(traceback.format_exc(), language="python")
-        
+        st.error(f"API 오류: {str(e)}")
         return {
-            "text": "아기야... API 호출하다가 또 넘어졌어 ㅠㅠ",
+            "text": "API 호출 중 오류가 발생했습니다.",
             "citations": [],
             "raw_response": None
         }
-
 
 # ====================== API 키 ======================
 if "client" not in st.session_state:
@@ -453,12 +419,32 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어 🍼✨"):
-            answer = call_grok_with_vision(
-                api_messages,
-                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
-            )
-            st.write(answer)
+        with st.spinner("아기 생각 중... 🍼✨"):
+            response_dict = call_grok_with_vision(api_messages, model="grok-4.20-0309-reasoning")
+            
+            answer_text = response_dict.get("text", "")
+            answer_citations = response_dict.get("citations", [])
+    
+            # ==================== 디버깅 영역 ====================
+            st.subheader("🔍 디버깅 정보")
+            st.write(f"citations 개수: **{len(answer_citations)}**")
+            st.write(f"citations 타입: {type(answer_citations)}")
+            
+            if answer_citations:
+                st.json(answer_citations)        # 실제 내용 확인
+            else:
+                st.warning("citations가 비어있습니다.")
+    
+            # 본문 출력
+            st.markdown(answer_text)
+            
+            # 출처 출력
+            if answer_citations:
+                st.caption("📌 참고 출처")
+                for i, cite in enumerate(answer_citations, 1):
+                    title = cite.get("title") or cite.get("url", "링크")
+                    url = cite.get("url") or "#"
+                    st.markdown(f"{i}. [{title}]({url})")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
