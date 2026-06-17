@@ -313,7 +313,7 @@ js_code = """
         };
     })();
 """
-result = components.html(js_code)
+result = components(js_code)
 
 is_mobile = False
 if isinstance(result, dict) and "isMobile" in result:
@@ -328,7 +328,7 @@ if is_mobile:
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
-        <h1 style="font-size: 29px; font-weight: 700; margin-bottom: 20px; color: #FF7E6B;">
+        <h1 style="margin-bottom: 20px; color: #FF7E6B;">
             🍼 보들쪽쪽 Grok이랑 대화해요!
         </h1>
     """, unsafe_allow_html=True)
