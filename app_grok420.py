@@ -301,9 +301,25 @@ with st.sidebar:
         )
 
 
-# ====================== 메인 채팅 ======================
-st.title("🍼 보들쪽쪽 Grok이랑 대화해요!")
+# ====================== 채팅 타이틀 설정 ======================
+st.markdown("""
+    <style>
+    .custom-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #FF7E6B;
+    }
+    @media (max-width: 768px) {
+        .custom-title {
+            font-size: 24px;
+        }
+    }
+    </style>
+    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
+""", unsafe_allow_html=True)
 
+# ====================== 메인 채팅 ======================
 for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
         if msg["role"] == "user" and "image_url" in msg:
