@@ -307,7 +307,7 @@ with st.sidebar:
 js_code = """
     (function() {
         return {
-            isMobile: window.innerWidth < 600,
+            isMobile: window.innerWidth < 700,
             width: window.innerWidth
         };
     })();
