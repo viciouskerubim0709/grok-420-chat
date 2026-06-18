@@ -15,6 +15,7 @@ st.markdown("""
 <style>
 [data-testid="stHorizontalBlock"] {
    flex-shrink: 2;
+   flex-wrap: nowrap;
 }
 </style>
 """, unsafe_allow_html=True)
