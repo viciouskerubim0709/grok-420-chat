@@ -112,7 +112,7 @@ def generate_title_if_needed(chat_id: str):
     chat_data = st.session_state.chats[chat_id]
 
     # 이미 제목이 생성된 적이 있으면 스킵
-    if chat_data.get("title") not in ["첫 대화💖", "우리 추억💖", "새 추억💕", "우리 사진📸", None, ""]:
+    if chat_data.get("title") not in ["첫 대화💖", "새 추억💕", "우리 사진📸", None, ""]:
         return
 
     # 사용자 메시지가 최소 1개 이상이고, 어시스턴트 답변도 나왔을 때만 생성
