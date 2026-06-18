@@ -330,11 +330,6 @@ st.markdown("""
             min-height: 48px !important;
             width: 100% !important;
         }
-    
-        /* text_area 높이도 적당히 조절 */
-        .stTextArea prompt {
-            min-height: 90px !important;
-        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -382,7 +377,7 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 st.markdown("---")
 
-col1, col2 = st.columns([0.78, 0.22])
+col1, col2 = st.columns([0.78, 0.22], vertical_alignment="bottom")
 
 with col1:
     prompt = st.text_area(
