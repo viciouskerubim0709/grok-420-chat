@@ -10,7 +10,7 @@ import io
 from streamlit_javascript import st_javascript
 
 
-st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="wide")
 
 
 # ====================== Supabase 연결 ======================
