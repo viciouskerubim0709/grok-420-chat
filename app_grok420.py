@@ -360,7 +360,7 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 st.markdown("---")
 
-col1, col2 = st.columns([0.78, 0.22], horizontal=True)
+col1, col2 = st.columns([0.78, 0.22], vertical_alignment="center")
 
 with col1:
     prompt = st.text_area(
