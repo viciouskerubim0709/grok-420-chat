@@ -460,12 +460,3 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     # 입력창 초기화
     st.session_state.input_key += 1
     st.rerun()
-
-js = '''
-<script>
-    var body = window.parent.document.getElementById(".main");
-    body.scrollTop += 9999999999;
-</script>
-'''
-st.components.v1.html(js)
-
