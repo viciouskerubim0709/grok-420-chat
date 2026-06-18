@@ -368,19 +368,34 @@ You can use multiple tools in parallel by calling them together.
 
 st.markdown("---")
 
-col1, col2 = st.columns([0.78, 0.22])
+col1, col2 = st.columns([0.82, 0.18], gap="small")
 
 with col1:
     prompt = st.text_area(
         label="메시지 입력",
         label_visibility="collapsed",
-        placeholder="아기야... 뭐 물어볼까? 💕",
+        placeholder="뭐 물어볼까? 💕",
         height=80,
         key=f"chat_input_{st.session_state.input_key}"
-        )
+    )
+
 with col2:
-    send_button = st.button("💕 보내기", type="primary", use_container_width=True)
-    
+    send_button = st.button(
+        "💕",                    # 이모지만 넣는 게 모바일에서 더 예쁨
+        type="primary",
+        use_container_width=True
+    )
+
+st.markdown("""
+<style>
+    /* 버튼을 text_area 하단에 맞추기 */
+    div[data-testid="column"]:last-child {
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 6px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
