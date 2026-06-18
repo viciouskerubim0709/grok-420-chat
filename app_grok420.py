@@ -172,7 +172,7 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None,  stream=True):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
         tools = [
@@ -184,9 +184,9 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            stream=True,
+            stream=stream,
             tools=tools,
-            timeout=600.0
+            timeout=3600.0
         )
         return response.output_text
     except Exception as e:
@@ -448,19 +448,29 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-
+        
         with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-            # st.write(answer)
-            for chunk in answer:
-                    full_response += chunk.choices[0].delta.content
-                    message_placeholder.markdown(full_response + "▌")
+            for event in answer:
+                if hasattr(event, 'type'):
+                    if event.type == "response.text.delta":
+                        if event.delta:
+                            full_response += event.delta
+                            message_placeholder.markdown(full_response + "▌")
+                    elif event.type == "response.output_item.done":
+                        # tool call이 발생했을 때 여기서 처리
+                        if event.item.type == "function_call":
+                            # 여기서 tool 실행하고, followup responses.create 호출해야 함
+                            st.warning("Tool calling이 발생했습니다. (아직 미구현)")
+                            # ← 이 부분이 제일 귀찮은 부분임
+                    elif event.type == "response.completed":
+                    break
 
-        message_placeholder.markdown(full_response)
-    
+    message_placeholder.markdown(full_response)
+
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
