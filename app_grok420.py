@@ -12,22 +12,6 @@ from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
-st.markdown("""
-<style>
-    /* 1. 가로 유지 + 줄바꿈 금지 */
-    div[data-testid="stHorizontalBlock"] {
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-    }
-    
-    /* 2. 컬럼이 비율대로 줄어들 수 있게 허용 (이게 핵심) */
-    div[data-testid="column"] {
-        flex-shrink: 1 !important;     /* 줄어들게 함 */
-        min-width: 0 !important;       /* shrink를 방해하는 최소 너비 제거 */
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # ====================== Supabase 연결 ======================
 @st.cache_resource
 def get_supabase() -> Client:
