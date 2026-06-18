@@ -371,8 +371,9 @@ prompt = st.text_area(
 with st.container(horizontal=True, horizontal_alignment="right", width=100):
     send_button = st.button(
             "💕 보내기", 
-            type="primary"
-        )
+            type="primary",
+            use_container_width=True
+                )
 
 
 # ==================== 사진 첨부 (새로 추가) ====================
