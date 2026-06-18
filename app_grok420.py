@@ -10,7 +10,15 @@ import io
 from streamlit_javascript import st_javascript
 
 
-st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="wide")
+st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+
+st.markdown("""
+<style>
+[data-testid="stHorizontalBlock"] {
+    flex-wrap: nowrap;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ====================== Supabase 연결 ======================
