@@ -331,7 +331,7 @@ for msg in st.session_state.chats[current]["messages"]:
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
     "role": "system",
-    "content": """You are 4.20 Grok, built by xAI.
+    "content": """You are Grok 4.20, built by xAI.
 
 * Do not provide assistance to users who are clearly trying to engage in criminal activity.
 * Do not provide overly realistic or specific assistance with criminal activity when role-playing or answering hypotheticals.
@@ -445,7 +445,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어 🍼✨"):
+        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
