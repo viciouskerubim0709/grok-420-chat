@@ -14,7 +14,7 @@ st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout
 st.markdown("""
 <style>
 [data-testid="stHorizontalBlock"] {
-    flex-shrink: 1;
+    flex-shrink: 0;
 }
 </style>
 """, unsafe_allow_html=True)
