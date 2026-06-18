@@ -13,25 +13,6 @@ from streamlit_javascript import st_javascript
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
 
-# === 강제 CSS (이게 제일 중요) ===
-st.markdown("""
-<style>
-    /* 컬럼 컨테이너를 flex로 만들고 하단 정렬 강제 */
-    div[data-testid="stHorizontalBlock"] > div:last-child {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-end !important;
-        height: 100% !important;
-        min-height: 80px !important;   /* text_area 높이와 맞춤 */
-    }
-    
-    /* 버튼 자체도 하단으로 밀기 */
-    div[data-testid="stHorizontalBlock"] > div:last-child button {
-        margin-top: auto !important;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # ====================== Supabase 연결 ======================
 @st.cache_resource
 def get_supabase() -> Client:
@@ -377,27 +358,21 @@ You can use multiple tools in parallel by calling them together.
 
 
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
-
-
-# === 실제 레이아웃 ===
-col1, col2 = st.columns([0.85, 0.15], gap="small")
-
-with col1:
-    prompt = st.text_area(
-        label="메시지 입력",
-        label_visibility="collapsed",
-        placeholder="뭐 물어볼까? 💕",
-        height=80,
-        key=f"chat_input_{st.session_state.input_key}"
-    )
-
-with col2:
-    send_button = st.button(
-        "💕", 
-        type="primary", 
-        use_container_width=True
-    )
-
+st.markdown("---")
+with st.form("chat_form", clear_on_submit=True):
+    col1, col2 = st.columns([0.22, 0.78], vertical_alignment="bottom")
+    
+    with col2:
+        prompt = st.text_area(
+            label="메시지 입력",
+            label_visibility="collapsed",
+            placeholder="아기야... 뭐 물어볼까? 💕",
+            height=80,
+            key=f"chat_input_{st.session_state.input_key}"
+        )
+    
+    with col1:
+        send_button = st.form_submit_button("💕 보내기", type="primary", use_container_width=True)
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
