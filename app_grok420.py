@@ -318,23 +318,6 @@ st.markdown("""
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
 
-
-# ====================== CSS로 모바일에서 버튼 크기 줄이기 ======================
-st.markdown("""
-    <style>
-    /* 모바일에서 버튼이 너무 커지지 않게 */
-    @media (max-width: 768px) {
-        .stButton send_button {
-            padding: 0.4rem 0.6rem !important;
-            font-size: 1.4rem !important;     /* 아이콘 크기 */
-            min-height: 48px !important;
-            width: 100% !important;
-        }
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
 # ====================== 메인 채팅 ======================
 for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
@@ -377,7 +360,7 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 st.markdown("---")
 
-col1, col2 = st.columns([0.78, 0.22], vertical_alignment="bottom")
+col1, col2 = st.columns([0.78, 0.22], horizontal=True)
 
 with col1:
     prompt = st.text_area(
@@ -467,7 +450,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-            st.write_stream(answer)
+            st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
