@@ -361,7 +361,7 @@ You can use multiple tools in parallel by calling them together.
 st.markdown("---")
 
 with st.container(horizontal_alignment="center"):
-    col1, col2 = st.columns([0.78, 0.22])
+    col1, col2 = st.columns([0.78, 0.22], vertical_alignment="center")
     
     with col1:
         prompt = st.text_area(
