@@ -368,10 +368,7 @@ prompt = st.text_area(
     key=f"chat_input_{st.session_state.input_key}"
 )
 
-# === 아래쪽에 오른쪽 정렬된 작은 버튼 ===
-col1, col2, col3 = st.columns([0.75, 0.1, 0.15])
-
-with col3:
+with st.container(horizontal_alignment="center", width=50):
     send_button = st.button(
             "💕 보내기", 
             type="primary",
