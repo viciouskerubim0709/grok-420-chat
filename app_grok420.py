@@ -12,6 +12,18 @@ from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
+st.markdown("""
+<style>
+    div[data-testid="stHorizontalBlock"] {
+        flex-direction: row !important;
+    }
+    div[data-testid="column"] {
+        min-width: 0 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 # ====================== Supabase 연결 ======================
 @st.cache_resource
 def get_supabase() -> Client:
@@ -358,9 +370,12 @@ You can use multiple tools in parallel by calling them together.
 
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 
-st.markdown("---")
-
-col1, col2 = st.columns([0.82, 0.18], gap="small")
+# === 핵심: vertical_alignment="bottom" 추가 ===
+col1, col2 = st.columns(
+    [0.82, 0.18], 
+    gap="small",
+    vertical_alignment="bottom"   # ← 이 한 줄이 중요!
+)
 
 with col1:
     prompt = st.text_area(
@@ -373,21 +388,11 @@ with col1:
 
 with col2:
     send_button = st.button(
-        "💕",                    # 이모지만 넣는 게 모바일에서 더 예쁨
-        type="primary",
+        "💕 보내기", 
+        type="primary", 
         use_container_width=True
     )
 
-st.markdown("""
-<style>
-    /* 버튼을 text_area 하단에 맞추기 */
-    div[data-testid="column"]:last-child {
-        display: flex;
-        align-items: flex-end;
-        padding-bottom: 6px;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
