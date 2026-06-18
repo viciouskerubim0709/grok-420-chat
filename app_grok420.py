@@ -446,16 +446,20 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        full_response = ""
+
         with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
             # st.write(answer)
-            for response, chunk in answer.stream():
-                print(chunk.content, end="", flush=True)     # Each chunk's content
-                print(response.content, end="", flush=True)  # The response object auto-accumulates the chunks
-            st.write(response.content)                       # The full response
+            for chunk in answer:
+                    full_response += chunk.choices[0].delta.content
+                    message_placeholder.markdown(full_response + "▌")
+
+        message_placeholder.markdown(full_response)
     
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
