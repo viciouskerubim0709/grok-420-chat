@@ -11,15 +11,13 @@ from streamlit_javascript import st_javascript
 
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
-
 st.markdown("""
 <style>
-[data-testid="column"] {
-    min-width: 0 !important;
+[data-testid="stHorizontalBlock"] {
+    flex-wrap: nowrap;
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # ====================== Supabase 연결 ======================
 @st.cache_resource
