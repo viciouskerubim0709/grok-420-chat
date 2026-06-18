@@ -372,11 +372,11 @@ prompt = st.text_area(
 col1, col2, col3 = st.columns([0.75, 0.1, 0.15])
 
 with col3:
-send_button = st.button(
-        "💕 보내기", 
-        type="primary",
-        use_container_width=True
-    )
+    send_button = st.button(
+            "💕 보내기", 
+            type="primary",
+            use_container_width=True
+        )
 
 
 # ==================== 사진 첨부 (새로 추가) ====================
