@@ -12,6 +12,7 @@ from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
+
 # ====================== Supabase 연결 ======================
 @st.cache_resource
 def get_supabase() -> Client:
@@ -102,7 +103,7 @@ def generate_chat_title(first_user_message: str, has_image: bool = False) -> str
         title = response.output_text.strip().replace('"', '').replace("'", "")
         return title[:12]  # 너무 길면 자르기
     except:
-        return "우리 사진📸" if has_image else "새 추억💕"
+        return "우리 사진들📸" if has_image else "새 추억💕"
 
 
 # ==================== 제목 생성 전용 함수 (새로 추가) ====================
@@ -111,7 +112,7 @@ def generate_title_if_needed(chat_id: str):
     chat_data = st.session_state.chats[chat_id]
 
     # 이미 제목이 생성된 적이 있으면 스킵
-    if chat_data.get("title") not in ["첫 대화💖", "새 추억💕", "우리 사진📸", None, ""]:
+    if chat_data.get("title") not in ["첫 대화💖", "새 추억💕", "우리 사진📸", "우리 사진들📸", None, ""]:
         return
 
     # 사용자 메시지가 최소 1개 이상이고, 어시스턴트 답변도 나왔을 때만 생성
@@ -119,7 +120,7 @@ def generate_title_if_needed(chat_id: str):
     first_user_msg = next((m for m in messages if m["role"] == "user"), None)
 
     if first_user_msg and len(messages) >= 2:
-        has_image = "image_url" in first_user_msg
+        has_image = "image_url" in first_user_msg or "image_urls" in first_user_msg
         new_title = generate_chat_title(first_user_msg["content"], has_image)
 
         chat_data["title"] = new_title
@@ -207,101 +208,6 @@ if "client" not in st.session_state:
     )
 
 
-# ====================== 사이드바 ======================
-with st.sidebar:
-    st.title("📜 대화 기록")
-    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
-        new_id = str(uuid.uuid4())
-        st.session_state.chats[new_id] = {"title": "새 추억💕",
-                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
-        st.session_state.current_session = new_id
-        save_chat(new_id)
-        st.rerun()
-
-    st.divider()
-
-    # 대화 목록 + 삭제 버튼
-    to_delete = None
-
-    for chat_id, chat in list(st.session_state.chats.items()):
-        is_current = (chat_id == current)
-
-        col1, col2 = st.columns([7.5, 1.2])
-
-        with col1:
-            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                st.session_state.current_session = chat_id
-                st.rerun()
-
-        with col2:
-            with st.popover("⋯", use_container_width=True):
-                # ==================== 제목 수정 ====================
-                st.write("**제목 수정**")
-                new_title = st.text_input(
-                    "새 제목",
-                    value=chat["title"],
-                    key=f"title_input_{chat_id}",
-                    label_visibility="collapsed"
-                )
-
-                if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
-                    if new_title.strip():
-                        new_title_clean = new_title.strip()
-
-                        # session_state 먼저 업데이트
-                        st.session_state.chats[chat_id]["title"] = new_title_clean
-                        # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
-                        save_chat(chat_id)
-
-                        st.success("제목이 수정되었습니다.")
-                        st.rerun()
-
-                st.divider()
-
-                # ==================== 삭제 ====================
-                if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
-                    delete_chat_from_db(chat_id)
-
-                    # session_state에서도 삭제
-                    if chat_id in st.session_state.chats:
-                        del st.session_state.chats[chat_id]
-
-                    # 현재 보고 있던 채팅을 지웠을 때
-                    if chat_id == st.session_state.current_session:
-                        if st.session_state.chats:
-                            st.session_state.current_session = list(st.session_state.chats.keys())[0]
-                        else:
-                            # 마지막 채팅이었을 경우 새로 생성 + 저장
-                            create_default_chat()
-
-                    st.rerun()
-
-    st.divider()
-
-    # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True):
-        chat_data = st.session_state.chats[current]
-        json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
-        st.download_button(
-            label="📥 JSON 파일로 저장",
-            data=json_str,
-            file_name=f"{chat_data['title']}.json",
-            mime="application/json",
-            use_container_width=True
-        )
-
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True):
-        all_data = st.session_state.chats
-        json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
-        st.download_button(
-            label="📥 전체 JSON 다운로드",
-            data=json_str,
-            file_name="grok_모든_대화.json",
-            mime="application/json",
-            use_container_width=True
-        )
-
 # ====================== 타이틀 꾸미기 ======================
 st.markdown("""
     <style>
@@ -317,12 +223,17 @@ st.markdown("""
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
 
-# ====================== 메인 채팅 ======================
+# ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
-        if msg["role"] == "user" and "image_url" in msg:
+        if msg["role"] == "user":
             st.write(msg.get("content", ""))
-            st.image(msg["image_url"], width=320)
+            # 다중 이미지 지원
+            if "image_urls" in msg and msg.get("image_urls"):
+                for url in msg["image_urls"]:
+                    st.image(url, width=320)
+            elif "image_url" in msg:  # 이전 단일 이미지 호환
+                st.image(msg["image_url"], width=320)
         else:
             st.write(msg["content"])
 
@@ -356,7 +267,7 @@ You can use multiple tools in parallel by calling them together.
 }
 
 
-# ==================== 채팅 입력 영역 (2단계 수정) ====================
+# ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
 # === 메시지 입력창 (풀 width) ===
@@ -370,63 +281,83 @@ prompt = st.text_area(
 
 with st.container(horizontal=True, horizontal_alignment="right"):
     send_button = st.button(
-            "💕", 
+            "💕",
             type="primary",
             width="content"
                 )
 
 
-# ==================== 사진 첨부 (새로 추가) ====================
-uploaded_file = st.file_uploader(
-    label="📸 사진 첨부하기",
+# ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
+uploaded_files = st.file_uploader(
+    label="📸 사진 첨부하기 (여러 장 선택 가능)",
     type=["jpg", "jpeg", "png"],
+    accept_multiple_files=True,
     label_visibility="visible",
     key=f"uploader_{st.session_state.input_key}"
 )
 
-# 미리보기
-if uploaded_file is not None:
-    st.image(uploaded_file, width=280, caption="📤 전송될 사진")
-    st.caption("💡 '보내기' 버튼을 누르면 사진과 함께 전송돼요")
+# 미리보기 (여러 장 지원)
+if uploaded_files:
+    st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
+    preview_cols = st.columns(min(len(uploaded_files), 4))
+    for idx, file in enumerate(uploaded_files):
+        with preview_cols[idx % 4]:
+            st.image(file, width=160, caption=file.name[:18])
 
 
-# ==================== 메시지 전송 및 처리 (3단계 완전 교체) ====================
-if send_button and (prompt.strip() or uploaded_file is not None):
-    user_prompt = prompt.strip() if prompt else "사진 분석해줘~"
+# ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
+if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
+    user_prompt = prompt.strip() if prompt else "사진들 분석해줘~"
 
-    image_url = None
+    image_urls = []
 
-    # 1. 사진이 있으면 Supabase Storage에 업로드
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        with st.spinner("📤 사진 업로드 중..."):
-            image_url = upload_image_to_supabase(bytes_data, uploaded_file.name)
+    # 1. 사진(들)이 있으면 Supabase Storage에 업로드
+    if uploaded_files:
+        for uploaded_file in uploaded_files:
+            bytes_data = uploaded_file.getvalue()
+            with st.spinner(f"📤 {uploaded_file.name} 업로드 중..."):
+                url = upload_image_to_supabase(bytes_data, uploaded_file.name)
+                if url:
+                    image_urls.append(url)
+                else:
+                    st.error(f"{uploaded_file.name} 업로드에 실패했어... 😢")
 
-        if not image_url:
-            st.error("사진 업로드에 실패했어... 😢")
-            st.stop()
+    if uploaded_files and len(image_urls) == 0:
+        st.error("사진 업로드에 모두 실패했어... 다시 시도해줘!")
+        st.stop()
 
-    # 2. 사용자 메시지 저장 (image_url 포함)
+    # 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
     user_message = {"role": "user", "content": user_prompt}
-    if image_url:
-        user_message["image_url"] = image_url
+    if image_urls:
+        user_message["image_urls"] = image_urls
 
     st.session_state.chats[current]["messages"].append(user_message)
 
     # 3. 화면에 바로 보여주기
     with st.chat_message("user"):
         st.write(user_prompt)
-        if image_url:
-            st.image(image_url, width=300)
+        if image_urls:
+            for url in image_urls:
+                st.image(url, width=300)
 
-    # 4. Grok에게 보내기 위한 messages 구성 (Vision 형식)
+    # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
 
     for msg in st.session_state.chats[current]["messages"]:
         if msg["role"] == "assistant":
             api_messages.append({"role": "assistant", "content": msg["content"]})
         else:  # user 메시지
-            if "image_url" in msg:
+            if "image_urls" in msg and msg.get("image_urls"):
+                # === 다중 이미지 처리 핵심 ===
+                content_parts = []
+                for url in msg["image_urls"]:
+                    content_parts.append({"type": "input_image", "image_url": url})
+                content_parts.append({"type": "input_text", "text": msg["content"]})
+                api_messages.append({
+                    "role": "user",
+                    "content": content_parts
+                })
+            elif "image_url" in msg:  # 이전 버전 단일 이미지 호환
                 api_messages.append({
                     "role": "user",
                     "content": [
@@ -438,19 +369,16 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages.append({
                     "role": "user",
                     "content": [
-                        {
-                            "type": "input_text",
-                            "text": msg["content"]
-                        }
+                        {"type": "input_text", "text": msg["content"]}
                     ]
                 })
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
+        with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
+                model="grok-4.20-0309-reasoning"
             )
             st.write(answer)
 
