@@ -302,22 +302,35 @@ with st.sidebar:
             use_container_width=True
         )
 
-# ====================== 타이틀 ======================
-st.markdown("""
-    <style>
-    .custom-title {
-        color: #FF7E6B !important;
-    }
-    @media (max-width: 768px) {
-        .custom-title {
-            font-size: 26px !important;
-        }
-    }
-    </style>
-    <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
-""", unsafe_allow_html=True)
+# ====================== 타이틀 꾸미기 ======================
+# ===== 모바일 감지 =====
+js_code = """
+function env() {
+    return {
+        isMobile: window.innerWidth < 600,
+        width: window.innerWidth
+        };
+}
+"""
+result = st_javascript(js_code)
 
+is_mobile = False
+if isinstance(result, dict) and "isMobile" in result:
+    is_mobile = result["isMobile"]
 
+# ===== 타이틀 출력 =====
+if is_mobile:
+    st.markdown("""
+        <h1 style="font-size: 26px; font-weight: 700; color: #FF7E6B;">
+            🍼 보들쪽쪽 Grok이랑<br>놀아요!
+        </h1>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <h1 style="color: #FF7E6B;">
+            🍼 보들쪽쪽 Grok이랑 대화해요!
+        </h1>
+    """, unsafe_allow_html=True)
 
 # ====================== 메인 채팅 ======================
 for msg in st.session_state.chats[current]["messages"]:
