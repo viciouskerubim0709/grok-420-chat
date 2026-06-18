@@ -324,7 +324,7 @@ st.markdown("""
     <style>
     /* 모바일에서 버튼이 너무 커지지 않게 */
     @media (max-width: 768px) {
-        .stButton button {
+        .stButton send_button {
             padding: 0.4rem 0.6rem !important;
             font-size: 1.4rem !important;     /* 아이콘 크기 */
             min-height: 48px !important;
@@ -332,7 +332,7 @@ st.markdown("""
         }
     
         /* text_area 높이도 적당히 조절 */
-        .stTextArea textarea {
+        .stTextArea prompt {
             min-height: 90px !important;
         }
     }
