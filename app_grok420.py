@@ -360,16 +360,8 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 
 st.markdown("---")
-st.markdown("""
-<style>
-[data-testid=st.column()] {
-    width: auto !important;
-    flex: 1 1 auto !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
-col1, col2 = st.columns([0.85, 0.15])
+col1, col2 = st.columns([0.78, 0.22])
 
 with col1:
     prompt = st.text_area(
@@ -381,7 +373,7 @@ with col1:
         )
 with col2:
     send_button = st.button("💕 보내기", type="primary", use_container_width=True)
-
+    
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
