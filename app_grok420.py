@@ -17,7 +17,7 @@ st.markdown("""
     /* 2. 컬럼이 줄어드는 것 방지 (이게 핵심) */
     div[data-testid="column"] {
         flex-wrap: nowrap !important;
-        flex-shrink: 1 !important;
+        flex-shrink: 2 !important;
     }
 </style>
 """, unsafe_allow_html=True)
