@@ -172,7 +172,7 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None,  stream=True):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     if tools is None:
         tools = [
@@ -184,9 +184,8 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            stream=stream,
             tools=tools,
-            timeout=3600.0
+            timeout=600.0
         )
         return response.output_text
     except Exception as e:
@@ -451,10 +450,7 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-            for response, chunk in answer.stream():
-                print(chunk.content, end="", flush=True)     # Each chunk's content
-                print(response.content, end="", flush=True)  # The response object auto-accumulates the chunks
-            st.write(response.content)     
+            st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
