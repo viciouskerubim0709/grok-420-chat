@@ -12,17 +12,25 @@ from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 
+
+# === 강제 CSS (이게 제일 중요) ===
 st.markdown("""
 <style>
-    div[data-testid="stHorizontalBlock"] {
-        flex-direction: row !important;
+    /* 컬럼 컨테이너를 flex로 만들고 하단 정렬 강제 */
+    div[data-testid="stHorizontalBlock"] > div:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-end !important;
+        height: 100% !important;
+        min-height: 80px !important;   /* text_area 높이와 맞춤 */
     }
-    div[data-testid="column"] {
-        min-width: 0 !important;
+    
+    /* 버튼 자체도 하단으로 밀기 */
+    div[data-testid="stHorizontalBlock"] > div:last-child button {
+        margin-top: auto !important;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 # ====================== Supabase 연결 ======================
 @st.cache_resource
@@ -370,12 +378,9 @@ You can use multiple tools in parallel by calling them together.
 
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 
-# === 핵심: vertical_alignment="bottom" 추가 ===
-col1, col2 = st.columns(
-    [0.82, 0.18], 
-    gap="small",
-    vertical_alignment="bottom"   # ← 이 한 줄이 중요!
-)
+
+# === 실제 레이아웃 ===
+col1, col2 = st.columns([0.85, 0.15], gap="small")
 
 with col1:
     prompt = st.text_area(
@@ -388,7 +393,7 @@ with col1:
 
 with col2:
     send_button = st.button(
-        "💕 보내기", 
+        "💕", 
         type="primary", 
         use_container_width=True
     )
