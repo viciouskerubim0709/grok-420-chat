@@ -360,16 +360,16 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 st.markdown("---")
 
-
-col1, col2 = st.columns([0.85, 0.15], vertical_alignment="center")
+col1, col2 = st.columns([0.85, 0.15])
 
 with col1:
-    with st.container(horizontal=True, horizontal_alignment="right"):
+    with st.container(horizontal=True, horizontal_alignment="center"):
         prompt = st.text_area(
             label="메시지 입력",
             label_visibility="collapsed",
             placeholder="아기야... 뭐 물어볼까? 💕",
             height=80,
+            width=600,
             key=f"chat_input_{st.session_state.input_key}"
         )
 
