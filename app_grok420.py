@@ -446,30 +446,15 @@ if send_button and (prompt.strip() or uploaded_file is not None):
 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        full_response = ""
-        
         with st.spinner("아기 생각 중... 사진도 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-            for event in answer:
-                if hasattr(event, 'type'):
-                    if event.type == "response.text.delta":
-                        if event.delta:
-                            full_response += event.delta
-                            message_placeholder.markdown(full_response + "▌")
-                    elif event.type == "response.output_item.done":
-                        # tool call이 발생했을 때 여기서 처리
-                        if event.item.type == "function_call":
-                            # 여기서 tool 실행하고, followup responses.create 호출해야 함
-                            st.warning("Tool calling이 발생했습니다. (아직 미구현)")
-                            # ← 이 부분이 제일 귀찮은 부분임
-                    elif event.type == "response.completed":
-                    break
-
-    message_placeholder.markdown(full_response)
+            for response, chunk in answer.stream():
+                print(chunk.content, end="", flush=True)     # Each chunk's content
+                print(response.content, end="", flush=True)  # The response object auto-accumulates the chunks
+            st.write(response.content)     
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
