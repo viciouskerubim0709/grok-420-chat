@@ -359,20 +359,20 @@ You can use multiple tools in parallel by calling them together.
 
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
 st.markdown("---")
-with st.form("chat_form", clear_on_submit=True):
-    col1, col2 = st.columns([0.22, 0.78], vertical_alignment="bottom")
-    
-    with col2:
-        prompt = st.text_area(
-            label="메시지 입력",
-            label_visibility="collapsed",
-            placeholder="아기야... 뭐 물어볼까? 💕",
-            height=80,
-            key=f"chat_input_{st.session_state.input_key}"
-        )
-    
-    with col1:
-        send_button = st.form_submit_button("💕 보내기", type="primary", use_container_width=True)
+
+col1, col2 = st.columns([0.18, 0.82])
+
+with col2:
+    prompt = st.text_area(
+        label="메시지 입력",
+        label_visibility="collapsed",
+        placeholder="아기야... 뭐 물어볼까? 💕",
+        height=80,
+        key=f"chat_input_{st.session_state.input_key}"
+    )
+
+with col1:
+    send_button = st.button("💕 보내기", type="primary", use_container_width=True)
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
