@@ -21,8 +21,7 @@ st.markdown("""
     
     /* 2. 컬럼이 줄어드는 것 방지 (이게 핵심) */
     div[data-testid="column"] {
-        flex-shrink: 0 !important;
-        min-width: 0 !important;
+        flex-shrink: 1 !important;
     }
 </style>
 """, unsafe_allow_html=True)
