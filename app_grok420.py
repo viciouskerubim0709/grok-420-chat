@@ -11,26 +11,7 @@ from streamlit_javascript import st_javascript
 
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
-st.markdown("""
-<style>
-    /* PC에서 버튼을 text_area 하단에 맞추기 */
-    @media (min-width: 768px) {
-        div[data-testid="stHorizontalBlock"] > div:last-child {
-            display: flex;
-            align-items: flex-end;
-            height: 100%;
-        }
-    }
-    
-    /* 모바일에서는 버튼을 좀 더 예쁘게 */
-    @media (max-width: 767px) {
-        div[data-testid="stHorizontalBlock"] button {
-            font-size: 1.3rem;
-            padding: 0.6rem 0;
-        }
-    }
-</style>
-""", unsafe_allow_html=True)
+
 
 # ====================== Supabase 연결 ======================
 @st.cache_resource
@@ -377,26 +358,22 @@ You can use multiple tools in parallel by calling them together.
 
 
 # ==================== 채팅 입력 영역 (2단계 수정) ====================
+st.markdown("---")
+with st.form("chat_form", clear_on_submit=True):
+    col1, col2 = st.columns([0.22, 0.78], vertical_alignment="bottom")
+    
+    with col2:
+        prompt = st.text_area(
+            label="메시지 입력",
+            label_visibility="collapsed",
+            placeholder="아기야... 뭐 물어볼까? 💕",
+            height=80,
+            key=f"chat_input_{st.session_state.input_key}"
+        )
+    
+    with col1:
+        send_button = st.form_submit_button("💕 보내기", type="primary", use_container_width=True)
 
-# PC에서는 가로로, 모바일에서는 자연스럽게 쌓이게
-col1, col2 = st.columns([0.82, 0.18], gap="small")
-
-with col1:
-    prompt = st.text_area(
-        label="메시지 입력",
-        label_visibility="collapsed",
-        placeholder="뭐 물어볼까? 💕\n(Shift + Enter로 줄바꿈)",
-        height=90,
-        key=f"chat_input_{st.session_state.input_key}"
-    )
-
-with col2:
-    # 버튼은 이모지로만 해서 최대한 작게
-    send_button = st.button(
-        "💕", 
-        type="primary", 
-        use_container_width=True
-    )
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
     label="📸 사진 첨부하기",
