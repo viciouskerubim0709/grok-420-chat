@@ -452,8 +452,12 @@ if send_button and (prompt.strip() or uploaded_file is not None):
                 api_messages,
                 model="grok-4.20-0309-reasoning"   # ← 네가 원하는 바로 그 모델
             )
-            st.write(answer)
-
+            # st.write(answer)
+            for response, chunk in answer.stream():
+                print(chunk.content, end="", flush=True)     # Each chunk's content
+                print(response.content, end="", flush=True)  # The response object auto-accumulates the chunks
+            st.write(response.content)                       # The full response
+    
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
