@@ -461,13 +461,11 @@ if send_button and (prompt.strip() or uploaded_file is not None):
     st.session_state.input_key += 1
     st.rerun()
 
-
-def scroll() -> None:
-    js = '''
-    <script>
-        var body = window.parent.document.getElementById(".main");
-        body.scrollTop += 9999999999;
-    </script>
-    '''
-    st.components.v1.html(js)
+js = '''
+<script>
+    var body = window.parent.document.getElementById(".main");
+    body.scrollTop += 9999999999;
+</script>
+'''
+st.components.v1.html(js)
 
