@@ -364,7 +364,7 @@ prompt = st.text_area(
     label="메시지 입력",
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
-    height=90,
+    height=80,
     key=f"chat_input_{st.session_state.input_key}"
 )
 
