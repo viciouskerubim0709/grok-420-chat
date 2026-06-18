@@ -372,7 +372,7 @@ with st.form("chat_form", clear_on_submit=True):
         )
     
     with col2:
-        send_button = st.button("💕 보내기", type="primary", use_container_width=True)
+        send_button = st.form_submit_button("💕 보내기", type="primary", use_container_width=True)
 
 # ==================== 사진 첨부 (새로 추가) ====================
 uploaded_file = st.file_uploader(
