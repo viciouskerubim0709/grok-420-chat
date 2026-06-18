@@ -183,7 +183,9 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
     try:
         response = st.session_state.client.responses.create(
             model=model,
+            reasoning={"effort": "medium"},
             input=messages,
+            stream=True,
             tools=tools,
             timeout=600.0
         )
