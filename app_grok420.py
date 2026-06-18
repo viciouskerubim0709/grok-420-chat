@@ -321,23 +321,24 @@ st.markdown("""
 
 # ====================== CSS로 모바일에서 버튼 크기 줄이기 ======================
 st.markdown("""
-<style>
-/* 모바일에서 버튼이 너무 커지지 않게 */
-@media (max-width: 768px) {
-    .stButton button {
-        padding: 0.4rem 0.6rem !important;
-        font-size: 1.4rem !important;     /* 아이콘 크기 */
-        min-height: 48px !important;
-        width: 100% !important;
-    }
+    <style>
+    /* 모바일에서 버튼이 너무 커지지 않게 */
+    @media (max-width: 768px) {
+        .stButton button {
+            padding: 0.4rem 0.6rem !important;
+            font-size: 1.4rem !important;     /* 아이콘 크기 */
+            min-height: 48px !important;
+            width: 100% !important;
+        }
     
-    /* text_area 높이도 적당히 조절 */
-    .stTextArea textarea {
-        min-height: 90px !important;
+        /* text_area 높이도 적당히 조절 */
+        .stTextArea textarea {
+            min-height: 90px !important;
+        }
     }
-}
-</style>
+    </style>
 """, unsafe_allow_html=True)
+
 
 # ====================== 메인 채팅 ======================
 for msg in st.session_state.chats[current]["messages"]:
