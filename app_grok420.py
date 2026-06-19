@@ -14,7 +14,7 @@ st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout
 st.markdown("""
     <style>
     .stTextArea textarea {
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
     </style>
 """, unsafe_allow_html=True)
