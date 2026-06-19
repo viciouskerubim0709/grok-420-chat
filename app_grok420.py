@@ -388,7 +388,7 @@ prompt = st.text_area(
 
 with st.container(horizontal=True, horizontal_alignment="right"):
     send_button = st.button(
-            "🩷",
+            "❤️",
             type="primary",
             width="content"
                 )
