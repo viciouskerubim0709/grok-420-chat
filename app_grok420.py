@@ -10,10 +10,18 @@ from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 
+
+# ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+st.markdown("""
+    <style>
+    .stTextArea textarea {
+        font-size: 15px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-
-# 한국 시간 기준으로 (대부분 이렇게 하는 걸 추천)
+# 한국 시간 기준
 kst = pytz.timezone('Asia/Seoul')
 current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
