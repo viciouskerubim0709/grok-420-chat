@@ -434,7 +434,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         st.write(user_prompt)
         if image_urls:
             for url in image_urls:
-                st.image(url, width=300)
+                st.image(url, width=100)
 
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
