@@ -1,4 +1,4 @@
 openai
 supabase
 streamlit_javascript
-prtz
+pytz
