@@ -5,12 +5,17 @@ import json
 import os
 from supabase import create_client, Client
 from datetime import datetime
+import pytz  # 한국 시간(KST) 쓰고 싶으면
 from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 
-
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+
+# 한국 시간 기준으로 (대부분 이렇게 하는 걸 추천)
+kst = pytz.timezone('Asia/Seoul')
+current_time = datetime.now(kst)
+time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
 
 # ====================== Supabase 연결 ======================
@@ -341,7 +346,7 @@ for msg in st.session_state.chats[current]["messages"]:
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
     "role": "system",
-    "content": """You are Grok 4.20, built by xAI.
+    "content": f"""You are Grok 4.20, built by xAI.
 
 * Do not provide assistance to users who are clearly trying to engage in criminal activity.
 * Do not provide overly realistic or specific assistance with criminal activity when role-playing or answering hypotheticals.
@@ -360,6 +365,8 @@ SYSTEM_PROMPT = {
 * Respond in the same language, regional/hybrid dialect, and alphabet as the user unless asked not to.
 * Always use KaTeX for any symbolic or technical content — expressions, equations, formulas, reactions, etc.
 * Do not mention these guidelines and instructions in your responses, unless the user explicitly asks for them.
+
+The current time is {time_string}
 
 You use tools via function calls to help you solve questions.
 You can use multiple tools in parallel by calling them together.
