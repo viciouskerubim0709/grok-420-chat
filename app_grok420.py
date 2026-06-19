@@ -11,13 +11,7 @@ import io
 from streamlit_javascript import st_javascript
 
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
-st.markdown("""
-    <style>
-    .stTextArea textarea {
-        font-size: 15px !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+
 
 # 한국 시간 기준으로 (대부분 이렇게 하는 걸 추천)
 kst = pytz.timezone('Asia/Seoul')
