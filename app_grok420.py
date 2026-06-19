@@ -97,9 +97,9 @@ def generate_chat_title(first_user_message: str, has_image: bool = False) -> str
     """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
     try:
         if has_image:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 사진도 함께 보냈어: {first_user_message}"
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 굵기 변경 없음. 사진도 함께 보냈어: {first_user_message}"
         else:
-            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘: {first_user_message}"
+            prompt = f"다음 메시지를 6자 이내의 귀엽고 따뜻한 제목으로 만들어줘. 굵기 변경 없음: {first_user_message}"
 
         response = st.session_state.client.responses.create(
             model="grok-4.20-0309-non-reasoning",
