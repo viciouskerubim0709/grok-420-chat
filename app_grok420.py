@@ -155,13 +155,17 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
     """Supabase Storage에 이미지를 업로드하고 Public URL을 반환"""
     try:
         # 파일명 중복 방지
-        file_ext = original_filename.split(".")[-1].lower()
-        unique_filename = f"{uuid.uuid4()}.{file_ext}"
+        path = Path(original_filename)
+        stem = path.stem                    # 확장자를 제외한 모든 부분
+        suffix = path.suffix.lower()        # .jpg, .png, .jpeg 등
+
+        unique_filename = f"{stem}_{uuid.uuid4().hex}{suffix}"
+        content_type = f"image/{suffix[1:]}" if suffix else "image/jpeg"
 
         supabase.storage.from_("chat_images").upload(
             unique_filename,
             file_bytes,
-            file_options={"content-type": f"image/{file_ext}"}
+            file_options={"content-type": content_type}
         )
 
         public_url = supabase.storage.from_("chat_images").get_public_url(unique_filename)
