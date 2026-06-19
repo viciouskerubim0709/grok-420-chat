@@ -327,9 +327,9 @@ for msg in st.session_state.chats[current]["messages"]:
             # 다중 이미지 지원
             if "image_urls" in msg and msg.get("image_urls"):
                 for url in msg["image_urls"]:
-                    st.image(url, width=320)
+                    st.image(url, width=160)
             elif "image_url" in msg:  # 이전 단일 이미지 호환
-                st.image(msg["image_url"], width=320)
+                st.image(msg["image_url"], width=160)
         else:
             st.write(msg["content"])
 
@@ -434,7 +434,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         st.write(user_prompt)
         if image_urls:
             for url in image_urls:
-                st.image(url, width=100)
+                st.image(url, width=300)
 
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
