@@ -385,8 +385,6 @@ You can use multiple tools in parallel by calling them together.
 
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
-
-
 with st.container(horizontal=True, horizontal_alignment="right"):
     send_button = st.button(
             "❤️",
