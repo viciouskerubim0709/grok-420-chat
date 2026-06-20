@@ -395,9 +395,9 @@ prompt = st.text_area(
     key=f"chat_input_{st.session_state.input_key}"
 )
 
-with st.container(horizontal=True, horizontal_alignment="left"):
+with st.container(horizontal=True, horizontal_alignment="right"):
     send_button = st.button(
-            "❤️ 보내기",
+            "❤️",
             type="primary",
             width="content"
                 )
