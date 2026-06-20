@@ -395,7 +395,7 @@ prompt = st.text_area(
     key=f"chat_input_{st.session_state.input_key}"
 )
 
-with st.container(horizontal=True, horizontal_alignment="right"):
+with st.container(horizontal=True, horizontal_alignment="left"):
     send_button = st.button(
             "❤️",
             type="primary",
