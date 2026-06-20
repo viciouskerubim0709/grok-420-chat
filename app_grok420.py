@@ -387,7 +387,7 @@ You can use multiple tools in parallel by calling them together.
 st.markdown("---")
 with st.container(horizontal=True, horizontal_alignment="left"):
     send_button = st.button(
-            "❤️",
+            "❤️ 보내기",
             type="primary",
             width="content"
                 )
