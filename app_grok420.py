@@ -386,6 +386,13 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
+
+with st.container(horizontal=True, horizontal_alignment="right"):
+    send_button = st.button(
+            "❤️",
+            type="primary",
+            width="content"
+                )
 # === 메시지 입력창 (풀 width) ===
 prompt = st.text_area(
     label="메시지 입력",
@@ -394,13 +401,6 @@ prompt = st.text_area(
     height=100,
     key=f"chat_input_{st.session_state.input_key}"
 )
-
-with st.container(horizontal=True, horizontal_alignment="left"):
-    send_button = st.button(
-            "❤️",
-            type="primary",
-            width="content"
-                )
 
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
