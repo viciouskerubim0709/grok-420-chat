@@ -254,7 +254,7 @@ with st.sidebar:
                 st.rerun()
 
         with col2:
-            with st.popover("⋯", use_container_width=True):
+            with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
@@ -386,7 +386,7 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.container(horizontal=True, horizontal_alignment="right"):
+with st.container(horizontal=True, horizontal_alignment="left"):
     send_button = st.button(
             "❤️ 보내기",
             type="primary",
