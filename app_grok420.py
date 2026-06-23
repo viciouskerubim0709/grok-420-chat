@@ -423,12 +423,21 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-# === 메시지 입력창 (chat_input 버전) ===
-prompt = st.chat_input(
+with st.container(horizontal=True, horizontal_alignment="left"):
+    send_button = st.button(
+            "❤️ 보내기",
+            type="primary",
+            width="content"
+                )
+
+# === 메시지 입력창 (풀 width) ===
+prompt = st.text_area(
+    label="메시지 입력",
+    label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
+    height=100,
     key=f"chat_input_{st.session_state.input_key}"
 )
-
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
 uploaded_files = st.file_uploader(
@@ -449,8 +458,8 @@ if uploaded_files:
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if uploaded_files and len(uploaded_files) > 0:
-    user_prompt = "사진들 분석해줘~"
+if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
+    user_prompt = prompt.strip() if prompt else "사진들 분석해줘~"
 
     image_urls = []
 
