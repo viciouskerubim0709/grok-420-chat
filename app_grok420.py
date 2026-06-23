@@ -209,10 +209,32 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         full_text = ""
         placeholder = st.empty()   # Streamlit용
         for event in response:
-            if hasattr(event, "delta"):
+            if event.type == "response.output_text.delta":
                 full_text += event.delta
-                placeholder.markdown(full_text)
-        return full_text
+            
+        elif event.type == "response.function_call_arguments.delta":
+            # Tool 호출이 발생했을 때 (custom function calling에서 주로 사용)
+            print("\n[Tool Call 감지]")
+            # arguments가 점진적으로 오는 경우를 대비
+            if current_tool is None:
+                current_tool = {"name": None, "arguments": ""}
+            if hasattr(event, "delta"):
+                current_tool["arguments"] += event.delta or ""
+                
+        elif event.type == "response.function_call":
+            # Tool call이 완료되었을 때 (이름 + arguments가 다 모인 경우)
+            if hasattr(event, "name"):
+                current_tool = {
+                    "name": event.name,
+                    "arguments": event.arguments or ""
+                }
+                tool_calls.append(current_tool)
+                print(f"\n[Tool Call 완료] {event.name}")
+
+        elif event.type == "response.completed":
+            break
+    # 필요하면 tool_calls도 함께 반환
+    return full_text, tool_calls
     
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
@@ -499,10 +521,12 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
-            answer = call_grok_with_vision(
+            answer, tool_calls = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning"
             )
+            if tool_calls:
+                print("Tool 호출됨:", tool_calls)
             st.write(answer)
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
