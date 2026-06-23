@@ -429,6 +429,12 @@ prompt = st.chat_input(
     key=f"chat_input_{st.session_state.input_key}"
 )
 
+with st.container(horizontal=True, horizontal_alignment="left"):
+    send_button = st.button(
+            type="primary",
+            width="content"
+                )
+
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
 uploaded_files = st.file_uploader(
