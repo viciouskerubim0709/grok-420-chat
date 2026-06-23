@@ -430,13 +430,12 @@ with st.container(horizontal=True, horizontal_alignment="left"):
             width="content"
                 )
 
-# === 메시지 입력창 (풀 width) ===
+# === 메시지 입력창 (chat_input 버전) ===
 prompt = st.chat_input(
-    label="메시지 입력",
-    label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     key=f"chat_input_{st.session_state.input_key}"
 )
+
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
 uploaded_files = st.file_uploader(
