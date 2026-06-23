@@ -204,7 +204,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             input=messages,
             tools=tools,
             stream=True,
-            timeout=600.0
+            timeout=300.0
         )
         
         full_text = ""
