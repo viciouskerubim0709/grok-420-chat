@@ -192,20 +192,28 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
+    if tools is None:
+        tools = [
+            {"type": "web_search"},
+            {"type": "x_search"}
+        ]
+    
     try:
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
+            tools=tools,
             stream=True,
             timeout=3600.0
         )
         full_text = ""
         placeholder = st.empty()   # Streamlit용
         for event in response:
-            if event.type == "response.output_text.delta":
+            if hasattr(event, "delta"):
                 full_text += event.delta
                 placeholder.markdown(full_text)
         return full_text
+    
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
