@@ -197,11 +197,9 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            stream=True,
-            timeout=3600.0
+            timeout=600.0
         )
         full_text = ""
-        placeholder = st.empty()   # Streamlit용
         for event in response:
             if event.type == "response.output_text.delta":
                 full_text += event.delta
