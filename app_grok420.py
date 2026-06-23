@@ -449,8 +449,8 @@ if uploaded_files:
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if prompt.strip() or (uploaded_files and len(uploaded_files) > 0):
-    user_prompt = prompt.strip() if prompt else "사진들 분석해줘~"
+if uploaded_files and len(uploaded_files) > 0:
+    user_prompt = "사진들 분석해줘~"
 
     image_urls = []
 
