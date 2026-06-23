@@ -209,19 +209,14 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         
         full_text = ""
 
-        for event in response:
-            if event.type == "response.output_text.delta":
-                # 텍스트 스트리밍
+        for event in stream:
+            # 실제로 어떤 이벤트가 오는지 확인하기 위해 일단 다 출력해보자
+            print(f"Event type: {event.type}")   # ← 이거 추가해서 뭐가 오는지 확인
+            if hasattr(event, "delta"):
                 full_text += event.delta
                 print(event.delta, end="", flush=True)
-            elif event.type == "response.function_call_arguments.delta":
-                # 툴 호출이 발생할 때
-                # 여기서 tool call 정보를 수집해야 함
-                print("\n[Tool call detected]")
-            elif event.type == "response.completed":
-                break
-
         return full_text
+        
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
