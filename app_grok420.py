@@ -206,41 +206,46 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             stream=True,
             timeout=3600.0
         )
+        
         full_text = ""
         tool_calls = []
+        current_tool = None
+        placeholder = st.empty()
         
-        placeholder = st.empty()   # Streamlit용
         for event in response:
             if event.type == "response.output_text.delta":
-                full_text += event.delta
+                if hasattr(event, 'delta') and event.delta:
+                    full_text += event.delta
+                    placeholder.markdown(full_text + "▌")  # 커서 효과
             
             elif event.type == "response.function_call_arguments.delta":
-                # Tool 호출이 발생했을 때 (custom function calling에서 주로 사용)
-                print("\n[Tool Call 감지]")
-                # arguments가 점진적으로 오는 경우를 대비
                 if current_tool is None:
                     current_tool = {"name": None, "arguments": ""}
-                if hasattr(event, "delta"):
-                    current_tool["arguments"] += event.delta or ""
+                if hasattr(event, 'delta') and event.delta:
+                    current_tool["arguments"] += event.delta
                     
             elif event.type == "response.function_call":
-                # Tool call이 완료되었을 때 (이름 + arguments가 다 모인 경우)
-                if hasattr(event, "name"):
-                    current_tool = {
-                        "name": event.name,
-                        "arguments": event.arguments or ""
-                    }
-                    tool_calls.append(current_tool)
-                    print(f"\n[Tool Call 완료] {event.name}")
-    
+                if hasattr(event, 'name') and event.name:
+                    if current_tool is None:
+                        current_tool = {"name": event.name, "arguments": ""}
+                    else:
+                        current_tool["name"] = event.name
+                    
+                    tool_calls.append(current_tool.copy())
+                    print(f"[Tool Call] {event.name} 감지")
+                    current_tool = None  # 초기화
+        
             elif event.type == "response.completed":
                 break
-            # 필요하면 tool_calls도 함께 반환
-            return full_text, tool_calls
+                
+        # 루프 종료 후 최종 출력
+        placeholder.markdown(full_text)
+        
+        return full_text, tool_calls
     
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
+        return "아기야... 나 지금 좀 아픈가 봐... 🥺", []
 
 
 # ====================== API 키 ======================
