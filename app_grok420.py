@@ -527,9 +527,10 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 api_messages,
                 model="grok-4.20-0309-reasoning"
             )
+
+            st.markdown(answer)
             if tool_calls:
-                print("Tool 호출됨:", tool_calls)
-            st.write(answer)
+                st.info(f"Tool 호출됨: {tool_calls}")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
