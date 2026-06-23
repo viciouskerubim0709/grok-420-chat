@@ -207,6 +207,8 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             timeout=3600.0
         )
         full_text = ""
+        tool_calls = []
+        
         placeholder = st.empty()   # Streamlit용
         for event in response:
             if event.type == "response.output_text.delta":
