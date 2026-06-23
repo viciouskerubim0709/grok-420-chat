@@ -423,13 +423,6 @@ You can use multiple tools in parallel by calling them together.
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.container(horizontal=True, horizontal_alignment="left"):
-    send_button = st.button(
-            "❤️ 보내기",
-            type="primary",
-            width="content"
-                )
-
 # === 메시지 입력창 (chat_input 버전) ===
 prompt = st.chat_input(
     placeholder="아기야... 뭐 물어볼까? 💕",
