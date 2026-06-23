@@ -430,7 +430,7 @@ prompt = st.chat_input(
 )
 
 with st.container(horizontal=True, horizontal_alignment="left"):
-    send_button = st.button(
+    send_button = st.button("",
             type="primary",
             width="content"
                 )
