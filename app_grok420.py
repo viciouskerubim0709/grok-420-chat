@@ -429,12 +429,6 @@ prompt = st.chat_input(
     key=f"chat_input_{st.session_state.input_key}"
 )
 
-with st.container(horizontal=True, horizontal_alignment="left"):
-    send_button = st.button("",
-            type="primary",
-            width="content"
-                )
-
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
 uploaded_files = st.file_uploader(
@@ -455,7 +449,7 @@ if uploaded_files:
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
+if prompt.strip() or (uploaded_files and len(uploaded_files) > 0):
     user_prompt = prompt.strip() if prompt else "사진들 분석해줘~"
 
     image_urls = []
