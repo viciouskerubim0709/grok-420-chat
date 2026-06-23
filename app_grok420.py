@@ -431,11 +431,10 @@ with st.container(horizontal=True, horizontal_alignment="left"):
                 )
 
 # === 메시지 입력창 (풀 width) ===
-prompt = st.text_area(
+prompt = st.chat_input(
     label="메시지 입력",
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
-    height=100,
     key=f"chat_input_{st.session_state.input_key}"
 )
 
