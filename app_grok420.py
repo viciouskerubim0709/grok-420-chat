@@ -209,7 +209,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         
         full_text = ""
 
-        for event in stream:
+        for event in response:
             # 실제로 어떤 이벤트가 오는지 확인하기 위해 일단 다 출력해보자
             print(f"Event type: {event.type}")   # ← 이거 추가해서 뭐가 오는지 확인
             if hasattr(event, "delta"):
