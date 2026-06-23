@@ -202,21 +202,14 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            stream=True,
             tools=tools,
+            stream=True
             timeout=3600.0
         )
-        
-        full_text = ""
-
         for event in response:
-            # 실제로 어떤 이벤트가 오는지 확인하기 위해 일단 다 출력해보자
-            print(f"Event type: {event.type}")   # ← 이거 추가해서 뭐가 오는지 확인
-            if hasattr(event, "delta"):
-                full_text += event.delta
-                print(event.delta, end="", flush=True)
-        return full_text
-        
+            if hasattr(event, 'delta'):
+                print(event.delta)
+                
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
