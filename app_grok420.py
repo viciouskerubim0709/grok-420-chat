@@ -202,7 +202,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         )
         full_text = ""
         placeholder = st.empty()   # Streamlit용
-        for event in stream:
+        for event in response:
             if event.type == "response.output_text.delta":
                 full_text += event.delta
                 placeholder.markdown(full_text)
