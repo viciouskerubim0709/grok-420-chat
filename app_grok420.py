@@ -192,17 +192,11 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    if tools is None:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
-
+    
     try:
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            tools=tools,
             stream=True,
             timeout=3600.0
         )
