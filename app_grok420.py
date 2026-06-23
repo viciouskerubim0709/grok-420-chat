@@ -196,15 +196,15 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         response = st.session_state.client.responses.create(
             model=model,
             input=messages,
-            timeout=600.0
+            timeout=3600.0
         )
-            full_text = ""
-            placeholder = st.empty()   # Streamlit용
-            for event in stream:
-                if event.type == "response.output_text.delta":
-                    full_text += event.delta
-                    placeholder.markdown(full_text)
-            return full_text
+        full_text = ""
+        placeholder = st.empty()   # Streamlit용
+        for event in stream:
+            if event.type == "response.output_text.delta":
+                full_text += event.delta
+                placeholder.markdown(full_text)
+        return full_text
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺 그래도 곧 괜찮아질 거야. 조금만 기다려줄래?"
