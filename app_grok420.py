@@ -22,8 +22,11 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .stPopover > div[data-testid="stPopoverDetails"] {
+    div[data-testid="stPopoverContent"],
+    .stPopover > div[data-testid="stPopoverContent"],
+    div[data-testid="stPopoverContent"] > div {
         background-color: #FF7E6B !important;
+        background: #FF7E6B !important;
     }
     div[data-testid="stPopoverDetails"] {
         max-width: 200px !important;
