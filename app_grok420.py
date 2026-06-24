@@ -335,11 +335,11 @@ with st.sidebar:
             
             with st.container(vertical_alignment="center"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, height=10int):
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, height="content"):
                     st.session_state.current_session = chat_id
                     st.rerun()
     
-            with st.popover("⋯", width="content", height=10int):
+            with st.popover("⋯", width="content", height="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
