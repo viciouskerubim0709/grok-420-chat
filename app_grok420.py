@@ -427,6 +427,7 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             type="primary",
             width="content"
                 )
+    "🔍"
     use_tools = st.toggle(label="🔍", value=False, key="use_tools_toggle", label_visibility="collapsed")
 
 # === 메시지 입력창 (풀 width) ===
