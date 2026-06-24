@@ -343,13 +343,12 @@ with st.sidebar:
         with col2:
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
-                st.write("**제목 수정**")
+                st.write("**제목 수정**", type="primary")
                 new_title = st.text_input(
                     "새 제목",
                     value=chat["title"],
                     key=f"title_input_{chat_id}",
-                    label_visibility="collapsed",
-                    type="primary"
+                    label_visibility="collapsed"
                 )
 
                 if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
