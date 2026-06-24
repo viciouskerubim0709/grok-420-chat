@@ -343,7 +343,8 @@ with st.sidebar:
         st.markdown("""
             <style>
             div[data-testid="stPopover"] > div > button{
-                background-color: #FF7E6B !important;
+                background-color: transparent !important;
+                border: 0 !important;
             }
             </style>
         """, unsafe_allow_html=True)
