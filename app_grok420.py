@@ -18,19 +18,6 @@ st.markdown("""
     .stTextArea textarea {
         font-size: 15px !important;
     }
-    div[data-testid="stPopover"] > div > button{
-        background-color: transparent !important;
-        border: 0 !important;
-    }
-    div[data-testid="stPopoverContent"],
-    .stPopover > div[data-testid="stPopoverContent"],
-    div[data-testid="stPopoverContent"] > div {
-        background-color: #FF7E6B !important;
-        background: #FF7E6B !important;
-    }
-    div[data-testid="stPopoverDetails"] {
-        max-width: 200px !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -351,6 +338,27 @@ with st.sidebar:
                     st.session_state.current_session = chat_id
                     st.rerun()
 
+            st.markdown("""
+                <style>
+                .stTextArea textarea {
+                    font-size: 15px !important;
+                }
+                div[data-testid="stPopover"] > div > button{
+                    background-color: transparent !important;
+                    border: 0 !important;
+                }
+                div[data-testid="stPopoverContent"],
+                .stPopover > div[data-testid="stPopoverContent"],
+                div[data-testid="stPopoverContent"] > div {
+                    background-color: #FF7E6B !important;
+                    background: #FF7E6B !important;
+                }
+                div[data-testid="stPopoverDetails"] {
+                    max-width: 200px !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+                        
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
