@@ -360,7 +360,7 @@ with st.sidebar:
             </style>
             """, unsafe_allow_html=True)
 
-            with st.container(horizontal=True, vertical_alignment="center", gap="xsmall", key="my_custom_container", border=True):
+            with st.container(key="my_custom_container", border=True):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     st.session_state.current_session = chat_id
