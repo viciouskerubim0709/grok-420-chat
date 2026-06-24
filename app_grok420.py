@@ -351,7 +351,7 @@ with st.sidebar:
                             
             with st.container(horizontal=True, horizontal_alignment="center", vertical_alignment="center"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                if st.button(label, key=f"chat_{chat_id}", width="stretch"):
                     st.session_state.current_session = chat_id
                     st.rerun()
     
