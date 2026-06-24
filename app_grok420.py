@@ -343,14 +343,14 @@ with st.sidebar:
                 .stTextArea textarea {
                     font-size: 15px !important;
                 }
+                div[data-testid="stPopoverBody"],
+                div[data-testid="stPopover"] > div {
+                    background-color: #FF7E6B !important;
+                    background: #FF7E6B !important;
+                }
                 div[data-testid="stPopover"] > div > button{
                     background-color: transparent !important;
                     border: 0 !important;
-                }
-                div[data-testid="stPopoverBody"],
-                div[data-testid="stPopoverContent"] {
-                    background-color: #FF7E6B !important;
-                    background: #FF7E6B !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
