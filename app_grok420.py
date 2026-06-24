@@ -232,7 +232,7 @@ def needs_tools_by_grok(user_message: str) -> bool:
         return False  # 실패 시 안전하게 tool 사용 안 함
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False, user_input: judge_prompt):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False, judge_input: user_prompt):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     tools = None
     if st.session_state.use_tools_toggle:           # 사용자가 토글 켰으면
