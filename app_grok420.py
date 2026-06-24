@@ -331,7 +331,16 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+        
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
+            st.markdown("""
+                <style>
+                div.stButton > button:first-child {
+                    border: none;
+                }
+                </style>
+            """, unsafe_allow_html=True)            
+                        
             with st.container(horizontal=True, vertical_alignment="center"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
