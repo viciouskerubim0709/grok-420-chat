@@ -21,10 +21,12 @@ st.markdown("""
     div[data-testid="stPopover"] > div > button{
         background-color: transparent !important;
         border: 0 !important;
-        max-width: 100px !important;
     }
     .stPopover > div[data-testid="stPopoverContent"] {
         background-color: #FF7E6B !important;
+    }
+    div[data-testid="stPopover"] {
+        max-width: 200px !important;
     }
     </style>
 """, unsafe_allow_html=True)
