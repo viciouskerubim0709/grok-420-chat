@@ -347,14 +347,11 @@ with st.sidebar:
                     background-color: transparent !important;
                     border: 0 !important;
                 }
-                div[data-testid="stPopoverContent"],
-                .stPopover > div[data-testid="stPopoverContent"],
-                div[data-testid="stPopoverContent"] > div {
+                div[data-testid="stPopoverContent"] > div,           /* stPopoverContent의 직계 자식 */
+                div[data-testid*="Popover"] > div,                   /* Popover 관련 요소의 직계 자식 */
+                div[role="dialog"] > div {
                     background-color: #FF7E6B !important;
                     background: #FF7E6B !important;
-                }
-                div[data-testid="stPopoverDetails"] {
-                    max-width: 200px !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
