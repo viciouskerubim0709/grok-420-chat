@@ -346,6 +346,9 @@ with st.sidebar:
                 background-color: transparent !important;
                 border: 0 !important;
             }
+           .stPopover stPopover:open {
+                background-color: #FF7E6B !important;
+            }
             </style>
         """, unsafe_allow_html=True)
 
