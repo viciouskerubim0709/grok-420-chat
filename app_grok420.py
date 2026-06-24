@@ -339,13 +339,7 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xsmall"):
-            with st.container():
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                    st.session_state.current_session = chat_id
-                    st.rerun()
-                        
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xsmall"):        
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
@@ -386,6 +380,12 @@ with st.sidebar:
                             # 마지막 채팅이었을 경우 새로 생성 + 저장
                             create_default_chat()
 
+                    st.rerun()
+                    
+            with st.container():
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                    st.session_state.current_session = chat_id
                     st.rerun()
 
     st.divider()
