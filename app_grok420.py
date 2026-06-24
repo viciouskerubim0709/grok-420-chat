@@ -190,9 +190,10 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", tools: list = None):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    if tools is None:
+    tools = None
+    if use_tools:
         tools = [
             {"type": "web_search"},
             {"type": "x_search"}
@@ -426,6 +427,7 @@ with st.container(horizontal=True, horizontal_alignment="left"):
             type="primary",
             width="content"
                 )
+    use_tools = st.toggle("🔍 도구 사용", value=False, key="use_tools_toggle")
 
 # === 메시지 입력창 (풀 width) ===
 prompt = st.text_area(
@@ -527,7 +529,8 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning"
+                model="grok-4.20-0309-reasoning",
+                use_tools=use_tools
             )
 
             st.markdown(answer)
