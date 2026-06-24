@@ -6,7 +6,7 @@ import os
 from supabase import create_client, Client
 from datetime import datetime
 import pytz  # 한국 시간(KST) 쓰고 싶으면
-from PIL import Image
+from PIL import Imagehttps://github.com/viciouskerubim0709/grok-420-chat/blob/main/app_grok420.py
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
@@ -333,16 +333,19 @@ with st.sidebar:
         is_current = (chat_id == current)
         
         with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="Xsmall"):
-            st.markdown("""
+ st.markdown("""
             <style>
-            div.stButton{
+            /* 메인 채팅 제목 버튼 테두리 완전 제거 */
+            div[data-testid="stButton"] button {
                 border: none !important;
             }
-            div.stPopover{
+            
+            /* ⋯ popover 트리거 버튼 테두리 제거 */
+            div[data-testid="stPopover"] button {
                 border: none !important;
             }
             </style>
-            """, unsafe_allow_html=True)            
+            """, unsafe_allow_html=True)    
                         
             with st.container(horizontal=True, vertical_alignment="center"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
