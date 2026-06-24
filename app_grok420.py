@@ -421,7 +421,7 @@ The current time is {time_string}
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.container(horizontal=True, horizontal_alignment="left"):
+with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
     send_button = st.button(
             "❤️ 보내기",
             type="primary",
