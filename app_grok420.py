@@ -334,45 +334,45 @@ with st.sidebar:
         
         with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="Xsmall"):
             st.markdown("""
-                <style>
-                div[data-testid="stButton"] button {
-                    border: none !important;
-                }
-                
-                div[data-testid="stPopover"] button {
-                    border: none !important;
-                }
-                </style>
-                """, unsafe_allow_html=True)    
+            <style>
+            div[data-testid="stButton"] button {
+                border: none !important;
+            }
+            
+            div[data-testid="stPopover"] button {
+                border: none !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)    
                             
-                with st.container(horizontal=True, vertical_alignment="center"):
-                    label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                    if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                        st.session_state.current_session = chat_id
-                        st.rerun()
-        
-                with st.popover("⋯", width="content"):
-                    # ==================== 제목 수정 ====================
-                    st.write("**제목 수정**")
-                    new_title = st.text_input(
-                        "새 제목",
-                        value=chat["title"],
-                        key=f"title_input_{chat_id}",
-                        label_visibility="collapsed"
-                    )
+            with st.container(horizontal=True, vertical_alignment="center"):
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                    st.session_state.current_session = chat_id
+                    st.rerun()
+    
+            with st.popover("⋯", width="content"):
+                # ==================== 제목 수정 ====================
+                st.write("**제목 수정**")
+                new_title = st.text_input(
+                    "새 제목",
+                    value=chat["title"],
+                    key=f"title_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
 
                 if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
                     if new_title.strip():
                         new_title_clean = new_title.strip()
-
+    
                         # session_state 먼저 업데이트
                         st.session_state.chats[chat_id]["title"] = new_title_clean
                         # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
                         save_chat(chat_id)
-
+    
                         st.success("제목이 수정되었습니다.")
                         st.rerun()
-
+    
                 st.divider()
 
                 # ==================== 삭제 ====================
