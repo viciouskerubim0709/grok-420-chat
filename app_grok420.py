@@ -353,6 +353,11 @@ with st.sidebar:
             div[data-testid="stButton"] button:hover,
             div[data-testid="stPopover"] button:hover {
             }
+
+            div[data-testid="stHorizontalBlock"] {
+                align-items: center;
+                background-color: #FFF8F !important;
+            }
             </style>
             """, unsafe_allow_html=True)
 
