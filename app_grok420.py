@@ -344,7 +344,7 @@ with st.sidebar:
             with st.popover("⋯", width="content"):
                 st.markdown("""
                     <style>
-                    .stTextInput input {
+                    .stwrite {
                         color: #FF7E6B !important;
                     }
                     </style>
