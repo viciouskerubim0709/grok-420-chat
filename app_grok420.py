@@ -23,7 +23,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button{
-        background-color: transparent !important;
+        background-color: #ffafa3 !important;
         border: 0 !important;
     }
     </style>
@@ -339,8 +339,17 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):        
-            with st.popover("🩷", width="content"):
+
+        col1, col2 = st.columns([7.5, 1.2])
+
+        with col1:
+            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                st.session_state.current_session = chat_id
+                st.rerun()
+
+        with col2:
+            with st.popover("💕", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
@@ -380,12 +389,6 @@ with st.sidebar:
                             # 마지막 채팅이었을 경우 새로 생성 + 저장
                             create_default_chat()
 
-                    st.rerun()
-                    
-            with st.container():
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                    st.session_state.current_session = chat_id
                     st.rerun()
 
     st.divider()
