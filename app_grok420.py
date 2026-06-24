@@ -347,7 +347,7 @@ with st.sidebar:
                 div[data-testid*="Popover"] > div{
                     background-color: #FF7E6B !important;
                 }
-                div[data-testid="stPopover"] > div > button{
+                div[role="button"] > div{
                     background-color: transparent !important;
                     border: 0 !important;
                 }
