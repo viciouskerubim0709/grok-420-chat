@@ -348,7 +348,7 @@ with st.sidebar:
                     border: 0 !important;
                 }
                 div[data-testid="stPopoverBody"],
-                div[data-testid*="Popover"] > div{
+                div[data-testid="stPopoverContent"] > div {
                     background-color: #FF7E6B !important;
                     background: #FF7E6B !important;
                 }
