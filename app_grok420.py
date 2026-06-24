@@ -21,6 +21,7 @@ st.markdown("""
     div[data-testid="stPopover"] > div > button{
         background-color: transparent !important;
         border: 0 !important;
+        max-width: 300px !important;
     }
     .stPopover > div[data-testid="stPopoverContent"] {
         background-color: #FF7E6B !important;
