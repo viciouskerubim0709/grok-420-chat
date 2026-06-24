@@ -334,11 +334,14 @@ with st.sidebar:
         
         with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="Xsmall"):
             st.markdown("""
-                <style>
-                .stButton .stpopover {
-                    border: none;
-                }
-                </style>
+            <style>
+            div.stButton > button:first-child {
+                border: none;
+            }
+            div.stPopover > button:first-child {
+                border: none;
+            }
+            </style>
             """, unsafe_allow_html=True)            
                         
             with st.container(horizontal=True, vertical_alignment="center"):
