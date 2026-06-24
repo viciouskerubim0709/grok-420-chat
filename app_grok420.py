@@ -345,7 +345,7 @@ with st.sidebar:
                 st.markdown("""
                     <style>
                     .stTextInput input {
-                        background-color: #FF7E6B !important;
+                        color: #FF7E6B !important;
                     }
                     </style>
                 """, unsafe_allow_html=True)
