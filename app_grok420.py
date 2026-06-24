@@ -337,8 +337,6 @@ with st.sidebar:
             /* 메인 채팅 제목 버튼 테두리 완전 제거 */
             div[data-testid="stButton"] button {
                 border: none !important;
-                background: transparent !important;
-                box-shadow: none !important;
                 padding: 8px 10px !important;
                 text-align: left;
                 width: 100%;
@@ -347,10 +345,7 @@ with st.sidebar:
             /* ⋯ popover 트리거 버튼 테두리 제거 */
             div[data-testid="stPopover"] button {
                 border: none !important;
-                background: transparent !important;
-                box-shadow: none !important;
                 padding: 8px 12px !important;
-                border-radius: 6px;
                 min-width: auto;
             }
             
