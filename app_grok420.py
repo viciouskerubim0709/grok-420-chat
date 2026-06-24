@@ -23,7 +23,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button{
-        background-color: #ffafa3 !important;
+        background-color: transparent !important;
         border: 0 !important;
     }
     </style>
@@ -340,7 +340,7 @@ with st.sidebar:
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
         with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xsmall"):        
-            with st.popover("🩷", width="content"):
+            with st.popover("💕", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
