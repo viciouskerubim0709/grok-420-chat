@@ -428,7 +428,7 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             width="content"
                 )
 with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-    col1, col2 = st.columns([1, 2], horizontal=True, horizontal_alignment="center")
+    col1, col2 = st.columns([1, 2], horizontal_alignment="center")
     col1.write("🔍")
     use_tools = col2.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed")
 
