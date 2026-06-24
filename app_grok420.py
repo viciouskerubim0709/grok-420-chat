@@ -22,7 +22,7 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .stPopover > div[data-testid="stPopoverContent"] {
+    .stPopover > div[data-testid="stPopoverDetails"] {
         background-color: #FF7E6B !important;
     }
     div[data-testid="stPopoverDetails"] {
