@@ -22,7 +22,8 @@ st.markdown("""
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
     }
-    div[data-testid*="Popover"] > div > button{
+    div[data-testid*="Popover"] > div > button,
+    div[data-testid*="file_uploader"] {
         background-color: transparent !important;
         border: 0 !important;
     }
