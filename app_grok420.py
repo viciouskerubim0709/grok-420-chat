@@ -221,7 +221,7 @@ def needs_tools_by_grok(user_message: str) -> bool:
             model="grok-4.20-0309-non-reasoning",
             input=[{"role": "user", "content": judge_prompt}],
             tools=None,
-            max_completion_tokens=10,  # 5 → 10으로 여유를 조금 주는 걸 추천
+            max_output_tokens=10,  # 5 → 10으로 여유를 조금 주는 걸 추천
             temperature=0.0
         )
 
