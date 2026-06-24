@@ -6,7 +6,7 @@ import os
 from supabase import create_client, Client
 from datetime import datetime
 import pytz  # 한국 시간(KST) 쓰고 싶으면
-from PIL import Imagehttps://github.com/viciouskerubim0709/grok-420-chat/blob/main/app_grok420.py
+from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
