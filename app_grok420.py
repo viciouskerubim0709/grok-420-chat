@@ -331,7 +331,7 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+    with st.container(horizontal=True):
             col1, col2 = st.columns([7.5, 1.2])
 
             with col1:
