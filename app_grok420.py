@@ -342,8 +342,15 @@ with st.sidebar:
 
         with col2:
             with st.popover("⋯", width="content"):
+                st.markdown("""
+                    <style>
+                    .stTextinput textinput {
+                        background-color: #FF7E6B !important;
+                    }
+                    </style>
+                """, unsafe_allow_html=True)
                 # ==================== 제목 수정 ====================
-                st.write("**제목 수정**", type="primary")
+                st.write("**제목 수정**")
                 new_title = st.text_input(
                     "새 제목",
                     value=chat["title"],
