@@ -20,7 +20,7 @@ st.markdown("""
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
-        background: #ff9c8c !important;
+        background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button{
         background-color: transparent !important;
