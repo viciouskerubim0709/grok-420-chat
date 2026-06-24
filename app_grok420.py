@@ -331,30 +331,16 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-        
-        with st.container(horizontal=True, vertical_alignment="center", gap="Xsmall"):
-            st.markdown("""
-            <style>
-            div[data-testid="stButton"] button {
-                border: none !important;
-            }
-            div[data-testid="stPopover"] button {
-                border: none !important;
-            }
-            /* hover 효과 */
-            div[data-testid="stButton"] button:hover,
-            div[data-testid="stPopover"] button:hover {
-                background-color: rgba(0, 0, 0, 0.05) !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)    
-                            
-            with st.container(horizontal=True, horizontal_alignment="center", vertical_alignment="center"):
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", width="stretch"):
-                    st.session_state.current_session = chat_id
-                    st.rerun()
-    
+
+        col1, col2 = st.columns([7.5, 1.2])
+
+        with col1:
+            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                st.session_state.current_session = chat_id
+                st.rerun()
+
+        with col2:
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
@@ -368,15 +354,14 @@ with st.sidebar:
                 if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
                     if new_title.strip():
                         new_title_clean = new_title.strip()
-    
+
                         # session_state 먼저 업데이트
                         st.session_state.chats[chat_id]["title"] = new_title_clean
                         # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
                         save_chat(chat_id)
-    
+
                         st.success("제목이 수정되었습니다.")
                         st.rerun()
-    
                 st.divider()
 
                 # ==================== 삭제 ====================
