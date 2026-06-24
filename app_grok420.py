@@ -345,7 +345,7 @@ with st.sidebar:
                     st.session_state.current_session = chat_id
                     st.rerun()
 
-            with st.popover("⋯", use_container_width=True):
+            with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
