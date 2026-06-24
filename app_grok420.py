@@ -427,8 +427,7 @@ with st.container(horizontal=True, horizontal_alignment="left"):
             type="primary",
             width="content"
                 )
-    🔍Search
-    use_tools = st.toggle("", value=False, key="use_tools_toggle")
+    use_tools = st.toggle(label="🔍", value=False, key="use_tools_toggle")
 
 # === 메시지 입력창 (풀 width) ===
 prompt = st.text_area(
