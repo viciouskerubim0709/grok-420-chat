@@ -23,7 +23,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button{
-        background-color: transparent !important;
+        background-color: #ffafa3 !important;
         border: 0 !important;
     }
     </style>
@@ -349,7 +349,7 @@ with st.sidebar:
                 st.rerun()
 
         with col2:
-            with st.popover("💖", width="content"):
+            with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
