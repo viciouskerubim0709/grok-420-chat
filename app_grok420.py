@@ -338,16 +338,13 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+            with st.container():
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                    st.session_state.current_session = chat_id
+                    st.rerun()
 
-        col1, col2 = st.columns([7.5, 1.2])
-
-        with col1:
-            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                st.session_state.current_session = chat_id
-                st.rerun()
-
-        with col2:
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
