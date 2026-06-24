@@ -436,22 +436,17 @@ The current time is {time_string}
 
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
-
-st.markdown("🔍")
-use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed",
-                      width="content")
-
 # === 메시지 입력창 (풀 width) ===
 prompt = st.chat_input(
+    label="메시지 입력",
+    label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     key=f"chat_input_{st.session_state.input_key}"
 )
 
-
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
 if prompt.strip():
     user_prompt = prompt.strip() if prompt else ""
-
 
     # 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
     user_message = {"role": "user", "content": user_prompt}
