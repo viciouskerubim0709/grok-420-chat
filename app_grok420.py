@@ -344,7 +344,7 @@ with st.sidebar:
                     font-size: 15px !important;
                 }
                 div[data-testid="stPopoverBody"],
-                div[data-testid*="Popover"] > div{
+                div[data-testid*="Popover"] > div:not(:has(> button)){
                     background: #FF7E6B !important;
                 }
                 div[data-testid*="Popover"] > div > button{
