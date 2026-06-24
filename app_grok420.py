@@ -342,7 +342,7 @@ with st.sidebar:
 
         st.markdown("""
             <style>
-            .stpopover popover{
+            div[data-testid="stPopover"] > div > button{
                 color: #FF7E6B !important;
             }
             </style>
