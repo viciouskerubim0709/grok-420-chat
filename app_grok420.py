@@ -353,15 +353,13 @@ with st.sidebar:
             div[data-testid="stButton"] button:hover,
             div[data-testid="stPopover"] button:hover {                              
             }
-            .st-key-my_custom_container {
-                background-color: #FF7E6B;
-                
+            .st-key-my_custom_container {              
             }
                     
             </style>
             """, unsafe_allow_html=True)
 
-            with st.container(key="my_custom_container", horizontal=True, vertical_alignment="center", gap="xsmall", border=True):
+            with st.container(key="my_custom_container"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     st.session_state.current_session = chat_id
