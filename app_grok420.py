@@ -437,16 +437,9 @@ The current time is {time_string}
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-    send_button = st.button(
-        "❤️ 보내기",
-        type="primary",
-        width="content"
-    )
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-        st.markdown("🔍")
-        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed",
-                              width="content")
+st.markdown("🔍")
+use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed",
+                      width="content")
 
 # === 메시지 입력창 (풀 width) ===
 prompt = st.chat_input(
@@ -456,7 +449,7 @@ prompt = st.chat_input(
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if send_button and prompt.strip():
+if prompt.strip():
     user_prompt = prompt.strip() if prompt else ""
 
 
