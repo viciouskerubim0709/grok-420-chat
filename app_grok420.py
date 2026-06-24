@@ -332,10 +332,10 @@ with st.sidebar:
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
         
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="Xsmall"):
             st.markdown("""
                 <style>
-                div.stButton, div.stPopover > button:first-child {
+                .stButton .stpopover {
                     border: none;
                 }
                 </style>
