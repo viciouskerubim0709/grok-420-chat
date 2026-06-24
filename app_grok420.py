@@ -353,9 +353,9 @@ with st.sidebar:
             div[data-testid="stButton"] button:hover,
             div[data-testid="stPopover"] button:hover {
             }
-
-            .st-key-my_custom_container {
-                background-color: "#FFF8F5" !important;                                  
+            
+            div.st-key-my_custom_container {
+                background-color: "FFF8F5" !important;                                  
             }
             </style>
             """, unsafe_allow_html=True)
