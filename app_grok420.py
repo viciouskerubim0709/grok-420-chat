@@ -335,7 +335,7 @@ with st.sidebar:
             st.markdown("""
             <style>
             /* 메인 채팅 제목 버튼 테두리 완전 제거 */
-            div[data-testid="stButton"] button {
+            div[data-testid="stButton"] button > button:first-child {
                 border: none !important;
                 padding: 8px 10px !important;
                 text-align: left;
@@ -345,7 +345,7 @@ with st.sidebar:
             /* ⋯ popover 트리거 버튼 테두리 제거 */
             div[data-testid="stPopover"] button {
                 border: none !important;
-                padding: 8px 12px !important;
+                padding: 8px 10px !important;
                 min-width: auto;
             }
             
