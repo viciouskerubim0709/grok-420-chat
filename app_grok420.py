@@ -332,7 +332,7 @@ with st.sidebar:
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
         
-        with st.container(horizontal=True, width="content", horizontal_alignment="center", vertical_alignment="center", gap="Xsmall"):
+        with st.container(horizontal=True, width="stretch", horizontal_alignment="center", vertical_alignment="center", gap="Xsmall"):
             st.markdown("""
             <style>
             div[data-testid="stButton"] button {
