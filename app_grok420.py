@@ -23,7 +23,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button{
-        background-color: #ffafa3 !important;
+        background-color: transparent !important;
         border: 0 !important;
     }
     </style>
