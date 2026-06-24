@@ -340,16 +340,16 @@ with st.sidebar:
                 st.session_state.current_session = chat_id
                 st.rerun()
 
+        st.markdown("""
+            <style>
+            .stpopover popover{
+                color: #FF7E6B !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         with col2:
             with st.popover("⋯", width="content"):
-                st.markdown("""
-                    <style>
-                    .stwrite {
-                        color: #FF7E6B !important;
-                    }
-                    </style>
-                """, unsafe_allow_html=True)
-
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
