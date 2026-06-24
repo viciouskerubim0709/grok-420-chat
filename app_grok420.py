@@ -240,7 +240,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         use_tools = True
     else:
         # 자동 판단 모드 (선택)
-        if needs_tools_by_llm(user_input):
+        if needs_tools_by_grok(user_input):
             use_tools = True
             
     if use_tools:
