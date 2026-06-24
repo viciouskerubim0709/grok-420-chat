@@ -336,10 +336,10 @@ with st.sidebar:
             st.markdown("""
             <style>
             div.stButton{
-                border: none;
+                border: none !important;
             }
             div.stPopover{
-                border: none;
+                border: none !important;
             }
             </style>
             """, unsafe_allow_html=True)            
