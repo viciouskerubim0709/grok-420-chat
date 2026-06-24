@@ -211,6 +211,7 @@ def needs_tools_by_grok(user_message: str) -> bool:
     - Is creative writing, brainstorming, advice, or emotional support
     - Can be answered well with your trained knowledge
     - Is about coding, math, tech, or logical reasoning
+    - Is a vacant message
     
     Answer with only "YES" or "NO".
     """
@@ -232,14 +233,14 @@ def needs_tools_by_grok(user_message: str) -> bool:
         return False  # 실패 시 안전하게 tool 사용 안 함
 
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False, judge_input: str = user_prompt):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False, user_query: str | None = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     tools = None
     if st.session_state.use_tools_toggle:           # 사용자가 토글 켰으면
         use_tools = True
     else:
         # 자동 판단 모드 (선택)
-        if needs_tools_by_grok(judge_input):
+        if needs_tools_by_grok(user_query):
             use_tools = True
             
     if use_tools:
@@ -580,7 +581,8 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning",
-                use_tools=use_tools
+                use_tools=use_tools,
+                user_query=user_prompt
             )
 
             st.markdown(answer)
