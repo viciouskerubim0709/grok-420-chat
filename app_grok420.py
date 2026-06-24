@@ -335,7 +335,7 @@ with st.sidebar:
         with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
             st.markdown("""
                 <style>
-                div.stButton > button:first-child {
+                div.stButton, div.stPopover > button:first-child {
                     border: none;
                 }
                 </style>
