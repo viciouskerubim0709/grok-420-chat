@@ -354,14 +354,13 @@ with st.sidebar:
             div[data-testid="stPopover"] button:hover {
             }
 
-            div[data-testid="stHorizontalBlock"] {
-                align-items: center;
-                background-color: #FFF8F !important;
+            .st-key-my_custom_container {
+                background-color: "#FFF8F5" !important;                                  
             }
             </style>
             """, unsafe_allow_html=True)
 
-            with st.container(horizontal=True, vertical_alignment="center", gap="xsmall"):
+            with st.container(horizontal=True, vertical_alignment="center", gap="xsmall", key="my_custom_container", border=True):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     st.session_state.current_session = chat_id
