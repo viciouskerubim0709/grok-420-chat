@@ -349,7 +349,7 @@ with st.sidebar:
                 st.rerun()
 
         with col2:
-            with st.popover("", width="content"):
+            with st.popover("💖", width="content"):
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
                 new_title = st.text_input(
