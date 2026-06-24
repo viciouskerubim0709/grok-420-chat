@@ -347,8 +347,7 @@ with st.sidebar:
                     background-color: transparent !important;
                     border: 0 !important;
                 }
-                div[data-testid="stPopoverContent"] > div,           /* stPopoverContent의 직계 자식 */
-                div[data-testid*="Popover"] > div,                   /* Popover 관련 요소의 직계 자식 */
+                div[data-testid="stPopoverBody"],
                 div[role="dialog"] > div {
                     background-color: #FF7E6B !important;
                     background: #FF7E6B !important;
