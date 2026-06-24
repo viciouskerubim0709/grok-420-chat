@@ -220,7 +220,7 @@ def needs_tools_by_grok(user_message: str) -> bool:
             model="grok-4.20-0309-non-reasoning",
             input=[{"role": "user", "content": judge_prompt.format(judge_prompt)}],
             tools=None,
-            max_tokens=10,  # 5 → 10으로 여유를 조금 주는 걸 추천
+            max_completion_tokens=10,  # 5 → 10으로 여유를 조금 주는 걸 추천
             temperature=0.0
         )
 
@@ -235,18 +235,19 @@ def needs_tools_by_grok(user_message: str) -> bool:
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     tools = None
-    if use_tools:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
-        
+
     if st.session_state.use_tools_toggle:           # 사용자가 토글 켰으면
         use_tools = True
     else:
         # 자동 판단 모드 (선택)
         if needs_tools_by_llm(user_input):
             use_tools = True
+            
+    if use_tools:
+        tools = [
+            {"type": "web_search"},
+            {"type": "x_search"}
+        ]
     try:
         response = st.session_state.client.responses.create(
             model=model,
@@ -577,13 +578,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     # 5. Grok에게 요청
     with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
-            if st.session_state.use_tools_toggle:           # 사용자가 토글 켰으면
-                use_tools = True
-            else:
-                # 자동 판단 모드 (선택)
-                if needs_tools_by_grok(prompt):
-                    use_tools = True
-            
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
                 model="grok-4.20-0309-reasoning",
