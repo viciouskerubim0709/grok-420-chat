@@ -331,7 +331,7 @@ with st.sidebar:
 
     for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", height=10):
             
             with st.container(vertical_alignment="center"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
