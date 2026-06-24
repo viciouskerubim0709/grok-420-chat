@@ -23,7 +23,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid*="Popover"] > div > button,
-    div[data-testid*="file_uploader"] {
+    div[data-testid*="file_uploader"]  > div{
         background-color: transparent !important;
         border: 0 !important;
     }
