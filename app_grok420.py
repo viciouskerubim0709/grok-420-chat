@@ -343,10 +343,9 @@ with st.sidebar:
         with col2:
             with st.popover("⋯", width="content"):
                 st.markdown("""
-                    <style>
-                    background-color: #FF7E6B !important;
+                    .stTextInput input {
+                        background-color: #FF7E6B !important;
                     }
-                    </style>
                 """, unsafe_allow_html=True)
                 # ==================== 제목 수정 ====================
                 st.write("**제목 수정**")
