@@ -348,7 +348,8 @@ with st.sidebar:
                     "새 제목",
                     value=chat["title"],
                     key=f"title_input_{chat_id}",
-                    label_visibility="collapsed"
+                    label_visibility="collapsed",
+                    type="primary"
                 )
 
                 if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
