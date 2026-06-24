@@ -344,7 +344,7 @@ with st.sidebar:
                     font-size: 15px !important;
                 }
                 div[data-testid="stPopoverBody"],
-                div[data-testid="stPopover"] > div {
+                div[data-testid*="Popover"] > div{
                     background-color: #FF7E6B !important;
                     background: #FF7E6B !important;
                 }
