@@ -390,23 +390,23 @@ with st.sidebar:
                             st.rerun()
                     st.divider()
         
-                        # ==================== 삭제 ====================
-                        if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
-                            delete_chat_from_db(chat_id)
-        
-                            # session_state에서도 삭제
-                            if chat_id in st.session_state.chats:
-                                del st.session_state.chats[chat_id]
-        
-                            # 현재 보고 있던 채팅을 지웠을 때
-                            if chat_id == st.session_state.current_session:
-                                if st.session_state.chats:
-                                    st.session_state.current_session = list(st.session_state.chats.keys())[0]
-                                else:
-                                    # 마지막 채팅이었을 경우 새로 생성 + 저장
-                                    create_default_chat()
-        
-                            st.rerun()
+                    # ==================== 삭제 ====================
+                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                        delete_chat_from_db(chat_id)
+    
+                        # session_state에서도 삭제
+                        if chat_id in st.session_state.chats:
+                            del st.session_state.chats[chat_id]
+    
+                        # 현재 보고 있던 채팅을 지웠을 때
+                        if chat_id == st.session_state.current_session:
+                            if st.session_state.chats:
+                                st.session_state.current_session = list(st.session_state.chats.keys())[0]
+                            else:
+                                # 마지막 채팅이었을 경우 새로 생성 + 저장
+                                create_default_chat()
+    
+                        st.rerun()
 
     st.divider()
 
