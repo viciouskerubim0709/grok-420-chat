@@ -443,44 +443,43 @@ prompt = st.chat_input(
 )
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if prompt.strip():
-    user_prompt = prompt.strip() if prompt else ""
+user_prompt = prompt.strip() if prompt else ""
 
-    # 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
-    user_message = {"role": "user", "content": user_prompt}
-    st.session_state.chats[current]["messages"].append(user_message)
+# 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
+user_message = {"role": "user", "content": user_prompt}
+st.session_state.chats[current]["messages"].append(user_message)
 
-    # 3. 화면에 바로 보여주기
-    with st.chat_message("user"):
-        st.write(user_prompt)
+# 3. 화면에 바로 보여주기
+with st.chat_message("user"):
+    st.write(user_prompt)
 
-    # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
-    api_messages = [SYSTEM_PROMPT]
+# 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
+api_messages = [SYSTEM_PROMPT]
 
-    for msg in st.session_state.chats[current]["messages"]:
-        if msg["role"] == "assistant":
-            api_messages.append({"role": "assistant", "content": msg["content"]})
+for msg in st.session_state.chats[current]["messages"]:
+    if msg["role"] == "assistant":
+        api_messages.append({"role": "assistant", "content": msg["content"]})
 
 
-    # 5. Grok에게 요청
-    with st.chat_message("assistant"):
-        with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
-            answer, tool_calls = call_grok_with_vision(
-                api_messages,
-                model="grok-4.20-0309-reasoning",
-                use_tools=use_tools,
-                user_query=user_prompt
-            )
+# 5. Grok에게 요청
+with st.chat_message("assistant"):
+    with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
+        answer, tool_calls = call_grok_with_vision(
+            api_messages,
+            model="grok-4.20-0309-reasoning",
+            use_tools=use_tools,
+            user_query=user_prompt
+        )
 
-            st.markdown(answer)
-            if tool_calls:
-                st.info(f"Tool 호출됨: {tool_calls}")
+        st.markdown(answer)
+        if tool_calls:
+            st.info(f"Tool 호출됨: {tool_calls}")
 
-    # 6. 어시스턴트 답변 저장 및 DB 저장
-    st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-    generate_title_if_needed(current)
-    save_chat(current)
+# 6. 어시스턴트 답변 저장 및 DB 저장
+st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
+generate_title_if_needed(current)
+save_chat(current)
 
-    # 입력창 초기화
-    st.session_state.input_key += 1
-    st.rerun()
+# 입력창 초기화
+st.session_state.input_key += 1
+st.rerun()
