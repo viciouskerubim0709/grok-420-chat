@@ -426,8 +426,8 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             type="primary",
             width="content"
                 )
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=20):
-        st.write("🔍")
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+        st.markdown("🔍")
         use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
 
 
