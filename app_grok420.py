@@ -427,10 +427,9 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             type="primary",
             width="content"
                 )
-    with st.container(horizontal=True, vertical_alignment="center"):
-        col1, col2 = st.columns([1, 2])
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
         st.write("🔍")
-        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
+        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed")
 
 
 # === 메시지 입력창 (풀 width) ===
