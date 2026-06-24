@@ -428,6 +428,16 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             width="content"
                 )
     with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+        st.markdown(
+            """
+            <style>
+            div[data-testid="column"] [data-testid="stVerticalBlock"] {
+                gap: 0rem !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
         st.write("🔍")
         use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
 
