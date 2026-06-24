@@ -35,7 +35,6 @@ def get_supabase() -> Client:
         st.secrets.supabase.key
     )
 
-
 supabase = get_supabase()
 
 
@@ -81,7 +80,7 @@ def create_default_chat():
         "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
     }
     st.session_state.current_session = first_id
-    save_chat(first_id)  # Supabase에도 바로 저장
+    save_chat(first_id)   # Supabase에도 바로 저장
 
 
 def save_chat(chat_id: str):
@@ -96,7 +95,7 @@ def save_chat(chat_id: str):
             "id": chat_id,
             "title": chat.get("title", "새 추억💕"),
             "messages": chat["messages"],
-            "updated_at": datetime.utcnow().isoformat()  # 또는 "now()" (Supabase가 지원하면)
+            "updated_at": datetime.utcnow().isoformat()   # 또는 "now()" (Supabase가 지원하면)
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
@@ -165,13 +164,38 @@ if "current_session" not in st.session_state or st.session_state.current_session
 current = st.session_state.current_session
 
 
+# ==================== 이미지 업로드 함수 ====================
+def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
+    """Supabase Storage에 이미지를 업로드하고 Public URL을 반환"""
+    try:
+        # 파일명 중복 방지
+        path = Path(original_filename)
+        stem = path.stem                    # 확장자를 제외한 모든 부분
+        suffix = path.suffix.lower()        # .jpg, .png, .jpeg 등
+
+        unique_filename = f"{stem}_{uuid.uuid4().hex}{suffix}"
+        content_type = f"image/{suffix[1:]}" if suffix else "image/jpeg"
+
+        supabase.storage.from_("chat_images").upload(
+            unique_filename,
+            file_bytes,
+            file_options={"content-type": content_type}
+        )
+
+        public_url = supabase.storage.from_("chat_images").get_public_url(unique_filename)
+        return public_url
+    except Exception as e:
+        st.error(f"이미지 업로드 실패: {str(e)}")
+        return None
+
+
 # ==================== Search Bool 함수 ====================
 def needs_tools_by_grok(user_message: str) -> bool:
     """Grok에게 tool 호출 필요성을 판단하게 하는 함수"""
     judge_prompt = f"""You are an expert judge that decides whether a question requires real-time or external information.
 
     Question: {user_message}
-
+    
     ### Decision Rules:
     Use tool (YES) when the question:
     - Asks about events, news, or situations after June 2025
@@ -181,14 +205,14 @@ def needs_tools_by_grok(user_message: str) -> bool:
     - Asks about personal examples of real-life experiences
     - Is a philosophical question but the user seems to want practical/modern interpretations
     - Would benefit from real opinions or trends on X (Twitter)
-
+    
     Do NOT use tool (NO) when the question:
     - Is about general knowledge, science, history, or established concepts
     - Is creative writing, brainstorming, advice, or emotional support
     - Can be answered well with your trained knowledge
     - Is about coding, math, tech, or logical reasoning
     - Is a vacant message
-
+    
     Answer with only "YES" or "NO".
     """
 
@@ -208,19 +232,17 @@ def needs_tools_by_grok(user_message: str) -> bool:
         st.warning(f"Judge error: {e}")
         return False  # 실패 시 안전하게 tool 사용 안 함
 
-
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
-def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False,
-                          user_query: str | None = None):
+def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False, user_query: str | None = None):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
     tools = None
-    if st.session_state.use_tools_toggle:  # 사용자가 토글 켰으면
+    if st.session_state.use_tools_toggle:           # 사용자가 토글 켰으면
         use_tools = True
     else:
         # 자동 판단 모드 (선택)
         if needs_tools_by_grok(user_query):
             use_tools = True
-
+            
     if use_tools:
         tools = [
             {"type": "web_search"},
@@ -234,43 +256,43 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             stream=True,
             timeout=900.0
         )
-
+        
         full_text = ""
         tool_calls = []
         current_tool = None
         placeholder = st.empty()
-
+        
         for event in response:
             if event.type == "response.output_text.delta":
                 if hasattr(event, 'delta') and event.delta:
                     full_text += event.delta
                     placeholder.markdown(full_text + "▌")  # 커서 효과
-
+            
             elif event.type == "response.function_call_arguments.delta":
                 if current_tool is None:
                     current_tool = {"name": None, "arguments": ""}
                 if hasattr(event, 'delta') and event.delta:
                     current_tool["arguments"] += event.delta
-
+                    
             elif event.type == "response.function_call":
                 if hasattr(event, 'name') and event.name:
                     if current_tool is None:
                         current_tool = {"name": event.name, "arguments": ""}
                     else:
                         current_tool["name"] = event.name
-
+                    
                     tool_calls.append(current_tool.copy())
                     print(f"[Tool Call] {event.name} 감지")
                     current_tool = None  # 초기화
-
+        
             elif event.type == "response.completed":
                 break
-
+                
         # 루프 종료 후 최종 출력
         placeholder.markdown(full_text)
-
+        
         return full_text, tool_calls
-
+    
     except Exception as e:
         st.error(f"API 오류: {str(e)}")
         return "아기야... 나 지금 좀 아픈가 봐... 🥺", []
@@ -289,6 +311,7 @@ if "client" not in st.session_state:
         api_key=api_key,
         base_url="https://api.x.ai/v1"
     )
+
 
 # ====================== 사이드바 ======================
 with st.sidebar:
@@ -385,6 +408,7 @@ with st.sidebar:
             use_container_width=True
         )
 
+
 # ====================== 타이틀 꾸미기 ======================
 st.markdown("""
     <style>
@@ -405,8 +429,15 @@ for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
         if msg["role"] == "user":
             st.write(msg.get("content", ""))
+            # 다중 이미지 지원
+            if "image_urls" in msg and msg.get("image_urls"):
+                for url in msg["image_urls"]:
+                    st.image(url, width=160)
+            elif "image_url" in msg:  # 이전 단일 이미지 호환
+                st.image(msg["image_url"], width=160)
         else:
             st.write(msg["content"])
+
 
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
@@ -434,52 +465,135 @@ The current time is {time_string}
 """
 }
 
+
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
+
+with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+    send_button = st.button(
+            "❤️ 보내기",
+            type="primary",
+            width="content"
+                )
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+        st.markdown("🔍")
+        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
+
+
 # === 메시지 입력창 (풀 width) ===
-prompt = st.chat_input(
+prompt = st.text_area(
+    label="메시지 입력",
+    label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
+    height=100,
     key=f"chat_input_{st.session_state.input_key}"
 )
 
+# ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
+uploaded_files = st.file_uploader(
+    label="📸 사진 첨부하기 (여러 장 선택 가능)",
+    type=["jpg", "jpeg", "png"],
+    accept_multiple_files=True,
+    label_visibility="visible",
+    key=f"uploader_{st.session_state.input_key}"
+)
+
+# 미리보기 (여러 장 지원)
+if uploaded_files:
+    st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
+    preview_cols = st.columns(min(len(uploaded_files), 4))
+    for idx, file in enumerate(uploaded_files):
+        with preview_cols[idx % 4]:
+            st.image(file, width=160, caption=file.name[:18])
+
+
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-user_prompt = prompt.strip() if prompt else ""
+if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
+    user_prompt = prompt.strip() if prompt else "사진들 분석해줘~"
 
-# 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
-user_message = {"role": "user", "content": user_prompt}
-st.session_state.chats[current]["messages"].append(user_message)
+    image_urls = []
 
-# 3. 화면에 바로 보여주기
-with st.chat_message("user"):
-    st.write(user_prompt)
+    # 1. 사진(들)이 있으면 Supabase Storage에 업로드
+    if uploaded_files:
+        for uploaded_file in uploaded_files:
+            bytes_data = uploaded_file.getvalue()
+            with st.spinner(f"📤 {uploaded_file.name} 업로드 중..."):
+                url = upload_image_to_supabase(bytes_data, uploaded_file.name)
+                if url:
+                    image_urls.append(url)
+                else:
+                    st.error(f"{uploaded_file.name} 업로드에 실패했어... 😢")
 
-# 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
-api_messages = [SYSTEM_PROMPT]
+    if uploaded_files and len(image_urls) == 0:
+        st.error("사진 업로드에 모두 실패했어... 다시 시도해줘!")
+        st.stop()
 
-for msg in st.session_state.chats[current]["messages"]:
-    if msg["role"] == "assistant":
-        api_messages.append({"role": "assistant", "content": msg["content"]})
+    # 2. 사용자 메시지 저장 (image_urls 리스트로 저장)
+    user_message = {"role": "user", "content": user_prompt}
+    if image_urls:
+        user_message["image_urls"] = image_urls
 
+    st.session_state.chats[current]["messages"].append(user_message)
 
-# 5. Grok에게 요청
-with st.chat_message("assistant"):
-    with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
-        answer, tool_calls = call_grok_with_vision(
-            api_messages,
-            model="grok-4.20-0309-reasoning",
-            use_tools=use_tools,
-            user_query=user_prompt
-        )
+    # 3. 화면에 바로 보여주기
+    with st.chat_message("user"):
+        st.write(user_prompt)
+        if image_urls:
+            for url in image_urls:
+                st.image(url, width=300)
 
-        st.markdown(answer)
-        if tool_calls:
-            st.info(f"Tool 호출됨: {tool_calls}")
+    # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
+    api_messages = [SYSTEM_PROMPT]
 
-# 6. 어시스턴트 답변 저장 및 DB 저장
-st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-generate_title_if_needed(current)
-save_chat(current)
+    for msg in st.session_state.chats[current]["messages"]:
+        if msg["role"] == "assistant":
+            api_messages.append({"role": "assistant", "content": msg["content"]})
+        else:  # user 메시지
+            if "image_urls" in msg and msg.get("image_urls"):
+                # === 다중 이미지 처리 핵심 ===
+                content_parts = []
+                for url in msg["image_urls"]:
+                    content_parts.append({"type": "input_image", "image_url": url})
+                content_parts.append({"type": "input_text", "text": msg["content"]})
+                api_messages.append({
+                    "role": "user",
+                    "content": content_parts
+                })
+            elif "image_url" in msg:  # 이전 버전 단일 이미지 호환
+                api_messages.append({
+                    "role": "user",
+                    "content": [
+                        {"type": "input_image", "image_url": msg["image_url"]},
+                        {"type": "input_text", "text": msg["content"]}
+                    ]
+                })
+            else:
+                api_messages.append({
+                    "role": "user",
+                    "content": [
+                        {"type": "input_text", "text": msg["content"]}
+                    ]
+                })
 
-# 입력창 초기화
-st.session_state.input_key += 1
-st.rerun()
+    # 5. Grok에게 요청
+    with st.chat_message("assistant"):
+        with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
+            answer, tool_calls = call_grok_with_vision(
+                api_messages,
+                model="grok-4.20-0309-reasoning",
+                use_tools=use_tools,
+                user_query=user_prompt
+            )
+
+            st.markdown(answer)
+            if tool_calls:
+                st.info(f"Tool 호출됨: {tool_calls}")
+
+    # 6. 어시스턴트 답변 저장 및 DB 저장
+    st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
+    generate_title_if_needed(current)
+    save_chat(current)
+
+    # 입력창 초기화
+    st.session_state.input_key += 1
+    st.rerun()
