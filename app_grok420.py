@@ -357,13 +357,6 @@ with st.sidebar:
             /* hover 효과 */
             div[data-testid="stButton"] button:hover,
             div[data-testid="stPopover"] button:hover {
-                background-color: rgba(1, 1, 1, 1) !important;
-            }
-            
-            /* horizontal container 안에서 두 버튼이 너무 떨어지지 않게 조정 */
-            div[data-testid="stHorizontalBlock"] {
-                gap: 2px !important;
-                align-items: center;
             }
             </style>
             """, unsafe_allow_html=True)
