@@ -458,7 +458,7 @@ prompt = st.chat_input(
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
-if send_button and prompt.strip()):
+if send_button and prompt.strip():
     user_prompt = prompt.strip() if prompt else ""
 
 
