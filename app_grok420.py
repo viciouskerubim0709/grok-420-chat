@@ -438,8 +438,6 @@ The current time is {time_string}
 st.markdown("---")
 # === 메시지 입력창 (풀 width) ===
 prompt = st.chat_input(
-    label="메시지 입력",
-    label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     key=f"chat_input_{st.session_state.input_key}"
 )
