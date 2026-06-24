@@ -18,6 +18,14 @@ st.markdown("""
     .stTextArea textarea {
         font-size: 15px !important;
     }
+    div[data-testid="stPopoverBody"],
+    div[data-testid*="Popover"] > div:not(:has(> button)){
+        background: #ff9c8c !important;
+    }
+    div[data-testid*="Popover"] > div > button{
+        background-color: transparent !important;
+        border: 0 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -337,22 +345,6 @@ with st.sidebar:
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     st.session_state.current_session = chat_id
                     st.rerun()
-
-            st.markdown("""
-                <style>
-                .stTextArea textarea {
-                    font-size: 15px !important;
-                }
-                div[data-testid="stPopoverBody"],
-                div[data-testid*="Popover"] > div:not(:has(> button)){
-                    background: #FF7E6B !important;
-                }
-                div[data-testid*="Popover"] > div > button{
-                    background-color: transparent !important;
-                    border: 0 !important;
-                }
-                </style>
-            """, unsafe_allow_html=True)
                         
             with st.popover("⋯", width="content"):
                 # ==================== 제목 수정 ====================
