@@ -440,7 +440,7 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
             width="content"
                 )
     with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-        st.markdown("**X Search**")
+        st.markdown("X Search")
         use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
 
 
