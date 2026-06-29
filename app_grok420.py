@@ -167,7 +167,7 @@ if "chats_loaded" not in st.session_state:
 
 # ====================== 입력 시 key 초기화 방지======================
 if "input_key" not in st.session_state:
-    st.session_state.input_key = "fixed_chat_input   # ← 고정된 문자열로!
+    st.session_state.input_key = "fixed_chat_input"   # ← 고정된 문자열로!
 if "pending_input" not in st.session_state:
     st.session_state.pending_input = ""
 
