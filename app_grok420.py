@@ -48,7 +48,6 @@ supabase = get_supabase()
 
 
 # ==================== Supabase용 함수 ====================
-@st.cache_data(ttl=60)   # 60초 동안 캐싱 (필요하면 30~120으로 조정)
 def load_all_chats():
     """Supabase에서 모든 채팅을 불러옴 (이미지 URL도 제대로 처리)"""
     if "chats" not in st.session_state:
