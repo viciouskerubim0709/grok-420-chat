@@ -454,23 +454,23 @@ with st.form(key=f"chat_form_{current}", clear_on_submit=True):   # ← 핵심
         height=100
     )
 
-# ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
-uploaded_files = st.file_uploader(
-    label="📸 사진 첨부하기 (여러 장 선택 가능)",
-    type=["jpg", "jpeg", "png"],
-    accept_multiple_files=True,
-    label_visibility="visible",
-    key=f"uploader_{st.session_state.input_key}"
-)
-
-# 미리보기 (여러 장 지원)
-if uploaded_files:
-    st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
-    preview_cols = st.columns(min(len(uploaded_files), 4))
-    for idx, file in enumerate(uploaded_files):
-        with preview_cols[idx % 4]:
-            st.image(file, width=160, caption=file.name[:18])
-
+    # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
+    uploaded_files = st.file_uploader(
+        label="📸 사진 첨부하기 (여러 장 선택 가능)",
+        type=["jpg", "jpeg", "png"],
+        accept_multiple_files=True,
+        label_visibility="visible",
+        key=f"uploader_{st.session_state.input_key}"
+    )
+    
+    # 미리보기 (여러 장 지원)
+    if uploaded_files:
+        st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
+        preview_cols = st.columns(min(len(uploaded_files), 4))
+        for idx, file in enumerate(uploaded_files):
+            with preview_cols[idx % 4]:
+                st.image(file, width=160, caption=file.name[:18])
+    
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
 if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
