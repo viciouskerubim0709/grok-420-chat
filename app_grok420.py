@@ -162,14 +162,7 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
-
-
-# ====================== 입력 시 key 초기화 방지======================
-if "input_key" not in st.session_state:
-    st.session_state.input_key = "fixed_chat_input"   # ← 고정된 문자열로!
-if "pending_input" not in st.session_state:
-    st.session_state.pending_input = ""
-
+    
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -440,26 +433,26 @@ The current time is {time_string}
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-    send_button = st.button(
-            "❤️ 보내기",
-            type="primary",
-            width="content"
-                )
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-        st.markdown("X Search")
-        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
-
-
-# === 메시지 입력창 (풀 width) ===
-prompt = st.text_area(
-    label="메시지 입력",
-    label_visibility="collapsed",
-    placeholder="아기야... 뭐 물어볼까? 💕",
-    height=100,
-    key=st.session_state.input_key,           # ← 여기서 key를 동적으로 쓰되, 값은 항상 같게
-    value=st.session_state.pending_input     # ← 이게 중요!
-)
+with st.form(key=f"chat_form_{current}", clear_on_submit=True):   # ← 핵심
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+        send_button = st.button(
+                "❤️ 보내기",
+                type="primary",
+                width="content"
+                    )
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+            st.markdown("X Search")
+            use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
+    
+    
+    # === 메시지 입력창 (풀 width) ===
+    
+    prompt = st.text_area(
+        label="메시지 입력",
+        label_visibility="collapsed",
+        placeholder="아기야... 뭐 물어볼까? 💕",
+        height=100
+    )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
 uploaded_files = st.file_uploader(
@@ -566,5 +559,4 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.pending_input = ""
     st.rerun()
