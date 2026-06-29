@@ -48,6 +48,7 @@ supabase = get_supabase()
 
 
 # ==================== Supabase용 함수 ====================
+@st.cache_data(ttl=60)   # 60초 동안 캐싱 (필요하면 30~120으로 조정)
 def load_all_chats():
     """Supabase에서 모든 채팅을 불러옴 (이미지 URL도 제대로 처리)"""
     if "chats" not in st.session_state:
@@ -162,7 +163,14 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
-    st.session_state.input_key = 0
+
+
+# ====================== 입력 시 key 초기화 방지======================
+if "input_key" not in st.session_state:
+    st.session_state.input_key = "fixed_chat_input   # ← 고정된 문자열로!
+if "pending_input" not in st.session_state:
+    st.session_state.pending_input = ""
+
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -450,7 +458,10 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=f"chat_input_{st.session_state.input_key}"
+    key=st.session_state.input_key,           # ← 여기서 key를 동적으로 쓰되, 값은 항상 같게
+    value=st.session_state.pending_input,     # ← 이게 중요!
+    on_change=lambda: st.session_state.update(
+        {"pending_input": st.session_state[st.session_state.input_key]})
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -558,5 +569,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.input_key += 1
+    st.session_state.pending_message = ""
     st.rerun()
