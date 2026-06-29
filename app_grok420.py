@@ -459,8 +459,7 @@ with st.form(key=f"chat_form_{current}", clear_on_submit=True):   # ← 핵심
         label="📸 사진 첨부하기 (여러 장 선택 가능)",
         type=["jpg", "jpeg", "png"],
         accept_multiple_files=True,
-        label_visibility="visible",
-        key=f"uploader_{st.session_state.input_key}"
+        label_visibility="visible"
     )
     
     # 미리보기 (여러 장 지원)
