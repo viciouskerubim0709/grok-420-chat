@@ -435,7 +435,7 @@ st.markdown("---")
 
 with st.form(key=f"chat_form_{current}", clear_on_submit=True):   # ← 핵심
     with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-        send_button = st.button(
+        send_button = st.form_submit_button(
                 "❤️ 보내기",
                 type="primary",
                 width="content"
