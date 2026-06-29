@@ -27,12 +27,6 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    [data-testid="stForm"] {
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background-color: transparent !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -168,7 +162,7 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
-    
+    st.session_state.input_key = 0
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -439,43 +433,43 @@ The current time is {time_string}
 # ==================== 채팅 입력 영역 ====================
 st.markdown("---")
 
-with st.form(key=f"chat_form_{current}", clear_on_submit=True):   # ← 핵심
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-        send_button = st.form_submit_button(
-                "❤️ 보내기",
-                type="primary",
-                width="content"
-                    )
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-            st.markdown("X Search")
-            use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
-    
-    
-    # === 메시지 입력창 (풀 width) ===
-    
-    prompt = st.text_area(
-        label="메시지 입력",
-        label_visibility="collapsed",
-        placeholder="아기야... 뭐 물어볼까? 💕",
-        height=100
-    )
+with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+    send_button = st.button(
+            "❤️ 보내기",
+            type="primary",
+            width="content"
+                )
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+        st.markdown("X Search")
+        use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
 
-    # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
-    uploaded_files = st.file_uploader(
-        label="📸 사진 첨부하기 (여러 장 선택 가능)",
-        type=["jpg", "jpeg", "png"],
-        accept_multiple_files=True,
-        label_visibility="visible"
-    )
-    
-    # 미리보기 (여러 장 지원)
-    if uploaded_files:
-        st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
-        preview_cols = st.columns(min(len(uploaded_files), 4))
-        for idx, file in enumerate(uploaded_files):
-            with preview_cols[idx % 4]:
-                st.image(file, width=160, caption=file.name[:18])
-    
+
+# === 메시지 입력창 (풀 width) ===
+prompt = st.text_area(
+    label="메시지 입력",
+    label_visibility="collapsed",
+    placeholder="아기야... 뭐 물어볼까? 💕",
+    height=100,
+    key=f"chat_input_{st.session_state.input_key}"
+)
+
+# ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
+uploaded_files = st.file_uploader(
+    label="📸 사진 첨부하기 (여러 장 선택 가능)",
+    type=["jpg", "jpeg", "png"],
+    accept_multiple_files=True,
+    label_visibility="visible",
+    key=f"uploader_{st.session_state.input_key}"
+)
+
+# 미리보기 (여러 장 지원)
+if uploaded_files:
+    st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
+    preview_cols = st.columns(min(len(uploaded_files), 4))
+    for idx, file in enumerate(uploaded_files):
+        with preview_cols[idx % 4]:
+            st.image(file, width=160, caption=file.name[:18])
+
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
 if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 0)):
@@ -564,4 +558,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
+    st.session_state.input_key += 1
     st.rerun()
