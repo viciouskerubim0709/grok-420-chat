@@ -459,9 +459,7 @@ prompt = st.text_area(
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
     key=st.session_state.input_key,           # ← 여기서 key를 동적으로 쓰되, 값은 항상 같게
-    value=st.session_state.pending_input,     # ← 이게 중요!
-    on_change=lambda: st.session_state.update(
-        {"pending_input": st.session_state[st.session_state.input_key]})
+    value=st.session_state.pending_input     # ← 이게 중요!
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -569,5 +567,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.pending_message = ""
+    st.session_state.pending_input = ""
     st.rerun()
