@@ -27,6 +27,12 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    [data-testid="stForm"] {
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
