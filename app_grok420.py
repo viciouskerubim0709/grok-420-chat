@@ -166,7 +166,9 @@ if "chats_loaded" not in st.session_state:
 
 # ====================== 입력 시 key 초기화 방지======================
 if "input_key" not in st.session_state:
-    st.session_state.input_key = ""   # ← 고정된 문자열로!
+    st.session_state.input_key = "fixed_chat_input"   # ← 고정된 문자열로!
+if "pending_input" not in st.session_state:
+    st.session_state.pending_input = ""
 
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
@@ -455,7 +457,8 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key="input_key",           # ← 고정 문자열 (session_state key가 됨)
+    key=st.session_state.input_key,           # ← 여기서 key를 동적으로 쓰되, 값은 항상 같게
+    value=st.session_state.pending_input     # ← 이게 중요!
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -563,5 +566,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.input_key = ""
+    st.session_state.pending_input = ""
     st.rerun()
