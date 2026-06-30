@@ -165,6 +165,8 @@ if "chats_loaded" not in st.session_state:
 
 if "chat_input" not in st.session_state:
     st.session_state.chat_input = ""
+if "image_input" not in st.session_state:
+    st.session_state.image_input = ""
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -461,7 +463,7 @@ uploaded_files = st.file_uploader(
     type=["jpg", "jpeg", "png"],
     accept_multiple_files=True,
     label_visibility="visible",
-    key=f"uploader_{st.session_state.input_key}"
+    key="image_input"
 )
 
 # 미리보기 (여러 장 지원)
@@ -503,6 +505,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 먼저 비우기
     st.session_state.chat_input = ""
+    st.session_state.image_input = ""
     
     # 3. 화면에 바로 보여주기
     with st.chat_message("user"):
