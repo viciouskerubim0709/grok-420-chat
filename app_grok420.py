@@ -27,11 +27,17 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    #모바일 대응
+    #모바일 화면
     @media (max-width: 768px) {
         .block-container {
-            padding: 0.5rem;
-        }
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+    }
+    #가로 스크롤 방지 및 콘텐츠 넘침 숨김
+    section[tabindex="0"] {
+        overflow-x: hidden;
     }
     </style>
 """, unsafe_allow_html=True)
