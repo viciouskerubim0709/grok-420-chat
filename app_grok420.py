@@ -27,6 +27,12 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    #모바일 대응
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 0.5rem;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
