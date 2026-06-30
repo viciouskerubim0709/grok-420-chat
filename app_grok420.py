@@ -163,8 +163,8 @@ if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
 
-if "text_input_key" not in st.session_state:
-    st.session_state.text_input_key = 0
+if "user_input" not in st.session_state:
+    st.session_state.user_input = ""
 
 if "image_uploader_key" not in st.session_state:
     st.session_state.image_uploader_key = 0
@@ -456,7 +456,8 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=f"chat_input_{st.session_state.text_input_key}"
+    value=st.session_state.user_input,
+    key="main_chat_input"
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -564,6 +565,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.text_input_key += 1
+    st.session_state.user_input = ""
     st.session_state.image_uploader_key += 1
     st.rerun()
