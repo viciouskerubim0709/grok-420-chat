@@ -524,7 +524,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         if image_urls:
             for url in image_urls:
                 st.image(url, width=300)
-    st.session_state.clear_input = True
+                
     
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
@@ -571,6 +571,9 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             st.markdown(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
+                
+    # 입력창 초기화
+    st.session_state.clear_input = True
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
