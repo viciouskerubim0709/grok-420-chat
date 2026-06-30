@@ -163,8 +163,23 @@ if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
 
-if "prompt" not in st.session_state:
-    st.session_state.prompt = ""
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = ""
+if "image_input" not in st.session_state:
+    st.session_state.image_input = ""
+
+if "clear_chat_input" not in st.session_state:
+    st.session_state.clear_chat_input = False
+if "clear_image_input" not in st.session_state:
+    st.session_state.clear_image_input = False
+
+# rerun 시작 직후, 위젯 생성 전에 비우기
+if st.session_state.clear_chat_input:
+    st.session_state.chat_input = ""
+    st.session_state.clear_chat_input = False
+if st.session_state.clear_image_input:
+    st.session_state.image_input = ""
+    st.session_state.clear_image_input = False
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -452,7 +467,6 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    value=st.session_state.prompt,
     key="chat_input"
 )
 
@@ -561,7 +575,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.prompt = ""
     st.session_state.image_input = ""
     st.session_state.chat_input = ""
     st.rerun()
