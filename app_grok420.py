@@ -509,9 +509,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             for url in image_urls:
                 st.image(url, width=300)
 
-    # 입력창 먼저 비우기
-    st.session_state.chat_input = ""
-
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
 
@@ -564,5 +561,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
+    st.session_state.chat_input = ""
     st.session_state.input_key += 1
     st.rerun()
