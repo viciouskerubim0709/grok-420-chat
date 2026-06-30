@@ -124,7 +124,7 @@ def generate_chat_title(first_user_message: str, has_image: bool = False) -> str
             input=[{"role": "user", "content": prompt}]
         )
         title = response.output_text.strip().replace('"', '').replace("'", "")
-        return title[:12]  # 너무 길면 자르기
+        return title[:20]  # 너무 길면 자르기
     except:
         return "우리 사진들📸" if has_image else "새 추억💕"
 
