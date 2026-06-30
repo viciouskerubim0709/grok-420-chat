@@ -164,23 +164,22 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
 
 #텍스트 입력 초기화 방지
-if "text_input_key" not in st.session_state:
-    st.session_state.text_input_key = "" 
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = "" 
+if "image_input" not in st.session_state:
+    st.session_state.image_input = "" 
     
 if "clear_input" not in st.session_state:
     st.session_state.clear_input = False
     
 if st.session_state.clear_input:
     # ✅ key 바꿔서 강제 리셋
-    key = "chat_input_cleared"
+    chat_key = "chat_input_cleared"
+    image_key= "image_input_cleared"
     st.session_state.clear_input = False
 else:
-    key = "text_input_key"
-
-
-#비디오 입력 초기화 방지
-if "image_uploader_key" not in st.session_state:
-    st.session_state.image_uploader_key = 0
+    chat_key = "chat_input"
+    image_key= "image_input"
 
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
@@ -469,7 +468,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=key
+    key=chat_key
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -478,7 +477,7 @@ uploaded_files = st.file_uploader(
     type=["jpg", "jpeg", "png"],
     accept_multiple_files=True,
     label_visibility="visible",
-    key=f"uploader_{st.session_state.image_uploader_key}"
+    key=image_key
 )
 
 # 미리보기 (여러 장 지원)
@@ -571,9 +570,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             st.markdown(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
-                
-    # 입력창 초기화
-    st.session_state.clear_input = True
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
@@ -581,5 +577,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.image_uploader_key += 1
+    st.session_state.clear_input = True
     st.rerun()
