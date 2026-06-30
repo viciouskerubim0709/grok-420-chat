@@ -163,9 +163,22 @@ if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
 
+#텍스트 입력 초기화 방지
 if "text_input_key" not in st.session_state:
-    st.session_state.text_input_key = ""
+    st.session_state.text_input_key = "" 
+    
+if "clear_input" not in st.session_state:
+    st.session_state.clear_input = False
+    
+if st.session_state.clear_input:
+    # ✅ key 바꿔서 강제 리셋
+    key = "chat_input_cleared"
+    st.session_state.clear_input = False
+else:
+    key = "text_input_key"
 
+
+#비디오 입력 초기화 방지
 if "image_uploader_key" not in st.session_state:
     st.session_state.image_uploader_key = 0
 
@@ -456,7 +469,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key="text_input_key"
+    key=key
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -511,8 +524,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         if image_urls:
             for url in image_urls:
                 st.image(url, width=300)
-
-    st.session_state.text_input_key = ""
+    st.session_state.clear_input = True
     
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
