@@ -168,19 +168,6 @@ if "chat_input" not in st.session_state:
 if "image_input" not in st.session_state:
     st.session_state.image_input = ""
 
-if "clear_chat_input" not in st.session_state:
-    st.session_state.clear_chat_input = False
-if "clear_image_input" not in st.session_state:
-    st.session_state.clear_image_input = False
-
-# rerun 시작 직후, 위젯 생성 전에 비우기
-if st.session_state.clear_chat_input:
-    st.session_state.chat_input = ""
-    st.session_state.clear_chat_input = False
-if st.session_state.clear_image_input:
-    st.session_state.image_input = ""
-    st.session_state.clear_image_input = False
-
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
         st.session_state.current_session = list(st.session_state.chats.keys())[0]
