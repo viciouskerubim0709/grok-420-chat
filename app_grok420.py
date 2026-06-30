@@ -462,7 +462,7 @@ uploaded_files = st.file_uploader(
     type=["jpg", "jpeg", "png"],
     accept_multiple_files=True,
     label_visibility="visible",
-    key=f"uploader_{st.session_state.input_key}"
+    key="image_input"
 )
 
 # 미리보기 (여러 장 지원)
