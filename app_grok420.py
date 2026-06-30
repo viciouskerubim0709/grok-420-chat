@@ -162,7 +162,9 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
-    st.session_state.input_key = 0
+
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = ""
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -450,7 +452,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=f"chat_input_{st.session_state.input_key}"
+    key="chat_input"
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -499,6 +501,9 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     st.session_state.chats[current]["messages"].append(user_message)
 
+    # 입력창 먼저 비우기
+    st.session_state.chat_input = ""
+    
     # 3. 화면에 바로 보여주기
     with st.chat_message("user"):
         st.write(user_prompt)
@@ -557,6 +562,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     generate_title_if_needed(current)
     save_chat(current)
 
-    # 입력창 초기화
-    st.session_state.input_key += 1
+    # 재실행
     st.rerun()
