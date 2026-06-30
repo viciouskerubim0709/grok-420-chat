@@ -162,11 +162,10 @@ def delete_chat_from_db(chat_id: str):
 if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
+    st.session_state.input_key = 0    #이미지 업로드에만 해당
 
 if "chat_input" not in st.session_state:
-    st.session_state.chat_input = ""
-if "image_input" not in st.session_state:
-    st.session_state.image_input = ""
+    st.session_state.chat_input = ""    #채팅 메시지에만 해당
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
@@ -463,7 +462,7 @@ uploaded_files = st.file_uploader(
     type=["jpg", "jpeg", "png"],
     accept_multiple_files=True,
     label_visibility="visible",
-    key="image_input"
+    key=f"uploader_{st.session_state.input_key}"
 )
 
 # 미리보기 (여러 장 지원)
@@ -503,16 +502,15 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     st.session_state.chats[current]["messages"].append(user_message)
 
-    # 입력창 먼저 비우기
-    st.session_state.chat_input = ""
-    st.session_state.image_input = ""
-    
     # 3. 화면에 바로 보여주기
     with st.chat_message("user"):
         st.write(user_prompt)
         if image_urls:
             for url in image_urls:
                 st.image(url, width=300)
+
+    # 입력창 먼저 비우기
+    st.session_state.chat_input = ""
 
     # 4. Grok에게 보내기 위한 messages 구성 (다중 Vision 이미지 지원)
     api_messages = [SYSTEM_PROMPT]
@@ -565,5 +563,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     generate_title_if_needed(current)
     save_chat(current)
 
-    # 재실행
+    # 입력창 초기화
+    st.session_state.input_key += 1
     st.rerun()
