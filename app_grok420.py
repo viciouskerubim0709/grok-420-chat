@@ -164,9 +164,6 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
     st.session_state.input_key = 0
 
-if "input_key" not in st.session_state:
-    st.session_state.image_input_key = 0
-
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
         st.session_state.current_session = list(st.session_state.chats.keys())[0]
