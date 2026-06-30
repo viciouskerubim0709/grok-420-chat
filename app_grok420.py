@@ -166,20 +166,21 @@ if "chats_loaded" not in st.session_state:
 #텍스트 입력 초기화 방지
 if "chat_input" not in st.session_state:
     st.session_state.chat_input = "" 
-if "image_input" not in st.session_state:
-    st.session_state.image_input = "" 
     
 if "clear_input" not in st.session_state:
     st.session_state.clear_input = False
     
 if st.session_state.clear_input:
     # ✅ key 바꿔서 강제 리셋
-    chat_key = "chat_input_cleared"
-    image_key= "image_input_cleared"
+    key = "chat_input_cleared"
     st.session_state.clear_input = False
 else:
-    chat_key = "chat_input"
-    image_key= "image_input"
+    key = "chat_input"
+
+
+#비디오 입력 초기화 방지
+if "image_input" not in st.session_state:
+    st.session_state.image_input = 0
 
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
@@ -468,7 +469,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=chat_key
+    key=key
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -477,7 +478,7 @@ uploaded_files = st.file_uploader(
     type=["jpg", "jpeg", "png"],
     accept_multiple_files=True,
     label_visibility="visible",
-    key=image_key
+    key=f"uploader_{st.session_state.image_input}"
 )
 
 # 미리보기 (여러 장 지원)
@@ -578,4 +579,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 초기화
     st.session_state.clear_input = True
+    st.session_state.image_input += 1
     st.rerun()
