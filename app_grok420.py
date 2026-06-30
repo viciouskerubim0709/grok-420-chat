@@ -562,4 +562,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 초기화
     st.session_state.prompt = ""
+    st.session_state.image_input = ""
+    st.session_state.chat_input = ""
     st.rerun()
