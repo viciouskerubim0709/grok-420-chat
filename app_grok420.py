@@ -165,9 +165,6 @@ if "chats_loaded" not in st.session_state:
 
 
 #텍스트 입력 초기화 방지
-if "chat_input" not in st.session_state:
-    st.session_state.image_input = ""
-
 def clear_input_function():
     if st.session_state.clear_input:
         # ✅ key 바꿔서 강제 리셋
