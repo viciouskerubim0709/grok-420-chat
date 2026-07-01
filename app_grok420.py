@@ -165,21 +165,7 @@ if "chats_loaded" not in st.session_state:
 
 
 #텍스트 입력 초기화 방지
-def clear_input_function():
-    if st.session_state.clear_input:
-        # ✅ key 바꿔서 강제 리셋
-        key = "chat_input_cleared"
-        st.session_state.clear_input = False
-        return key
-    else:
-        key = "chat_input"
-        return key
-
-if "clear_input" not in st.session_state:
-    st.session_state.clear_input = False
-    key = clear_input_function()
-else:
-    key = clear_input_function()
+key = "chat_input"
 
 
 #비디오 입력 초기화 방지
@@ -582,7 +568,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.clear_input = True
-    key = clear_input_function()
+    key = "chat_input_cleared"
     st.session_state.image_input += 1
     st.rerun()
