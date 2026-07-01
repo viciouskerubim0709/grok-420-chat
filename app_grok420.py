@@ -181,8 +181,6 @@ if "clear_input" not in st.session_state:
 else:
     key = clear_input_function()
 
-if "chat_input" not in st.session_state:
-    st.session_state.chat_input = 0
 
 #비디오 입력 초기화 방지
 if "image_input" not in st.session_state:
