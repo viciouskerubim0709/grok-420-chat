@@ -569,5 +569,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 초기화
     key = "chat_input_cleared"
+    st.session_state.chat_input = ""
     st.session_state.image_input += 1
     st.rerun()
