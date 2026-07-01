@@ -177,7 +177,7 @@ def clear_input_function():
 
 if "clear_input" not in st.session_state:
     st.session_state.clear_input = False
-key = clear_input_function()
+    key = clear_input_function()
 
 
 #비디오 입력 초기화 방지
