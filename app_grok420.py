@@ -165,6 +165,11 @@ if "chats_loaded" not in st.session_state:
 
 
 #텍스트 입력 초기화 방지
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = 0
+else:
+    st.session_state.chat_input += 1
+
 key = "chat_input"
 
 
@@ -569,6 +574,5 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 초기화
     key = "chat_input_cleared"
-    st.session_state.chat_input_cleared = ""
     st.session_state.image_input += 1
     st.rerun()
