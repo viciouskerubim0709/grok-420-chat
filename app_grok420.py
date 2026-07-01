@@ -580,6 +580,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    clear_input_function()
+    key = clear_input_function()
     st.session_state.image_input += 1
     st.rerun()
