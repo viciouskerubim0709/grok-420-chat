@@ -181,6 +181,10 @@ if "clear_input" not in st.session_state:
 else:
     key = clear_input_function()
 
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = ""
+
+
 
 #비디오 입력 초기화 방지
 if "image_input" not in st.session_state:
@@ -582,6 +586,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
+    st.session_state.chat_input = ""
     st.session_state.clear_input = True
     key = clear_input_function()
     st.session_state.image_input += 1
