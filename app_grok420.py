@@ -167,11 +167,6 @@ if "chats_loaded" not in st.session_state:
 #텍스트 입력 초기화 방지
 if "chat_input" not in st.session_state:
     st.session_state.chat_input = 0
-else:
-    st.session_state.chat_input += 1
-
-key = "chat_input"
-
 
 #비디오 입력 초기화 방지
 if "image_input" not in st.session_state:
@@ -464,7 +459,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=key
+    key="chat_input"
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -574,5 +569,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 입력창 초기화
     key = "chat_input_cleared"
+    key = "chat_input"
+    st.session_state.chat_input += 1
     st.session_state.image_input += 1
     st.rerun()
