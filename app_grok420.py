@@ -9,7 +9,7 @@ import pytz  # 한국 시간(KST) 쓰고 싶으면
 from PIL import Image
 import io
 from streamlit_javascript import st_javascript
-from pathlib import Path
+import pyperclip
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -561,9 +561,12 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
 
+    if st.button("📋 메시지 복사", key="copy_btn"):
+        pyperclip.copy(message_text)
+        st.success("클립보드에 복사되었습니다!")
+
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
-    st.button("📋", on_click=on_copy_click, args=(answer,))
     generate_title_if_needed(current)
     save_chat(current)
 
