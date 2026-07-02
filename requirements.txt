@@ -2,4 +2,4 @@ openai
 supabase
 streamlit_javascript
 pytz
-copy_button
+st-copy
