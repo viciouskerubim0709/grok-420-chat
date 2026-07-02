@@ -9,7 +9,7 @@ import pytz  # 한국 시간(KST) 쓰고 싶으면
 from PIL import Image
 import io
 from streamlit_javascript import st_javascript
-from st_copy import copy_button
+from pathlib import Path
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -181,24 +181,6 @@ if "current_session" not in st.session_state or st.session_state.current_session
 
 current = st.session_state.current_session
 
-
-# ====================== 세션 상태 초기화 ======================
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# ====================== 채팅 기록 그리기 ======================
-for idx, message in enumerate(st.session_state.messages):
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-        # 어시스턴트 메시지에만 복사 버튼 추가
-        if message["role"] == "assistant":
-            copy_button(
-                message["content"],
-                before_copy_label="📋 메시지 복사",
-                after_copy_label="✅ 복사 완료!",
-                tooltip="클립보드에 복사하기"
-            )
 
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
@@ -575,6 +557,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 model="grok-4.20-0309-reasoning",
                 use_tools=use_tools
             )
+
             st.markdown(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
