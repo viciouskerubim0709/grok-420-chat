@@ -182,6 +182,24 @@ if "current_session" not in st.session_state or st.session_state.current_session
 current = st.session_state.current_session
 
 
+# ====================== 세션 상태 초기화 ======================
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# ====================== 채팅 기록 그리기 ======================
+for idx, message in enumerate(st.session_state.messages):
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+        # 어시스턴트 메시지에만 복사 버튼 추가
+        if message["role"] == "assistant":
+            copy_button(
+                message["content"],
+                before_copy_label="📋 메시지 복사",
+                after_copy_label="✅ 복사 완료!",
+                tooltip="클립보드에 복사하기"
+            )
+
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
     """Supabase Storage에 이미지를 업로드하고 Public URL을 반환"""
@@ -560,14 +578,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             st.markdown(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
-
-    # === 여기서부터 복사 버튼 ===
-        copy_button(
-            answer,
-            before_copy_label="📋",
-            after_copy_label="✅ 복사 완료!",
-            tooltip="클립보드에 복사하기"
-        )
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
