@@ -10,6 +10,7 @@ from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
+from st_copy import copy_button
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -559,6 +560,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             )
 
             st.markdown(answer)
+            copy_button(answer, key='copy_key')
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
 
