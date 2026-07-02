@@ -10,6 +10,7 @@ from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
+from st_copy import copy_button
 
 
 # ====================== 전역 설정 ======================
