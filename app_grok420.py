@@ -10,6 +10,8 @@ from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
+from st_copy import copy_button
+
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -396,6 +398,22 @@ st.markdown("""
     </style>
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
+
+
+
+# ====================== 채팅 기록 그리기 ======================
+for idx, message in enumerate(st.session_state.messages):
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+        # 어시스턴트 메시지에만 복사 버튼 추가
+        if message["role"] == "assistant":
+            copy_button(
+                message["content"],
+                before_copy_label="📋 메시지 복사",
+                after_copy_label="✅ 복사 완료!",
+                tooltip="클립보드에 복사하기"
+            )
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for msg in st.session_state.chats[current]["messages"]:
