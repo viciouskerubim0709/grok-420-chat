@@ -9,7 +9,7 @@ import pytz  # 한국 시간(KST) 쓰고 싶으면
 from PIL import Image
 import io
 from streamlit_javascript import st_javascript
-from pathlib import Path
+import clipboard
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -165,7 +165,6 @@ if "chats_loaded" not in st.session_state:
 
 
 #입력 초기화 방지
-
 if "text_input" not in st.session_state:
     st.session_state.text_input = 0
 
@@ -180,6 +179,18 @@ if "current_session" not in st.session_state or st.session_state.current_session
         create_default_chat()
 
 current = st.session_state.current_session
+
+
+# ====================== 채팅 메시지 클립보드 버튼 ======================
+def on_copy_click(text):
+    st.session_state.copied.append(text)
+    clipboard.copy(text)
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+if "copied" not in st.session_state: 
+    st.session_state.copied = []
 
 
 # ==================== 이미지 업로드 함수 ====================
@@ -397,6 +408,17 @@ st.markdown("""
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
 
+
+# ====================== 채팅 기록 그리기 ======================
+for idx, message in enumerate(st.session_state.messages):
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+        # 어시스턴트 메시지에만 복사 버튼 추가
+        if message["role"] == "assistant":
+            st.button("📋", on_click=on_copy_click, args=(message["content"],))
+
+
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for msg in st.session_state.chats[current]["messages"]:
     with st.chat_message(msg["role"]):
@@ -566,7 +588,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
     save_chat(current)
-
+    
     # 입력창 초기화
     st.session_state.text_input += 1
     st.session_state.image_input += 1
