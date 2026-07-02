@@ -165,6 +165,10 @@ if "chats_loaded" not in st.session_state:
     load_all_chats()
     st.session_state.chats_loaded = True
 
+# ====================== 세션 상태 초기화 ======================
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 
 #입력 초기화 방지
 
