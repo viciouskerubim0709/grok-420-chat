@@ -164,29 +164,11 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
 
 
-#텍스트 입력 초기화 방지
-def clear_input_function():
-    if st.session_state.clear_input:
-        # ✅ key 바꿔서 강제 리셋
-        key = "chat_input_cleared"
-        st.session_state.clear_input = False
-        return key
-    else:
-        key = "chat_input"
-        return key
-        
-if "clear_input" not in st.session_state:
-    st.session_state.clear_input = False
-    key = clear_input_function()
-else:
-    key = clear_input_function()
+#입력 초기화 방지
 
-if "chat_input" not in st.session_state:
-    st.session_state.chat_input = ""
+if "text_input" not in st.session_state:
+    st.session_state.text_input = 0
 
-
-
-#비디오 입력 초기화 방지
 if "image_input" not in st.session_state:
     st.session_state.image_input = 0
 
@@ -477,7 +459,7 @@ prompt = st.text_area(
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
     height=100,
-    key=key
+    key=f"chat_input_{st.session_state.text_input}"
 )
 
 # ==================== 사진 첨부 (여러 장 지원으로 변경!) ====================
@@ -586,7 +568,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     save_chat(current)
 
     # 입력창 초기화
-    st.session_state.clear_input = True
-    key = clear_input_function()
+    st.session_state.text_input += 1
     st.session_state.image_input += 1
     st.rerun()
