@@ -562,7 +562,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 st.info(f"Tool 호출됨: {tool_calls}")
 
     if st.button("📋 메시지 복사", key="copy_btn"):
-        pyperclip.copy(message_text)
+        pyperclip.copy(answer)
         st.success("클립보드에 복사되었습니다!")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
