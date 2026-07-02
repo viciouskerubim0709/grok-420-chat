@@ -564,6 +564,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
+    copy_button(answer, key="copy")
     generate_title_if_needed(current)
     save_chat(current)
 
