@@ -418,7 +418,8 @@ for idx, message in enumerate(st.session_state.messages):
                 after_copy_label="✅ 복사 완료!",
                 tooltip="클립보드에 복사하기",
                 key=f"copy_btn_{idx}"
-                
+            )
+            
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for msg in st.session_state.chats[current]["messages"]:
