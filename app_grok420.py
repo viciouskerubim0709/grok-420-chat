@@ -560,9 +560,9 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             )
 
             st.markdown(answer)
-            copy_button(answer, icon=st)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
+            st.button("📋", on_click=on_copy_click, args=(answer))
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
