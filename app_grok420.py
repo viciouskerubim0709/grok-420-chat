@@ -560,7 +560,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
             )
 
             st.markdown(answer)
-            copy_button(answer, key='copy_key')
+            copy_button(answer, icon=st)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
 
