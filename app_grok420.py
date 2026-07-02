@@ -588,6 +588,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
     save_chat(current)
+    st.button("📋", on_click=on_copy_click, args=(answer,))
     
     # 입력창 초기화
     st.session_state.text_input += 1
