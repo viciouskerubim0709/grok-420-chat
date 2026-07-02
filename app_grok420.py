@@ -10,6 +10,7 @@ from PIL import Image
 import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
+from st_copy import copy_button
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -405,36 +406,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-
-# ====================== 기존 채팅 기록 + 복사 버튼 ======================
+# ====================== 채팅 기록 + 복사 버튼 ======================
 for idx, message in enumerate(st.session_state.messages):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
         if message["role"] == "assistant":
-            # === 복사 버튼 (여기에 넣어야 함!) ===
-            if st.button("📋 메시지 복사", key=f"copy_{idx}"):
-                text = message["content"]
-                # 백틱(`)과 $ 이스케이프 처리
-                escaped = text.replace("`", "\\`").replace("$", "\\$")
-                components.html(
-                    f"""
-                    <script>
-                    navigator.clipboard.writeText(`{escaped}`).then(() => {{
-                        const toast = document.createElement('div');
-                        toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#10b981;color:white;padding:14px 22px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:99999;font-size:14px;';
-                        toast.innerText = '✅ 클립보드에 복사되었습니다!';
-                        document.body.appendChild(toast);
-                        setTimeout(() => toast.remove(), 2200);
-                    }}).catch(() => {{
-                        alert('복사에 실패했습니다. 텍스트를 직접 선택해서 복사해주세요.');
-                    }});
-                    </script>
-                    """,
-                    height=0
-                )
-
-
+            copy_button(
+                message["content"],
+                before_copy_label="📋 메시지 복사",
+                after_copy_label="✅ 복사 완료!",
+                tooltip="클립보드에 복사하기",
+                key=f"copy_btn_{idx}"
+                
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for msg in st.session_state.chats[current]["messages"]:
