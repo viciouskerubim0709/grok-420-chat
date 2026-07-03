@@ -412,7 +412,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
             st.markdown(msg["content"])          # ← st.write 대신 markdown 추천!
             
             # 복사 버튼 (말풍선 안에 넣음)
-            copy_button(msg["content"], key=f"copy_{current}_{idx}")
+    copy_button(msg["content"], key=f"copy_{current}_{idx}")
             
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
