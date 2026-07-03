@@ -565,9 +565,9 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     # 6. 어시스턴트 답변 저장 및 DB 저장
 
     for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
-    with st.chat_message(msg["role"]):
-        if msg["role"] == "assistant":
-            copy_button(msg["content"], key=f"copy_btn_{idx}")
+        with st.chat_message(msg["role"]):
+            if msg["role"] == "assistant":
+                copy_button(msg["content"], key=f"copy_btn_{idx}")
     
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
