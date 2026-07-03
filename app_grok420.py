@@ -28,6 +28,9 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    .st-key-branch_generate > button {
+    border: none;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -416,7 +419,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                 copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!")
                 
                 # === 🌿 브랜치 버튼 추가 ===
-                if st.button("🌿", key=f"branch_{current}_{idx}", help="이 지점부터 새 대화 시작"):
+                if st.button("🌿", key="branch_generate", help="이 지점부터 새 대화 시작"):
                     # 1. 현재 메시지까지 복사 (idx 포함)
                     branch_messages = st.session_state.chats[current]["messages"][:idx + 1].copy()
             
