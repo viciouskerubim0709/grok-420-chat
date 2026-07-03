@@ -414,19 +414,6 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
             with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
                 # 복사 버튼 (말풍선 안에 넣음)
                 copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!")
-
-
-                st.markdown("""
-                    <style>
-                    div.stButton > button {
-                        border: none;
-                        /* 필요에 따라 배경색과 텍스트 색상도 변경 가능 */
-                        background-color: #007BFF;
-                        color: white;
-                    }
-                    </style>
-                """, unsafe_allow_html=True)
-
                 
                 # === 🌿 브랜치 버튼 추가 ===
                 if st.button("🌿", key=f"branch_{current}_{idx}", help="이 지점부터 새 대화 시작"):
