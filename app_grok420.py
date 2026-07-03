@@ -418,9 +418,8 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                 # === 🌿 브랜치 버튼 추가 ===
                 st.markdown("""
                     <style>
-                   div.stButton > button:first-child {
-                    border: none;
-                    box-shadow: none;
+                   div.stButton > button {
+                    border: none important!;
                 }
                     </style>
                 """, unsafe_allow_html=True)
