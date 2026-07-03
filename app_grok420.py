@@ -411,7 +411,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
             # === 어시스턴트 메시지 ===
             st.markdown(msg["content"])          # ← st.write 대신 markdown 추천!
 
-            with st.container(horizontal=True, vertical_alignment="center", gap=None):
+            with st.container(horizontal=True, gap=None):
                 # 복사 버튼 (말풍선 안에 넣음)
                 copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!")
                 
