@@ -300,6 +300,15 @@ with st.sidebar:
 
     st.divider()
 
+    # === 기존 채팅 리스트를 최신순으로 정렬해서 보여주기 ===
+    if st.session_state.chats:
+        # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
+        sorted_chats = sorted(
+            st.session_state.chats.items(),
+            key=lambda item: item[1].get("created_at", "1970-01-01T00:00:00"),
+            reverse=True
+        )
+
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
