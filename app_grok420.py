@@ -410,7 +410,7 @@ for msg in st.session_state.chats[current]["messages"]:
                 st.image(msg["image_url"], width=160)
         else:
             st.write(msg["content"])
-    copy_button(msg["content"], key=f"copy_{current}_{idx}")
+    copy_button(msg["content"])
 
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
