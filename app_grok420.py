@@ -182,12 +182,6 @@ if "current_session" not in st.session_state or st.session_state.current_session
 current = st.session_state.current_session
         
 
-for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
-    with st.chat_message(msg["role"]):
-        if msg["role"] == "assistant":
-            copy_button(msg["content"])
-
-
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
     """Supabase Storage에 이미지를 업로드하고 Public URL을 반환"""
@@ -416,7 +410,7 @@ for msg in st.session_state.chats[current]["messages"]:
                 st.image(msg["image_url"], width=160)
         else:
             st.write(msg["content"])
-
+    copy_button(msg["content"])
 
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
