@@ -182,11 +182,8 @@ if "current_session" not in st.session_state or st.session_state.current_session
 current = st.session_state.current_session
 
 
-
 for message in enumerate(st.session_state.chats[current]["messages"]):
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-        if message["role"] == "assistant":
+    if message["role"] == "assistant":
             copy_button(message["content"])
             
 
