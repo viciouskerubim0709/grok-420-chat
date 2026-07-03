@@ -564,7 +564,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 st.info(f"Tool 호출됨: {tool_calls}")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-    copy_button(answer)
+    copy_button('yeah')
     
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
