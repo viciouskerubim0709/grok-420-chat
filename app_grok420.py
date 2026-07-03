@@ -411,7 +411,7 @@ for msg in st.session_state.chats[current]["messages"]:
         else:
             st.markdown(msg["content"])
     with st.container(horizontal_alignment="right"):
-        copy_button(msg["content"], copied_label="복사 완료!", icon="st")
+        copy_button(msg["content"], tooltip="", copied_label="복사 완료!", icon="st")
 
 
 # ==================== SYSTEM PROMPT ====================
