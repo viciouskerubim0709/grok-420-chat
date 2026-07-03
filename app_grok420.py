@@ -310,7 +310,7 @@ with st.sidebar:
     
             with col1:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     st.session_state.current_session = chat_id
                     st.rerun()
     
