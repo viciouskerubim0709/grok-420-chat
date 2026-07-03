@@ -183,17 +183,12 @@ current = st.session_state.current_session
 
 
 
-for idx, message in enumerate(st.session_state.chats[current]["messages"]):
+for message in enumerate(st.session_state.chats[current]["messages"]):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
         if message["role"] == "assistant":
-            copy_button(
-                message["content"],
-                before_copy_label="📋 메시지 복사",
-                after_copy_label="✅ 복사 완료!",
-                tooltip="클립보드에 복사하기",
-                key=f"copy_btn_{idx}"          # ← 이거 추가!!
-            )
+            copy_button(message["content"])
+            
 
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
