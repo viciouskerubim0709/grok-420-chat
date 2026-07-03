@@ -426,7 +426,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                     # 3. 새 채팅 세션 생성
                     st.session_state.chats[new_branch_id] = {
                         "messages": branch_messages,
-                        "created_at": time.time(),
+                        "created_at": current_time,
                         "branched_from": current,
                         "title": f"브랜치 from {current["title"]}"
                     }
