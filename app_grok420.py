@@ -428,7 +428,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                         "messages": branch_messages,
                         "created_at": current_time,
                         "branched_from": current,
-                        "title": f"브랜치 from {current["title"]}"
+                        "title": f"브랜치 from {current}"
                     }
             
                     # 4. 새 채팅으로 전환
