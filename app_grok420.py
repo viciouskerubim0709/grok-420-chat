@@ -180,11 +180,6 @@ if "current_session" not in st.session_state or st.session_state.current_session
         create_default_chat()
 
 current = st.session_state.current_session
-
-
-for message in enumerate(st.session_state.chats[current]["messages"]):
-    if message["role"] == "assistant":
-            copy_button(message["content"])
             
 
 # ==================== 이미지 업로드 함수 ====================
@@ -415,6 +410,12 @@ for msg in st.session_state.chats[current]["messages"]:
                 st.image(msg["image_url"], width=160)
         else:
             st.write(msg["content"])
+
+
+for msg in st.session_state.chats[current]["messages"]:
+    with st.chat_message(msg["role"]):
+        if msg["role"] == "assistant":
+            copy_button(msg["content"])
 
 
 # ==================== SYSTEM PROMPT ====================
