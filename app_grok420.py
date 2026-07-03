@@ -28,6 +28,10 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    div.st-key-f"branch_{current}_{idx}" > button {
+        border: none;
+        box-shadow: none;
+    }
     </style>
 """, unsafe_allow_html=True)
 
