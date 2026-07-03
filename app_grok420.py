@@ -29,7 +29,8 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-branch_generate > button {
-    border: none;
+        background-color: transparent !important;
+        border: 0 !important;
     }
     </style>
 """, unsafe_allow_html=True)
