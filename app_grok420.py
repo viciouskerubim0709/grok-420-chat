@@ -289,15 +289,6 @@ if "client" not in st.session_state:
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
-    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
-        new_id = str(uuid.uuid4())
-        st.session_state.chats[new_id] = {"title": "새 추억💕",
-                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
-        st.session_state.current_session = new_id
-        save_chat(new_id)
-        st.rerun()
-
-    st.divider()
 
     # === 기존 채팅 리스트를 최신순으로 정렬해서 보여주기 ===
     if st.session_state.chats:
@@ -307,6 +298,17 @@ with st.sidebar:
             key=lambda item: item[1].get("created_at", "1970-01-01T00:00:00"),
             reverse=True
         )
+
+    
+    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
+        new_id = str(uuid.uuid4())
+        st.session_state.chats[new_id] = {"title": "새 추억💕",
+                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
+        st.session_state.current_session = new_id
+        save_chat(new_id)
+        st.rerun()
+
+    st.divider()
 
     # 대화 목록 + 삭제 버튼
     to_delete = None
