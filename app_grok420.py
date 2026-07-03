@@ -433,7 +433,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
             
                     # 4. 새 채팅으로 전환
                     st.session_state.current_session = new_branch_id
-                    save_chat(new_chat_id)
+                    save_chat(new_branch_id)
                     st.rerun()
 
 # ==================== SYSTEM PROMPT ====================
