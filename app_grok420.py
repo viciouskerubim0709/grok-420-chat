@@ -165,7 +165,7 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
 
 
-copy_button(st.session_state.chats[messages])
+copy_button(st.session_state.chats[current]["messages"])
 
 
 #입력 초기화 방지
