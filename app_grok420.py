@@ -165,8 +165,10 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
 
 
-#입력 초기화 방지
+copy_button(st.session_state.chats[messages])
 
+
+#입력 초기화 방지
 if "text_input" not in st.session_state:
     st.session_state.text_input = 0
 
@@ -564,7 +566,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 st.info(f"Tool 호출됨: {tool_calls}")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-    copy_button('yeah')
     
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
@@ -574,3 +575,4 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     st.session_state.text_input += 1
     st.session_state.image_input += 1
     st.rerun()
+    
