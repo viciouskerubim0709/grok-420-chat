@@ -289,17 +289,6 @@ if "client" not in st.session_state:
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
-
-    # === 기존 채팅 리스트를 최신순으로 정렬해서 보여주기 ===
-    if st.session_state.chats:
-        # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
-        sorted_chats = sorted(
-            st.session_state.chats.items(),
-            key=lambda item: item[1].get("created_at", "1970-01-01T00:00:00"),
-            reverse=True
-        )
-
-    
     if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
