@@ -415,7 +415,7 @@ for msg in st.session_state.chats[current]["messages"]:
 for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
     with st.chat_message(msg["role"]):
         if msg["role"] == "assistant":
-            copy_button(msg["content"])
+            copy_button(msg["content"], key=f"copy_btn_{idx}")
 
 
 # ==================== SYSTEM PROMPT ====================
