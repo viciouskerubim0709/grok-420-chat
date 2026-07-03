@@ -398,21 +398,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
-for msg in st.session_state.chats[current]["messages"]:
+for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
     with st.chat_message(msg["role"]):
         if msg["role"] == "user":
             st.write(msg.get("content", ""))
-            # 다중 이미지 지원
             if "image_urls" in msg and msg.get("image_urls"):
                 for url in msg["image_urls"]:
                     st.image(url, width=160)
-            elif "image_url" in msg:  # 이전 단일 이미지 호환
+            elif "image_url" in msg:
                 st.image(msg["image_url"], width=160)
         else:
-            st.markdown(msg["content"])
-    with st.container(horizontal_alignment="right"):
-        copy_button(msg["content"], tooltip="", copied_label="복사 완료!", icon="st")
+            # === 어시스턴트 메시지 ===
+            st.markdown(msg["content"])          # ← st.write 대신 markdown 추천!
 
+            # 복사 버튼 (말풍선 안에 넣음)
+            copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!")
 
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
