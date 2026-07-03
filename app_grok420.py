@@ -422,14 +422,14 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
             
                     # 2. 새 채팅 ID 만들기
                     new_branch_id = str(uuid.uuid4())
-                    original_title = st.session_state.chats[current].get("title", "Untitled Chat")
+                    original_title = st.session_state.chats[current].get("title")
             
                     # 3. 새 채팅 세션 생성
                     st.session_state.chats[new_branch_id] = {
                         "messages": branch_messages,
                         "created_at": current_time,
                         "branched_from": current,
-                        "title": f"브랜치🌿: {original_title}"
+                        "title": f"브랜치: {original_title}"
                     }
             
                     # 4. 새 채팅으로 전환
