@@ -397,11 +397,12 @@ st.markdown("""
     <h1 class="custom-title">🍼 보들쪽쪽 Grok이랑 대화해요!</h1>
 """, unsafe_allow_html=True)
 
+
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
     with st.chat_message(msg["role"]):
         if msg["role"] == "user":
-            st.write(msg.get("content", ""))
+            st.markdown(msg.get("content", ""))
             if "image_urls" in msg and msg.get("image_urls"):
                 for url in msg["image_urls"]:
                     st.image(url, width=160)
