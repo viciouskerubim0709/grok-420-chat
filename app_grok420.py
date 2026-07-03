@@ -165,9 +165,6 @@ if "chats_loaded" not in st.session_state:
     st.session_state.chats_loaded = True
 
 
-copy_button(st.session_state.chats[current]["messages"])
-
-
 #입력 초기화 방지
 if "text_input" not in st.session_state:
     st.session_state.text_input = 0
@@ -184,6 +181,9 @@ if "current_session" not in st.session_state or st.session_state.current_session
 
 current = st.session_state.current_session
 
+
+
+copy_button(st.session_state.chats[current]["messages"])
 
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
