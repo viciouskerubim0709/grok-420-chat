@@ -412,7 +412,7 @@ for msg in st.session_state.chats[current]["messages"]:
             st.write(msg["content"])
 
 
-for msg in st.session_state.chats[current]["messages"]:
+for msg in enumerate(st.session_state.chats[current]["messages"]):
     with st.chat_message(msg["role"]):
         if msg["role"] == "assistant":
             copy_button(msg["content"])
