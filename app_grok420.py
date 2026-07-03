@@ -19,6 +19,7 @@ st.markdown("""
     .stTextArea textarea {
         font-size: 15px !important;
     }
+    div.stButton {text-align: center !important;}
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
