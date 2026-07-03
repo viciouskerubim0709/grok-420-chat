@@ -408,12 +408,10 @@ for msg in st.session_state.chats[current]["messages"]:
                     st.image(url, width=160)
             elif "image_url" in msg:  # 이전 단일 이미지 호환
                 st.image(msg["image_url"], width=160)
-            with st.container(horizontal_alignment="right"):
-                copy_button(msg["content"])
         else:
             st.write(msg["content"])
-            with st.container(horizontal_alignment="right"):
-                copy_button(msg["content"])
+    with st.container(horizontal_alignment="right"):
+        copy_button(msg["content"])
 
 
 # ==================== SYSTEM PROMPT ====================
