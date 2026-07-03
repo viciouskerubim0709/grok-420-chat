@@ -12,7 +12,6 @@ from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
 
-copy_button('Hello, Streamlit!') 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
@@ -565,6 +564,8 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 st.info(f"Tool 호출됨: {tool_calls}")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
+    copy_button(answer)
+    
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
     save_chat(current)
