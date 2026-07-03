@@ -409,9 +409,9 @@ for msg in st.session_state.chats[current]["messages"]:
             elif "image_url" in msg:  # 이전 단일 이미지 호환
                 st.image(msg["image_url"], width=160)
         else:
-            st.write(msg["content"])
+            st.markdown(msg["content"])
     with st.container(horizontal_alignment="right"):
-        copy_button(msg["content"])
+        copy_button(msg["content"], icon="st")
 
 
 # ==================== SYSTEM PROMPT ====================
