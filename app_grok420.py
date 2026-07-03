@@ -180,7 +180,13 @@ if "current_session" not in st.session_state or st.session_state.current_session
         create_default_chat()
 
 current = st.session_state.current_session
-            
+        
+
+for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
+    with st.chat_message(msg["role"]):
+        if msg["role"] == "assistant":
+            copy_button(msg["content"])
+
 
 # ==================== 이미지 업로드 함수 ====================
 def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str | None:
@@ -563,12 +569,6 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 st.info(f"Tool 호출됨: {tool_calls}")
 
     # 6. 어시스턴트 답변 저장 및 DB 저장
-
-    for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
-        with st.chat_message(msg["role"]):
-            if msg["role"] == "assistant":
-                copy_button(msg["content"], key=f"copy_btn_{idx}")
-    
     st.session_state.chats[current]["messages"].append({"role": "assistant", "content": answer})
     generate_title_if_needed(current)
     save_chat(current)
