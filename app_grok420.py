@@ -28,7 +28,8 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .st-key-branch-button > button {
+    div[data-testid*="branch_button"] > div > button,
+    [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
     }
@@ -419,10 +420,9 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                 # 복사 버튼 (말풍선 안에 넣음)
                 copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!")
                 
-                # === 🌿 브랜치 버튼 추가 ===
-                st.markdown('<div class="branch-button">', unsafe_allow_html=True)                
+                # === 🌿 브랜치 버튼 추가 ===            
                 branch_button = st.button("🌿", key=f"branch_{current}_{idx}", help="이 지점부터 새 대화 시작")
-                st.markdown("</div>", unsafe_allow_html=True)
+
                 
                 if branch_button:
                     # 1. 현재 메시지까지 복사 (idx 포함)
