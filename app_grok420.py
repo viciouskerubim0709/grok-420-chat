@@ -70,9 +70,7 @@ def load_all_chats():
 
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
-                "messages": messages,
-                "created_at": row["created_at"],
-                "updated_at": row["updated_at"]
+                "messages": messages
             }
 
         if not st.session_state.chats:
@@ -294,8 +292,7 @@ with st.sidebar:
     if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
-                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}],
-                                          "created_at": current_time.isoformat()}
+                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
         st.session_state.current_session = new_id
         save_chat(new_id)
         st.rerun()
@@ -309,7 +306,7 @@ with st.sidebar:
         is_current = (chat_id == current)
 
         col1, col2 = st.columns([7.5, 1.2])
-        
+
         with col1:
             label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
             if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
