@@ -303,7 +303,7 @@ with st.sidebar:
     if st.session_state.chats:
             # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
             sorted_chats = sorted(
-                st.session_state.chats["created_at"],
+                st.session_state.chats["updated_at"],
                 reverse=True
             )
         
