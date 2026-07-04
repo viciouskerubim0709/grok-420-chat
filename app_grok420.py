@@ -71,6 +71,8 @@ def load_all_chats():
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
                 "messages": messages
+                "created_at": row["created_at"]
+                "updated_at": row["updated_at"]
             }
 
         if not st.session_state.chats:
@@ -292,7 +294,8 @@ with st.sidebar:
     if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
-                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
+                                          "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}],
+                                          "created_at": datetime.datetime.now().isoformat()}
         st.session_state.current_session = new_id
         save_chat(new_id)
         st.rerun()
@@ -380,11 +383,6 @@ with st.sidebar:
             mime="application/json",
             use_container_width=True
         )
-
-
-    st.sidebar.markdown("### 🔍 현재 chats 구조 확인")
-    # 1. 전체 구조를 예쁘게 보여줌 (가장 추천)
-    st.sidebar.json(st.session_state.chats)
 
 
 # ====================== 타이틀 꾸미기 ======================
