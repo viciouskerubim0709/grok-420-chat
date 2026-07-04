@@ -24,7 +24,7 @@ st.markdown("""
         background: #ffafa3 !important;
     }
     div[data-testid="stPopoverBody"] {
-        max-width: 250px !important;
+        max-width: 200px !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
