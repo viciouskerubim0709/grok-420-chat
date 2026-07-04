@@ -301,6 +301,12 @@ with st.sidebar:
 
     st.divider()
 
+    sorted_chats = sorted(
+    st.session_state.chats.items(),
+    key=lambda item: item[1].get("created_at", "1970-01-01 00:00:00"),
+    reverse=True
+    )
+
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
