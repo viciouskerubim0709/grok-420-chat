@@ -70,9 +70,7 @@ def load_all_chats():
 
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
-                "messages": messages,
-                "created_at": row["created_at"],
-                "updated_at": row["updated_at"]
+                "messages": messages
             }
 
         if not st.session_state.chats:
@@ -107,7 +105,7 @@ def save_chat(chat_id: str):
             "id": chat_id,
             "title": chat.get("title", "새 추억💕"),
             "messages": chat["messages"],
-            "updated_at": current_time   # 또는 "now()" (Supabase가 지원하면)
+            "updated_at": datetime.utcnow().isoformat()   # 또는 "now()" (Supabase가 지원하면)
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
