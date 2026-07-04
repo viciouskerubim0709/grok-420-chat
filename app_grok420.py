@@ -71,7 +71,8 @@ def load_all_chats():
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
                 "messages": messages,
-                "created_at": row["created_at"]
+                "created_at": row["created_at"],
+                "updated_at": row["updated_at"]
             }
 
         if not st.session_state.chats:
@@ -294,7 +295,8 @@ with st.sidebar:
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
                                           "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}],
-                                          "created_at": current_time.isoformat()}
+                                          "created_at": current_time.isoformat(),
+                                          "updated_at": current_time.isoformat()}
         st.session_state.current_session = new_id
         save_chat(new_id)
         st.rerun()
@@ -303,7 +305,7 @@ with st.sidebar:
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
-    key=lambda item: item[1].get("created_at", "1970-01-01 00:00:00"),
+    key=lambda item: item[1].get("updated_at", "1970-01-01 00:00:00"),
     reverse=True
     )
 
@@ -437,6 +439,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                     st.session_state.chats[new_branch_id] = {
                         "messages": branch_messages,
                         "created_at": current_time.isoformat(),
+                        "updated_at": current_time.isoformat(),
                         "branched_from": current,
                         "title": f"브랜치: {original_title}"
                     }
