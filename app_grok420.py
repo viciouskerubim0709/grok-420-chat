@@ -70,8 +70,8 @@ def load_all_chats():
 
             st.session_state.chats[chat_id] = {
                 "title": row["title"],
-                "messages": messages
-                "created_at": row["created_at"]
+                "messages": messages,
+                "created_at": row["created_at"],
                 "updated_at": row["updated_at"]
             }
 
