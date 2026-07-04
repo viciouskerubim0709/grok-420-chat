@@ -295,24 +295,24 @@ with st.sidebar:
                                           "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]}
         st.session_state.current_session = new_id
         save_chat(new_id)
+
+        # === 여기부터가 핵심! 기존 채팅 리스트를 최신순으로 정렬해서 보여주기 ===
+        if st.session_state.chats:
+            # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
+            sorted_chats = sorted(
+                st.session_state.chats.items(),
+                key=lambda item: item[1].get("created_at", "1970-01-01T00:00:00"),
+                reverse=True
+            )
         st.rerun()
 
     st.divider()
-
-    # === 여기부터가 핵심! 기존 채팅 리스트를 최신순으로 정렬해서 보여주기 ===
-    if st.session_state.chats:
-        # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
-        sorted_chats = sorted(
-            st.session_state.chats.items(),
-            key=lambda item: item[1].get("created_at", "1970-01-01T00:00:00"),
-            reverse=True
-        )
 
     
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    for chat_id, chat in list(sorted_chats):
+    for chat_id, chat in list(st.session_state.chats.items()):
         is_current = (chat_id == current)
 
         col1, col2 = st.columns([7.5, 1.2])
