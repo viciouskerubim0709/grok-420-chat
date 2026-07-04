@@ -23,9 +23,6 @@ st.markdown("""
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
     }
-    div[data-testid="stPopoverBody"] {
-        max-width: 200px !important;
-    }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
