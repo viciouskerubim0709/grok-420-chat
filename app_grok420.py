@@ -299,12 +299,18 @@ with st.sidebar:
 
     st.divider()
 
-    st.session_state.chats.items()
-                                         
+
+    if st.session_state.chats:
+            # created_at 기준으로 최신순 정렬 (없는 경우는 제일 아래로)
+            sorted_chats = sorted(
+                st.session_state.chats["created_at"],
+                reverse=True
+            )
+        
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    for chat_id, chat in list(st.session_state.chats.items()):
+    for chat_id, chat in list(sorted_chats):
         is_current = (chat_id == current)
 
         col1, col2 = st.columns([7.5, 1.2])
