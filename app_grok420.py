@@ -105,7 +105,7 @@ def save_chat(chat_id: str):
             "id": chat_id,
             "title": chat.get("title", "새 추억💕"),
             "messages": chat["messages"],
-            "updated_at": datetime.utcnow().isoformat()   # 또는 "now()" (Supabase가 지원하면)
+            "updated_at": current_time.isoformat()   # 또는 "now()" (Supabase가 지원하면)
         }).execute()
     except Exception as e:
         st.error(f"저장 실패: {str(e)}")
@@ -428,7 +428,7 @@ for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
                     # 3. 새 채팅 세션 생성
                     st.session_state.chats[new_branch_id] = {
                         "messages": branch_messages,
-                        "created_at": current_time,
+                        "created_at": current_time.isoformat(),
                         "branched_from": current,
                         "title": f"브랜치: {original_title}"
                     }
