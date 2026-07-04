@@ -299,7 +299,7 @@ with st.sidebar:
 
     st.divider()
 
-    print(st.session_state.chats.items().get("created_at"))
+    print(st.session_state.chats.items())
                                          
     # 대화 목록 + 삭제 버튼
     to_delete = None
