@@ -382,6 +382,11 @@ with st.sidebar:
         )
 
 
+    st.sidebar.markdown("### 🔍 현재 chats 구조 확인")
+    # 1. 전체 구조를 예쁘게 보여줌 (가장 추천)
+    st.sidebar.json(st.session_state.chats)
+
+
 # ====================== 타이틀 꾸미기 ======================
 st.markdown("""
     <style>
