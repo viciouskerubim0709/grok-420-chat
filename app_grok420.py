@@ -313,7 +313,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    for chat_id, chat in list(st.session_state.chats.items()):
+    for chat_id, chat in list(sorted_chats):
         is_current = (chat_id == current)
 
         col1, col2 = st.columns([7.5, 1.2])
