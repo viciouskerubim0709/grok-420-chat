@@ -72,7 +72,7 @@ def load_all_chats():
                 "title": row["title"],
                 "messages": messages,
                 "created_at": row["created_at"],
-                "updated_at": row["updated_atF"]
+                "updated_at": row["updated_at"]
             }
 
         if not st.session_state.chats:
