@@ -15,14 +15,7 @@ from st_copy import copy_button
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
-    <style>
-    [data - testid = "stChatMessageContent"] p,
-    [data - testid = "stChatMessageContent"] li
-    {
-        padding-left: 0rem;
-        padding-right: 0rem;
-    }
-    
+    <style>    
     .stTextArea textarea {
         font-size: 16px !important;
     }
