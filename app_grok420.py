@@ -16,6 +16,25 @@ from st_copy import copy_button
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
     <style>
+    [data-testid="stChatMessageContent"] p,
+    [data-testid="stChatMessageContent"] li {
+        font-size: 1rem !important;     /* 본문과 동일한 크기 */
+        line-height: 1.65;
+    }
+    
+    /* 리스트 들여쓰기 조절 (원하면 숫자 바꿔봐) */
+    [data-testid="stChatMessageContent"] ul,
+    [data-testid="stChatMessageContent"] ol {
+        padding-left: 1.4rem;
+        margin-top: 0.35rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    /* 리스트 아이템 간격 */
+    [data-testid="stChatMessageContent"] li {
+        margin-bottom: 0.25rem;
+    }
+    
     .stTextArea textarea {
         font-size: 16px !important;
     }
