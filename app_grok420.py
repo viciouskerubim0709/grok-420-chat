@@ -15,8 +15,9 @@ from st_copy import copy_button
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
+    <style>
     .stTextArea textarea {
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -29,6 +30,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # 한국 시간 기준
 kst = pytz.timezone('Asia/Seoul')
