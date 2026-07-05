@@ -17,7 +17,7 @@ st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout
 st.markdown("""
     <style>
     .stTextArea textarea {
-        font-size: 15px !important;
+        font-size: 16px !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
