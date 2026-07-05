@@ -16,6 +16,13 @@ from st_copy import copy_button
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
     <style>
+[data - testid = "stChatMessageContent"] p,
+[data - testid = "stChatMessageContent"] li
+{
+    padding: 0rem !important;
+}
+
+    
     .stTextArea textarea {
         font-size: 16px !important;
     }
