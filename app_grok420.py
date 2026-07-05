@@ -17,7 +17,7 @@ st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout
 st.markdown("""
     <style>
     [data-testid="stChatMessageContent"] p{
-        font-size: 1.5rem;
+        font-size: 18px !important;
     }
     .stTextArea textarea {
         font-size: 16px !important;
