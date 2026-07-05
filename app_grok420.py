@@ -417,44 +417,45 @@ st.markdown("""
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
-    with st.chat_message(msg["role"])(avatar=""):
-        if msg["role"] == "user":
-            st.markdown(msg.get("content", ""))
-            if "image_urls" in msg and msg.get("image_urls"):
-                for url in msg["image_urls"]:
-                    st.image(url, width=160)
-            elif "image_url" in msg:
-                st.image(msg["image_url"], width=160)
-        else:
-            # === 어시스턴트 메시지 ===
-            st.markdown(msg["content"])          # ← st.write 대신 markdown 추천!
-
-            with st.container(horizontal=True, horizontal_alignment="right", vertical_alignment="center", gap="xsmall"):
-                # 복사 버튼 (말풍선 안에 넣음)
-                copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!", icon="st")
+    with st.chat_message(avatar=""):
+        with st.chat_message(msg["role"]):
+            if msg["role"] == "user":
+                st.markdown(msg.get("content", ""))
+                if "image_urls" in msg and msg.get("image_urls"):
+                    for url in msg["image_urls"]:
+                        st.image(url, width=160)
+                elif "image_url" in msg:
+                    st.image(msg["image_url"], width=160)
+            else:
+                # === 어시스턴트 메시지 ===
+                st.markdown(msg["content"])          # ← st.write 대신 markdown 추천!
+    
+                with st.container(horizontal=True, horizontal_alignment="right", vertical_alignment="center", gap="xsmall"):
+                    # 복사 버튼 (말풍선 안에 넣음)
+                    copy_button(msg["content"], key=f"copy_{current}_{idx}", tooltip="", copied_label="복사 완료!", icon="st")
+                    
+                    # === 🌿 브랜치 버튼 추가 === 
+                    if st.button("➕", key=f"branch_{current}_{idx}", help="이 지점부터 새 대화 시작", type="tertiary"):
+                        # 1. 현재 메시지까지 복사 (idx 포함)
+                        branch_messages = st.session_state.chats[current]["messages"][:idx + 1].copy()
                 
-                # === 🌿 브랜치 버튼 추가 === 
-                if st.button("➕", key=f"branch_{current}_{idx}", help="이 지점부터 새 대화 시작", type="tertiary"):
-                    # 1. 현재 메시지까지 복사 (idx 포함)
-                    branch_messages = st.session_state.chats[current]["messages"][:idx + 1].copy()
-            
-                    # 2. 새 채팅 ID 만들기
-                    new_branch_id = str(uuid.uuid4())
-                    original_title = st.session_state.chats[current].get("title")
-            
-                    # 3. 새 채팅 세션 생성
-                    st.session_state.chats[new_branch_id] = {
-                        "messages": branch_messages,
-                        "created_at": current_time.isoformat(),
-                        "updated_at": current_time.isoformat(),
-                        "branched_from": current,
-                        "title": f"브랜치: {original_title}"
-                    }
-            
-                    # 4. 새 채팅으로 전환
-                    st.session_state.current_session = new_branch_id
-                    save_chat(new_branch_id)
-                    st.rerun()
+                        # 2. 새 채팅 ID 만들기
+                        new_branch_id = str(uuid.uuid4())
+                        original_title = st.session_state.chats[current].get("title")
+                
+                        # 3. 새 채팅 세션 생성
+                        st.session_state.chats[new_branch_id] = {
+                            "messages": branch_messages,
+                            "created_at": current_time.isoformat(),
+                            "updated_at": current_time.isoformat(),
+                            "branched_from": current,
+                            "title": f"브랜치: {original_title}"
+                        }
+                
+                        # 4. 새 채팅으로 전환
+                        st.session_state.current_session = new_branch_id
+                        save_chat(new_branch_id)
+                        st.rerun()
 
 # ==================== SYSTEM PROMPT ====================
 SYSTEM_PROMPT = {
