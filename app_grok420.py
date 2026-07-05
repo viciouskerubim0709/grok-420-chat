@@ -16,16 +16,6 @@ from st_copy import copy_button
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
     <style>
-    [data-testid="stChatMessageContent"] p,
-    [data-testid="stChatMessageContent"] li {
-        font-size: 17px !important;     /* 본문과 동일한 크기 */
-        line-height: 1.65;
-    }
-    .stChatMessage:has([data-testid="stChatMessageAvatarUser"]) {
-        flex-direction: row-reverse;
-        text-align: right;
-    }
-
     .stTextArea textarea {
         font-size: 16px !important;
     }
