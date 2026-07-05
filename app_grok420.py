@@ -417,7 +417,7 @@ st.markdown("""
 
 # ====================== 메인 채팅 (다중 이미지 지원 + 이전 버전 호환) ======================
 for idx, msg in enumerate(st.session_state.chats[current]["messages"]):
-    with st.chat_message(msg["role"]):
+    with st.chat_message(msg["role"], avatar=""):
         if msg["role"] == "user":
             st.markdown(msg.get("content", ""))
             if "image_urls" in msg and msg.get("image_urls"):
@@ -553,7 +553,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     st.session_state.chats[current]["messages"].append(user_message)
 
     # 3. 화면에 바로 보여주기
-    with st.chat_message("user", avatar=""):
+    with st.chat_message("user"):
         st.write(user_prompt)
         if image_urls:
             for url in image_urls:
@@ -594,7 +594,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 })
 
     # 5. Grok에게 요청
-    with st.chat_message("assistant", avatar=""):
+    with st.chat_message("assistant"):
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
