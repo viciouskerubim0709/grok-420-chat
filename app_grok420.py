@@ -21,7 +21,11 @@ st.markdown("""
         font-size: 17px !important;     /* 본문과 동일한 크기 */
         line-height: 1.65;
     }
-    
+    .stChatMessage:has([data-testid="stChatMessageAvatarUser"]) {
+        flex-direction: row-reverse;
+        text-align: right;
+    }
+
     .stTextArea textarea {
         font-size: 16px !important;
     }
