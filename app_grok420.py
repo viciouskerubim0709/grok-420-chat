@@ -18,8 +18,7 @@ st.markdown("""
     <style>
     [data-testid="stChatMessageContent"] p,
     [data-testid="stChatMessageContent"] li {
-        font-size: 1.2rem !important;     /* 본문과 동일한 크기 */
-        line-height: 1.65;
+        font-size: 18px !important;     /* 본문과 동일한 크기 */
     }
     
     /* 리스트 아이템 간격 */
