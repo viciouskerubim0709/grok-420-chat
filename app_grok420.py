@@ -598,7 +598,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 use_tools=use_tools
             )
 
-            st.markdown(answer)
+            st.write(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
 
