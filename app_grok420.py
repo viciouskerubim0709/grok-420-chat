@@ -553,7 +553,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
     st.session_state.chats[current]["messages"].append(user_message)
 
     # 3. 화면에 바로 보여주기
-    with st.chat_message("user", avatar=None):
+    with st.chat_message("user", avatar=""):
         st.write(user_prompt)
         if image_urls:
             for url in image_urls:
@@ -594,7 +594,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 })
 
     # 5. Grok에게 요청
-    with st.chat_message("assistant", avatar=None):
+    with st.chat_message("assistant", avatar=""):
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
