@@ -19,11 +19,7 @@ st.markdown("""
     [data-testid="stChatMessageContent"] p,
     [data-testid="stChatMessageContent"] li {
         font-size: 17px !important;     /* 본문과 동일한 크기 */
-    }
-    
-    /* 리스트 아이템 간격 */
-    [data-testid="stChatMessageContent"] li {
-        margin-bottom: 0.25rem;
+        line-height: 1.65;
     }
     
     .stTextArea textarea {
