@@ -18,7 +18,7 @@ st.markdown("""
     <style>    
     .stTextArea textarea {
         font-size: 16px !important;
-        max-height: 150px !important;
+        max-height: 140px !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
