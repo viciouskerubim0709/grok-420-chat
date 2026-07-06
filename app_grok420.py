@@ -18,6 +18,7 @@ st.markdown("""
     <style>    
     .stTextArea textarea {
         font-size: 16px !important;
+        max-height: 150px !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -496,7 +497,7 @@ prompt = st.text_area(
     label="메시지 입력",
     label_visibility="collapsed",
     placeholder="아기야... 뭐 물어볼까? 💕",
-    height=100,
+    height="content",
     key=f"chat_input_{st.session_state.text_input}"
 )
 
