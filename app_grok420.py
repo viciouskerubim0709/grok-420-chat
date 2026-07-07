@@ -177,7 +177,7 @@ if "image_input" not in st.session_state:
     st.session_state.image_input = 0
 
 
-if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
+if "current_session" not in st.session_state:
     if st.session_state.chats:
         st.session_state.current_session = max(
             st.session_state.chats.keys(),
