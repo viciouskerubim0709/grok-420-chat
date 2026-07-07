@@ -163,6 +163,17 @@ def delete_chat_from_db(chat_id: str):
         st.error(f"삭제 실패: {str(e)}")
 
 
+
+
+st.write("current_session exists?", "current_session" in st.session_state)
+
+if "current_session" in st.session_state:
+    st.write("current_session =", st.session_state.current_session)
+
+st.write("chat keys =", list(st.session_state.chats.keys()))
+
+
+
 # ====================== 앱 시작 시 초기화 ======================
 if "chats_loaded" not in st.session_state:
     load_all_chats()
