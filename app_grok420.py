@@ -18,7 +18,7 @@ st.markdown("""
     <style>    
     .stTextArea textarea {
         font-size: 16px !important;
-        max-height: 140px !important;
+        max-height: 150px !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -161,17 +161,6 @@ def delete_chat_from_db(chat_id: str):
         supabase.table("chats").delete().eq("id", chat_id).execute()
     except Exception as e:
         st.error(f"삭제 실패: {str(e)}")
-
-
-
-
-st.write("current_session exists?", "current_session" in st.session_state)
-
-if "current_session" in st.session_state:
-    st.write("current_session =", st.session_state.current_session)
-
-st.write("chat keys =", list(st.session_state.chats.keys()))
-
 
 
 # ====================== 앱 시작 시 초기화 ======================
