@@ -179,7 +179,10 @@ if "image_input" not in st.session_state:
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     if st.session_state.chats:
-        st.session_state.current_session = list(st.session_state.chats.keys())[0]
+        st.session_state.current_session = max(
+            st.session_state.chats.keys(),
+            key=lambda cid: st.session_state.chats[cid].get("updated_at", datetime.min)
+        )
     else:
         create_default_chat()
 
@@ -307,7 +310,7 @@ with st.sidebar:
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
-    key=lambda item: item[1].get("updated_at", "1970-01-01 00:00:00"),
+    key=lambda item: item[1].get("updated_at", datetime.min),
     reverse=True
     )
 
