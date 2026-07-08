@@ -186,24 +186,18 @@ if "image_input" not in st.session_state:
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
     chat_from_url = st.query_params.get("chat")
-    if chat_from_url:
-        # URL에 있는 chat id가 유효한지 간단히 확인
-        valid_ids = [c[chat_id] for c in list(st.session_state.chats.keys())]  # 네가 가진 채팅 목록
-        if chat_from_url in valid_ids:
-            st.session_state.current_session = chat_from_url
-        else:
-            st.query_params.clear()
-            if st.session_state.chats:
-                st.session_state.current_session = list(st.session_state.chats.keys())[0]
-            else:
-                create_default_chat()
+    if chat_from_url and chat_from_url in st.session_state.chats:
+        # URL에 유효한 chat id가 있으면 그걸 사용
+        st.session_state.current_session = chat_from_url
     else:
-        # URL에 없으면 가장 최근 채팅으로
         if st.session_state.chats:
             st.session_state.current_session = list(st.session_state.chats.keys())[0]
+            # URL에도 현재 채팅 반영 (새로고침해도 유지되게)
+            st.query_params["chat"] = st.session_state.current_session
         else:
             create_default_chat()
-
+            st.session_state.current_session = list(st.session_state.chats.keys())[0]
+            st.query_params["chat"] = st.session_state.current_session
 
 current = st.session_state.current_session
         
