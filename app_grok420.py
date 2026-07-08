@@ -194,13 +194,13 @@ if "current_session" not in st.session_state or st.session_state.current_session
         else:
             st.query_params.clear()
             if st.session_state.chats:
-                st.session_state.current_session = st.session_state.chats[0]["id"]
+                st.session_state.current_session = list(st.session_state.chats.keys())[0]
             else:
                 create_default_chat()
     else:
         # URL에 없으면 가장 최근 채팅으로
         if st.session_state.chats:
-            st.session_state.current_session = st.session_state.chats[0]["id"]
+            st.session_state.current_session = list(st.session_state.chats.keys())[0]
         else:
             create_default_chat()
 
