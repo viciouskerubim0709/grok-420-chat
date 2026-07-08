@@ -115,6 +115,13 @@ def save_chat(chat_id: str):
         st.error(f"저장 실패: {str(e)}")
 
 
+def switch_chat(chat_id: str):
+    """채팅 선택할 때마다 호출하는 함수"""
+    st.session_state.current_session = chat_id
+    st.query_params["chat"] = chat_id   # ← 여기서 URL 업데이트
+    st.rerun()
+
+
 # ==================== 자동 제목 생성 ====================
 def generate_chat_title(first_user_message: str, has_image: bool = False) -> str:
     """첫 메시지와 사진 유무를 보고 예쁜 제목 생성"""
@@ -178,10 +185,19 @@ if "image_input" not in st.session_state:
 
 
 if "current_session" not in st.session_state or st.session_state.current_session not in st.session_state.chats:
-    if st.session_state.chats:
-        st.session_state.current_session = list(st.session_state.chats.keys())[0]
+    chat_from_url = st.query_params.get("chat")
+    if chat_from_url:
+        # URL에 있는 chat id가 유효한지 간단히 확인
+        valid_ids = [c["id"] for c in st.session_state.chats]  # 네가 가진 채팅 목록
+        if chat_from_url in valid_ids:
+            st.session_state.current_session = chat_from_url
+        else:
+            st.query_params.clear()
+            st.session_state.current_session = st.session_state.chats[0]["id"] if st.session_state.chats else None
     else:
-        create_default_chat()
+        # URL에 없으면 가장 최근 채팅으로
+        st.session_state.current_session = get_most_recent_chat_id()  # 네가 구현한 함수
+
 
 current = st.session_state.current_session
         
@@ -322,8 +338,7 @@ with st.sidebar:
         with col1:
             label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
             if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                st.session_state.current_session = chat_id
-                st.rerun()
+                switch_chat(chat_id)
 
         with col2:
             with st.popover("💕", width="content"):
