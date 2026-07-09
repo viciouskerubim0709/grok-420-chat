@@ -94,6 +94,7 @@ def create_default_chat():
         "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
     }
     st.session_state.current_session = first_id
+    st.query_params["chat"] = first_id
     save_chat(first_id)   # Supabase에도 바로 저장
 
 
@@ -316,6 +317,7 @@ with st.sidebar:
                                           "created_at": current_time.isoformat(),
                                           "updated_at": current_time.isoformat()}
         st.session_state.current_session = new_id
+        st.query_params["chat"] = new_id
         save_chat(new_id)
         st.rerun()
 
