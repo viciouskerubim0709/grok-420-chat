@@ -22,8 +22,7 @@ st.markdown("""
     }
     [data - testid = "stSidebar"] {
         min - width: 17rem !important;
-        max - width: 17
-        rem !important;
+        max - width: 17rem !important;
         }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
