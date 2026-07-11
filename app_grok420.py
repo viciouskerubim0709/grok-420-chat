@@ -27,6 +27,7 @@ st.markdown("""
     }
     .st-key-chat_list [class*="st-key-chat_"] {
         max-width: 86% !important;
+        min-width: 86% !important;
     }
     
     div[data-testid="stPopoverBody"],
