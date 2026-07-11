@@ -395,7 +395,7 @@ with st.sidebar:
         
                             st.rerun()
                         
-        st.divider()
+    st.divider()
                     
 
     # 저장 / 내보내기 버튼
