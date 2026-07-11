@@ -401,7 +401,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
+    if st.button("📥 대화 저장 ", width="stretch", key="convo_save", type="tertiary"):
         st.caption('JSON 파일로 저장돼 💕')
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
