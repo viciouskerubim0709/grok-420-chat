@@ -31,6 +31,7 @@ st.markdown("""
         overflow-y: scroll !important;
         align-items: center;
         padding-right: 0.5rem !important;
+        padding-bottom: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
@@ -353,7 +354,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", gap="xsmall"):
+    with st.container(key="chat_list", gap="small"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
