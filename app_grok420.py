@@ -343,20 +343,16 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
     
-    with st.container(key="chat_list", width="stretch"):
-    
+    with st.container(key="chat_list"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            col1, col2 = st.columns([7.5, 1.2])
-    
-            with col1:
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+            with st.container(key=f"chat_item_{chat_id}", horizontal_alignment="left", vertical_alignment="center", gap=None):
+                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
-            with col2:
-                with st.popover("💕", width="content"):
+                with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
