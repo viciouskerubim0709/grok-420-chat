@@ -31,6 +31,7 @@ st.markdown("""
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
+        background: #ffece5" !important;
         font-size: 15px !important;
         padding-left: 0rem !important;
         border-radius: 10px !important;
@@ -356,7 +357,7 @@ with st.sidebar:
     
             with st.container(key=f"chat_item_{chat_id}", gap=None, horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
                 label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
     
                 with st.popover("", width="content"):
