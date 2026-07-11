@@ -29,7 +29,7 @@ st.markdown("""
         overflow-y: scroll !important;
         padding-right: 0rem !important;
     }
-    .st-key-chat_list [class*="st-key-chat_item_"] {
+    .st-key-chat_list [class*="st-key-chat_item_{chat_id}"] {
         flex: 1 1 auto !important;
         background-color: transparent !important;
         font-size: 15px !important;
