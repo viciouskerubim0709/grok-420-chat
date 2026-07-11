@@ -21,9 +21,19 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-height: 25rem !important;\
+        max-width: 108% !important;
+        min-width: 108% !important;
+        max-height: 25rem !important;
         overflow-y: scroll !important;
+        padding-right: 1rem !important;
     }
+    @media (max-width: 768px) {
+        .st-key-chat_list {
+            max-width: 100% !important;
+            min-width: 100% !important;
+            padding-right: 0rem !important;
+        }
+    }    
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
