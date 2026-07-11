@@ -21,10 +21,10 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+        padding-left: 0rem !important;
+        padding-right: 0rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -328,7 +328,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    with st.container(key="chat_list", height=400):
+    with st.container(key="chat_list", height=400, border=None):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
