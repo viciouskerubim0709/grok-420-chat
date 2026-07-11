@@ -20,6 +20,10 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
+    [data - testid = "stSidebar"] {
+        min-width: 19rem !important;
+        max-width: 19rem !important;
+    }
     .st-key-chat_list {
         max-height: 25rem !important;
         min-height: 20rem !important;
@@ -344,7 +348,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", gap="xsmall"):
+    with st.container(key="chat_list"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
 
