@@ -34,8 +34,8 @@ st.markdown("""
         flex: 1 1 auto !important;
         background: #ffafa3 !important;
         padding-right: 0rem !important;
-        padding-left: 0rem !important;
         padding-bottom: 0rem !important;
+        border-radius: 10px;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
