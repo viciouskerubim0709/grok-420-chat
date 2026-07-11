@@ -21,8 +21,8 @@ st.markdown("""
         max-height: 150px !important;
     }
     [data-testid="stSidebar"] {
-        min-width: 10rem !important;
-        max-width: 10rem !important;
+        min-width: 20rem !important;
+        max-width: 20rem !important;
     }
     .st-key-chat_list {
         max-height: 430px !important;
