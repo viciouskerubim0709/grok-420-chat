@@ -345,7 +345,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(horizontal_alignment="left", vertical_alignment="center", gap="xsmall", key="chat_title"):
+            with st.container(gap="xsmall", key="chat_title"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
