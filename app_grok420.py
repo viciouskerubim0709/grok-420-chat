@@ -31,9 +31,9 @@ st.markdown("""
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
-        background: #ffafa3 !important;
+        background: "#FFF8F5" !important;
         padding-left: 1rem !important;
-        border-radius: 10px;
+        border-radius: 10px !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
