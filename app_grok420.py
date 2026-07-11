@@ -21,11 +21,11 @@ st.markdown("""
         max-height: 150px !important;
     }
     [data-testid="stSidebar"] {
-        font-size: 15px !important;
         min-width: 19rem !important;
         max-width: 19rem !important;
     }
     .st-key-chat_list {
+        font-size: 15px !important;
         max-height: 22rem !important;
         overflow-y: scroll !important;
         padding-right: 0rem !important;
