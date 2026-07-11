@@ -20,7 +20,7 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
-    [data - testid = "stSidebar"] {
+    [data-testid="stSidebar"] {
         min-width: 19rem !important;
         max-width: 19rem !important;
     }
