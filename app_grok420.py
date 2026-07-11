@@ -20,12 +20,6 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
-    .st-key-chat_list {
-        max-height: 15rem !important;
-        overflow-y: scroll !important;
-        padding-right: 1rem !important;
-        padding-bottom: 0rem !important;
-    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
@@ -329,7 +323,7 @@ with st.sidebar:
 
     st.divider()
 
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+    with st.container(key="chat_list", gap="xsmall"):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
@@ -340,19 +334,15 @@ with st.sidebar:
         # 대화 목록 + 삭제 버튼
         to_delete = None
 
-        with st.container(key="chat_list", gap="xsmall"):
+        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
         
             for chat_id, chat in list(sorted_chats):
                 is_current = (chat_id == current)
         
-                col1, col2 = st.columns([7.5, 1.2])
-        
-                with col1:
                     label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                     if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                         switch_chat(chat_id)
-        
-                with col2:
+
                     with st.popover("💕", width="content"):
                         # ==================== 제목 수정 ====================
                         st.write("**제목 수정**")
