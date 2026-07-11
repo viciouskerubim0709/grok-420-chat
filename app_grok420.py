@@ -40,6 +40,7 @@ st.markdown("""
         padding-bottom: 0.1rem !important;
         padding-top: 0.1rem !important;
         border-radius: 10px !important;
+        text-align: left;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
