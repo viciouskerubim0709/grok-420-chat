@@ -410,7 +410,7 @@ with st.sidebar:
 
     # 저장 / 내보내기 버튼
     with st.container(key="convo_save", width="content"):
-        if st.button("📥 대화 저장 ", width="content", type="tertiary"):
+        if st.button("📥 대화 저장 ", type="tertiary"):
             chat_data = st.session_state.chats[current]
             all_data = st.session_state.chats
             json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
