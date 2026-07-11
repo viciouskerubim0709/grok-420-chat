@@ -46,7 +46,7 @@ st.markdown("""
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
-        background: #ffafa3 !important;
+        background: #FDA996 !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
@@ -54,9 +54,10 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-current_convo_save, .st-key-all_convo_save {
-        background: #ffafa3 !important;
+        background: #FDA996 !important;
         border-radius: 10px !important;
-        
+        border: 1px solid #D8C2BA !important;
+    }
 """, unsafe_allow_html=True)
 
 
@@ -413,7 +414,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True, key="current_convo_save"):
+    if st.button("💾 현재 대화 다운로드", use_container_width=True, key="current_convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -424,7 +425,7 @@ with st.sidebar:
             use_container_width=True
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, key="all_convo_save"):
+    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, key="all_convo_save", type="tertiary"):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
