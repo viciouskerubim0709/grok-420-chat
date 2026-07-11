@@ -409,7 +409,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    with st.container(key="convo_save"):
+    with st.container(key="convo_save", width="content"):
         if st.button("📥 대화 저장 ", width="content", type="tertiary"):
             chat_data = st.session_state.chats[current]
             all_data = st.session_state.chats
