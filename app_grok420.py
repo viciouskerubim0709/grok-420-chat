@@ -46,6 +46,7 @@ st.markdown("""
     .st-key-convo_save {
         background: #FFCBBA !important;
         border-radius: 10px !important;
+        border-radius: 10px !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
