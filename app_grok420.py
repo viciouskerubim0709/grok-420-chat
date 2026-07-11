@@ -325,7 +325,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    with st.container(key="chat_list"):
+    with st.container(key="chat_list", height=400):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
