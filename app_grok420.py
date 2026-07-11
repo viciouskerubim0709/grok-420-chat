@@ -340,7 +340,7 @@ with st.sidebar:
 
     st.divider()
     
-    with st.container(key="chat_list"):
+    with st.container(key="chat_list", gap=None):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
