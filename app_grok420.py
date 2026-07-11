@@ -53,10 +53,10 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .st-key-current_down {
+    .st-key-chat_list [class*="st-key-current_down"] {
         background-color: #ffafa3 !important;
     }
-    .st-key-all_down {
+    .st-key-chat_list [class*="st-key-all_down"] {
         background-color: #ffafa3 !important;
     }
     </style>
