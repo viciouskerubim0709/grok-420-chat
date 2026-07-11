@@ -25,10 +25,6 @@ st.markdown("""
         overflow-y: scroll !important;
         padding-right: 0rem !important;
     }
-    .st-key-chat_list [class*="st-key-chat_"] {
-        max-width: 86% !important;
-        min-width: 86% !important;
-    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
@@ -355,11 +351,14 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):                
+            col1, col2 = st.columns([7.5, 1.2])
+    
+            with col1:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
-
+    
+            with col2:
                 with st.popover("💕", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
@@ -381,26 +380,6 @@ with st.sidebar:
     
                             st.success("제목이 수정되었습니다.")
                             st.rerun()
-    
-                    st.divider()
-    
-                    # ==================== 삭제 ====================
-                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
-                        delete_chat_from_db(chat_id)
-    
-                        # session_state에서도 삭제
-                        if chat_id in st.session_state.chats:
-                            del st.session_state.chats[chat_id]
-    
-                        # 현재 보고 있던 채팅을 지웠을 때
-                        if chat_id == st.session_state.current_session:
-                            if st.session_state.chats:
-                                st.session_state.current_session = list(st.session_state.chats.keys())[0]
-                            else:
-                                # 마지막 채팅이었을 경우 새로 생성 + 저장
-                                create_default_chat()
-    
-                        st.rerun()
                 
     st.divider()
 
@@ -428,7 +407,7 @@ with st.sidebar:
             key="all_convo_save",
             type="tertiary"
         )
-        st.caption('JSON 파일로 저장돼 💕')
+        st.caption("JSON 파일로 저장돼 💕")
 
 
 # ====================== 타이틀 꾸미기 ======================
