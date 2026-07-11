@@ -21,8 +21,8 @@ st.markdown("""
         max-height: 150px !important;
     }
     [data-testid="stSidebar"] {
-        min-width: 19rem !important;
-        max-width: 19rem !important;
+        min-width: 17rem !important;
+        max-width: 17rem !important;
     }
     .st-key-chat_list {
         max-height: 25rem !important;
@@ -352,7 +352,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
 
-            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
+            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None, type="secondary"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", width="stretch", type="tertiary"):
                     switch_chat(chat_id)
