@@ -21,6 +21,7 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
+        border: 0 !important;
         padding-top: 0rem !important;
         padding-bottom: 0rem !important;
         padding-left: 0rem !important;
@@ -328,7 +329,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    with st.container(key="chat_list", height=400, border=None):
+    with st.container(key="chat_list", height=500):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
