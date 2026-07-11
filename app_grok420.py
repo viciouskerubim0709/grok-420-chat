@@ -25,7 +25,7 @@ st.markdown("""
         padding-top: 0rem !important;
         padding-bottom: 0rem !important;
         padding-left: 0rem !important;
-        padding-right: 0rem !important;
+        padding-right: 1rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
