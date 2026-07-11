@@ -27,7 +27,7 @@ st.markdown("""
     .st-key-chat_list {
         min-width: 17rem !important;
         max-width: 17rem !important;
-        max-height: 22rem !important;\
+        max-height: 23rem !important;\
         overflow-y: scroll !important;
         align-items: center;
         padding-right: 0.5rem !important;
@@ -37,6 +37,8 @@ st.markdown("""
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
         padding-left: 1rem !important;
+        padding-bottom: 0.2rem !important;
+        padding-top: 0.2rem !important;
         border-radius: 10px !important;
     }
     [data-testid="stHorizontalBlock"] {
