@@ -20,21 +20,11 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
-    [data - testid = "stSidebar"] {
-        min-width: 19rem !important;
-        max-width: 19rem !important;
-    }
-    div[data-testid="stElementContainer"]:has(div[data-keys*="chat_list"]) {
-        max-height: 25rem !important;
-        min-height: 20rem !important;
+    .st-key-chat_list {
+        max-height: 15rem !important;
         overflow-y: scroll !important;
+        padding-right: 1rem !important;
         padding-bottom: 0rem !important;
-    }
-    div[data-testid="stElementContainer"]:has(div[data-keys*="chat_title"]) {
-        flex: 1 1 auto !important;
-    }
-    [data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -348,15 +338,19 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list"):
+    with st.container(key="chat_list", gap="xsmall"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
-
-            with st.container(key="chat_title"):
+    
+            col1, col2 = st.columns([7.5, 1.2])
+    
+            with col1:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", width="stretch", type="tertiary"):
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
-                with st.popover("", width="content"):
+    
+            with col2:
+                with st.popover("💕", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
