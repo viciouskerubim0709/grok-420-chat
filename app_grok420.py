@@ -41,7 +41,8 @@ st.markdown("""
         padding-right: 1rem !important;
     }
     .st-key-chat_convo_save, .st-key-all_convo_save {
-        border: 1px solid #FFAFA3 !important;
+        border: 1.5px solid #FFAFA3 !important;
+        border-radius: 10px !important;
     }
     </style>
 """, unsafe_allow_html=True)
