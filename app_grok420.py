@@ -310,7 +310,7 @@ if "client" not in st.session_state:
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
-    if st.button("✨ 새 대화 시작", type="primary", width="stretch"):
+    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
                                           "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}],
@@ -328,68 +328,67 @@ with st.sidebar:
     key=lambda item: item[1].get("updated_at", "1970-01-01 00:00:00"),
     reverse=True
     )
-    
+
     # 대화 목록 + 삭제 버튼
     to_delete = None
-    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-        for chat_id, chat in list(sorted_chats):
-            is_current = (chat_id == current)
-    
-            col1, col2 = st.columns([7.5, 1.2])
-    
-            with col1:
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                    switch_chat(chat_id)
-    
-            with col2:
-                with st.popover("💕", width="content"):
-                    # ==================== 제목 수정 ====================
-                    st.write("**제목 수정**")
-                    new_title = st.text_input(
-                        "새 제목",
-                        value=chat["title"],
-                        key=f"title_input_{chat_id}",
-                        label_visibility="collapsed"
-                    )
-    
-                    if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
-                        if new_title.strip():
-                            new_title_clean = new_title.strip()
-    
-                            # session_state 먼저 업데이트
-                            st.session_state.chats[chat_id]["title"] = new_title_clean
-                            # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
-                            save_chat(chat_id)
-    
-                            st.success("제목이 수정되었습니다.")
-                            st.rerun()
-    
-                    st.divider()
-    
-                    # ==================== 삭제 ====================
-                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
-                        delete_chat_from_db(chat_id)
-    
-                        # session_state에서도 삭제
-                        if chat_id in st.session_state.chats:
-                            del st.session_state.chats[chat_id]
-    
-                        # 현재 보고 있던 채팅을 지웠을 때
-                        if chat_id == st.session_state.current_session:
-                            if st.session_state.chats:
-                                st.session_state.current_session = list(st.session_state.chats.keys())[0]
-                            else:
-                                # 마지막 채팅이었을 경우 새로 생성 + 저장
-                                create_default_chat()
-    
+
+    for chat_id, chat in list(sorted_chats):
+        is_current = (chat_id == current)
+
+        col1, col2 = st.columns([7.5, 1.2])
+
+        with col1:
+            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                switch_chat(chat_id)
+
+        with col2:
+            with st.popover("💕", width="content"):
+                # ==================== 제목 수정 ====================
+                st.write("**제목 수정**")
+                new_title = st.text_input(
+                    "새 제목",
+                    value=chat["title"],
+                    key=f"title_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
+
+                if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
+                    if new_title.strip():
+                        new_title_clean = new_title.strip()
+
+                        # session_state 먼저 업데이트
+                        st.session_state.chats[chat_id]["title"] = new_title_clean
+                        # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
+                        save_chat(chat_id)
+
+                        st.success("제목이 수정되었습니다.")
                         st.rerun()
 
-    st.divider()
+                st.divider()
+
+                # ==================== 삭제 ====================
+                if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                    delete_chat_from_db(chat_id)
+
+                    # session_state에서도 삭제
+                    if chat_id in st.session_state.chats:
+                        del st.session_state.chats[chat_id]
+
+                    # 현재 보고 있던 채팅을 지웠을 때
+                    if chat_id == st.session_state.current_session:
+                        if st.session_state.chats:
+                            st.session_state.current_session = list(st.session_state.chats.keys())[0]
+                        else:
+                            # 마지막 채팅이었을 경우 새로 생성 + 저장
+                            create_default_chat()
+
+                    st.rerun()
                     
+    st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", width="stretch"):
+    if st.button("💾 현재 대화 다운로드", use_container_width=True):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -397,10 +396,10 @@ with st.sidebar:
             data=json_str,
             file_name=f"{chat_data['title']}.json",
             mime="application/json",
-            width="stretch"
+            use_container_width=True
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", width="stretch"):
+    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -408,7 +407,7 @@ with st.sidebar:
             data=json_str,
             file_name="grok_모든_대화.json",
             mime="application/json",
-            width="stretch"
+            use_container_width=True
         )
 
 
