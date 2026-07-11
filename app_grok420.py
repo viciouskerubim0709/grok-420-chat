@@ -318,7 +318,7 @@ if "client" not in st.session_state:
 # ====================== 사이드바 ======================
 with st.sidebar:
     st.title("📜 대화 기록")
-    if st.button("✨ 새 대화 시작", type="primary", use_container_width=True):
+    if st.button("✨ 새 대화 시작", type="primary", width="stretch"):
         new_id = str(uuid.uuid4())
         st.session_state.chats[new_id] = {"title": "새 추억💕",
                                           "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}],
@@ -396,7 +396,7 @@ with st.sidebar:
                     
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True):
+    if st.button("💾 현재 대화 다운로드", width="stretch"):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -404,10 +404,10 @@ with st.sidebar:
             data=json_str,
             file_name=f"{chat_data['title']}.json",
             mime="application/json",
-            use_container_width=True
+            width="stretch"
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True):
+    if st.button("📦 모든 대화 한 번에 다운로드", width="stretch"):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -415,7 +415,7 @@ with st.sidebar:
             data=json_str,
             file_name="grok_모든_대화.json",
             mime="application/json",
-            use_container_width=True
+            width="stretch"
         )
 
 
