@@ -23,7 +23,7 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 24rem !important;
         overflow-y: scroll !important;
-        padding-right: 0.3rem !important;
+        padding-right: 0rem !important;
         flex-warp: warp !important;
     }
     div[data-testid="stPopoverBody"],
