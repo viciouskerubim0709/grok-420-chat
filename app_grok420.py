@@ -21,11 +21,11 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-width: 104% !important;
-        min-width: 104% !important;
+        max-width: 108% !important;
+        min-width: 108% !important;
         max-height: 24rem !important;
         overflow-y: scroll !important;
-        padding-right: 0.5rem !important;
+        padding-right: 1rem !important;
     }
     @media (max-width: 768px) {
         .st-key-chat_list {
