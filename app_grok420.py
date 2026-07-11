@@ -25,15 +25,15 @@ st.markdown("""
         max-width: 19rem !important;
     }
     .st-key-chat_list {
-        font-size: 15px !important;
         max-height: 22rem !important;
         overflow-y: scroll !important;
         padding-right: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
+        font-size: 15px !important;
         background: "#FFF8F5" !important;
-        padding-left: 1rem !important;
+        padding-left: 0rem !important;
         border-radius: 10px !important;
     }
     [data-testid="stHorizontalBlock"] {
