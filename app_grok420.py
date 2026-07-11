@@ -29,6 +29,7 @@ st.markdown("""
     }
     [data-testid="column"] {
         flex-grow: 1 !important;
+        flex-basis: auto !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
