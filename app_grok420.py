@@ -347,57 +347,57 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
     
-    with st.container(key="chat_list"):
-        for chat_id, chat in list(sorted_chats):
-            is_current = (chat_id == current)
-    
-            with st.container(key=f"chat_item_{chat_id}", horizontal_alignment="left", vertical_alignment="center", width="stretch", gap=None):
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
-                    switch_chat(chat_id)
-                    
-                with st.popover("💕", width="content"):
-                    # ==================== 제목 수정 ====================
-                    st.write("**제목 수정**")
-                    new_title = st.text_input(
-                        "새 제목",
-                        value=chat["title"],
-                        key=f"title_input_{chat_id}",
-                        label_visibility="collapsed"
-                    )
 
-                    if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
-                        if new_title.strip():
-                            new_title_clean = new_title.strip()
+    for chat_id, chat in list(sorted_chats):
+        is_current = (chat_id == current)
 
-                            # session_state 먼저 업데이트
-                            st.session_state.chats[chat_id]["title"] = new_title_clean
-                            # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
-                            save_chat(chat_id)
+        with st.container(key=f"chat_item_{chat_id}", horizontal_alignment="left", vertical_alignment="center", width="stretch", gap=None):
+            label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+            if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                switch_chat(chat_id)
+                
+            with st.popover("💕", width="content"):
+                # ==================== 제목 수정 ====================
+                st.write("**제목 수정**")
+                new_title = st.text_input(
+                    "새 제목",
+                    value=chat["title"],
+                    key=f"title_input_{chat_id}",
+                    label_visibility="collapsed"
+                )
 
-                            st.success("제목이 수정되었습니다.")
-                            st.rerun()
+                if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
+                    if new_title.strip():
+                        new_title_clean = new_title.strip()
 
-                    st.divider()
+                        # session_state 먼저 업데이트
+                        st.session_state.chats[chat_id]["title"] = new_title_clean
+                        # save_chat는 chat_id만 넘김 (title은 이미 session_state에 반영됨)
+                        save_chat(chat_id)
 
-                    # ==================== 삭제 ====================
-                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
-                        delete_chat_from_db(chat_id)
-
-                        # session_state에서도 삭제
-                        if chat_id in st.session_state.chats:
-                            del st.session_state.chats[chat_id]
-
-                        # 현재 보고 있던 채팅을 지웠을 때
-                        if chat_id == st.session_state.current_session:
-                            if st.session_state.chats:
-                                st.session_state.current_session = list(st.session_state.chats.keys())[0]
-                            else:
-                                # 마지막 채팅이었을 경우 새로 생성 + 저장
-                                create_default_chat()
-
+                        st.success("제목이 수정되었습니다.")
                         st.rerun()
-                    
+
+                st.divider()
+
+                # ==================== 삭제 ====================
+                if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                    delete_chat_from_db(chat_id)
+
+                    # session_state에서도 삭제
+                    if chat_id in st.session_state.chats:
+                        del st.session_state.chats[chat_id]
+
+                    # 현재 보고 있던 채팅을 지웠을 때
+                    if chat_id == st.session_state.current_session:
+                        if st.session_state.chats:
+                            st.session_state.current_session = list(st.session_state.chats.keys())[0]
+                        else:
+                            # 마지막 채팅이었을 경우 새로 생성 + 저장
+                            create_default_chat()
+
+                    st.rerun()
+                
     st.divider()
 
     # 저장 / 내보내기 버튼
