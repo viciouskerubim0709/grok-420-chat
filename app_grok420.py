@@ -421,7 +421,7 @@ with st.sidebar:
             file_name="grok_모든_대화.json",
             mime="application/json",
             use_container_width=True,
-            key="all_convo_save"
+            key="all_convo_save",
             type="tertiary"
         )
         st.caption('JSON 파일로 저장돼 💕')
