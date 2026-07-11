@@ -32,6 +32,7 @@ st.markdown("""
         align-items: center;
         padding-right: 0.5rem !important;
         padding-bottom: 0rem !important;
+        text-align: left !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
