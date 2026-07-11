@@ -414,7 +414,7 @@ with st.sidebar:
             mime="application/json",
             use_container_width=True
         )
-       st.caption('JSON 파일로 저장돼 💕')
+        st.caption('JSON 파일로 저장돼 💕')
 
 
 # ====================== 타이틀 꾸미기 ======================
