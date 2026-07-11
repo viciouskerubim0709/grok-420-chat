@@ -348,7 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    st.markdown("💕", text_alignment="center")
+    st.markdown("💖💖💖", text_alignment="center")
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
