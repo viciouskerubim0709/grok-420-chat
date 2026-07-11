@@ -27,7 +27,7 @@ st.markdown("""
     .st-key-chat_list {
         min-width: 17rem !important;
         max-width: 17rem !important;
-        max-height: 23rem !important;\
+        max-height: 22rem !important;\
         overflow-y: scroll !important;
         align-items: center;
         padding-right: 0.5rem !important;
@@ -37,12 +37,14 @@ st.markdown("""
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
         padding-left: 1rem !important;
-        padding-bottom: 0.2rem !important;
-        padding-top: 0.2rem !important;
+        padding-bottom: 0.1rem !important;
+        padding-top: 0.1rem !important;
         border-radius: 10px !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
+        min-width: 10rem !important;
+        max-width: 10rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -356,7 +358,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", gap="small"):
+    with st.container(key="chat_list", gap="xsmall"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
