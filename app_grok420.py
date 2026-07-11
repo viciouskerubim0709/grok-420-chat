@@ -21,6 +21,7 @@ st.markdown("""
         max-height: 150px !important;
     }
     [data-testid="stSidebar"] {
+        font-size: 15px !important;
         min-width: 19rem !important;
         max-width: 19rem !important;
     }
