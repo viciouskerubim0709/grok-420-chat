@@ -31,6 +31,7 @@ st.markdown("""
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
         border-radius: 10px !important;
+        border: 1.5px solid #FFAFA3 !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
