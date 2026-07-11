@@ -50,7 +50,7 @@ st.markdown("""
         padding-right: 1rem !important;
     }
     .st-key-chat_convo_save, .st-key-all_convo_save {
-        background: #FFD8D1 !important;
+        background: #FFCBBA !important;
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
     }
