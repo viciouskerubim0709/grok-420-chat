@@ -24,6 +24,7 @@ st.markdown("""
         max-height: 24rem !important;
         overflow-y: scroll !important;
         padding-right: 0.3rem !important;
+        flex: 1 1 auto !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -34,7 +35,7 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .st-key-convo_save {
+    .st-key-convo_save, .st-key-chat_convo_save, .st-key-all_convo_save {
         background: #FFAFA3 !important;
         border-radius: 10px !important;
         padding-left: 1rem !important;
