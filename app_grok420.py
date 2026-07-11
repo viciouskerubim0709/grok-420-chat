@@ -24,7 +24,7 @@ st.markdown("""
         max-height: 25rem !important;
         min-height: 20rem !important;
         overflow-y: scroll !important;
-        padding-right: 1rem !important;
+        padding-right: 0rem !important;
         padding-bottom: 0rem !important;
     }
     [data-testid="column"] {
