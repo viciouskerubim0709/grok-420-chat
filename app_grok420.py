@@ -47,13 +47,13 @@ st.markdown("""
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
-        min-width: 10rem !important;
-        max-width: 10rem !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
+        min-width: 14rem !important;
+        max-width: 14rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
