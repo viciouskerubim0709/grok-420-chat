@@ -354,7 +354,7 @@ with st.sidebar:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", width="stretch"):
                     switch_chat(chat_id)
-                with st.popover("💕", width="content"):
+                with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
