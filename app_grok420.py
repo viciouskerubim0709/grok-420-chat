@@ -28,8 +28,7 @@ st.markdown("""
         padding-bottom: 0rem !important;
     }
     [data-testid="column"] {
-        width: 10rem !important;
-        flex: 1 1 auto !important;
+        flex-grow: 1 !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
