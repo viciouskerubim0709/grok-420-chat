@@ -43,12 +43,12 @@ st.markdown("""
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
-        min-width: 10rem !important;
-        max-width: 10rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
+        min-width: 10rem !important;
+        max-width: 10rem !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
