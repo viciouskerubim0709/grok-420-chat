@@ -20,19 +20,6 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
-    [data-testid="stSidebar"] {
-        min-width: 17rem !important;
-        max-width: 17rem !important;
-    }
-    [data-testid="column"] {
-        flex: 1 1 auto !important;
-    }
-    .st-key-chat_list {
-        max-height: 432px !important;
-        overflow-y: scroll !important;
-        padding-right: 1rem !important;
-        padding-bottom: 0rem !important;
-    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
