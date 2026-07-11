@@ -35,7 +35,7 @@ st.markdown("""
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
         font-size: 15px !important;
-        padding-left: 1rem !important;
+        padding-left: 0rem !important;
         border-radius: 10px !important;
     }
     [data-testid="stHorizontalBlock"] {
