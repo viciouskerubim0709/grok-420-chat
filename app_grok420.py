@@ -28,7 +28,7 @@ st.markdown("""
         padding-bottom: 0rem !important;
     }
     [data-testid="column"] {
-        width: auto !important;
+        width: 27rem !important;
         flex: 1 1 auto !important;
     }
     [data-testid="stHorizontalBlock"] {
