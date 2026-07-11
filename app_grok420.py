@@ -420,23 +420,21 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", width="content", key="current_convo_save", type="tertiary"):
+    if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
-        json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
+        all_data = st.session_state.chats
+        json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
+        json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
-            label="📥 JSON 파일로 저장",
-            data=json_str,
+            label="💾 현재 대화 다운로드",
+            data=json_str_chat,
             file_name=f"{chat_data['title']}.json",
             mime="application/json",
             use_container_width=True
         )
-
-    if st.button("📦 모든 대화 한 번에 다운로드", width="content", key="all_convo_save", type="tertiary"):
-        all_data = st.session_state.chats
-        json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
-            label="📥 전체 JSON 다운로드",
-            data=json_str,
+            label="📦 모든 대화 한 번에 다운로드",
+            data=json_str_all,
             file_name="grok_모든_대화.json",
             mime="application/json",
             use_container_width=True
