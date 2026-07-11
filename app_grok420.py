@@ -24,6 +24,8 @@ st.markdown("""
         min-width: 17rem !important;
         max-width: 17rem !important;
     }
+    [data-testid="column"] {
+        flex: 1 1 auto !important;
     }
     /* 컬럼들을 감싸고 있는 상위 부모 요소 (Streamlit 버전에 따라 다를 수 있음) */
     div[data-testid="stHorizontalBlock"] {
@@ -348,7 +350,7 @@ with st.sidebar:
         
         # 대화 목록 + 삭제 버튼
         to_delete = None
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+        with st.container(horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
             for chat_id, chat in list(sorted_chats):
                 is_current = (chat_id == current)
         
