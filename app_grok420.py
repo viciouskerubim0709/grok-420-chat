@@ -53,6 +53,9 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    .st-key-current_convo_save, .st-key-all_convo_save {
+        background: #ffafa3 !important;
+        border: none !important;
     </style>
 """, unsafe_allow_html=True)
 
@@ -360,7 +363,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(key=f"chat_item_{chat_id}", gap=None, horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
+            with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
                 label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
@@ -410,7 +413,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True, border=None):
+    if st.button("💾 현재 대화 다운로드", use_container_width=True, key="current_convo_save"):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -421,7 +424,7 @@ with st.sidebar:
             use_container_width=True
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, border=None):
+    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, key="all_convo_save"):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
