@@ -21,16 +21,12 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        font-size: 15px !important;
-        border: 0 !important;
-        padding-top: 0rem !important;
-        padding-bottom: 0rem !important;
-        padding-left: 0rem !important;
-        padding-right: 0.5rem !important;
+    max-height: 450px !important;
+    overflow-y: scroll !important;
     }
-    /* 컬럼들을 감싸고 있는 상위 부모 요소 (Streamlit 버전에 따라 다를 수 있음) */
-    div[data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
+    [data-testid="column"] {
+        flex: 1 1 auto !important;
+    }
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -335,7 +331,7 @@ with st.sidebar:
 
     st.divider()
     
-    with st.container(key="chat_list", height=400):
+    with st.container(key="chat_list"):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
