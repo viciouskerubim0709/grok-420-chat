@@ -24,10 +24,17 @@ st.markdown("""
         min-width: 17rem !important;
         max-width: 17rem !important;
     }
+    [data-testid="column"] {
+        flex: 1 1 auto !important;
+    }
+    /* 컬럼들을 감싸고 있는 상위 부모 요소 (Streamlit 버전에 따라 다를 수 있음) */
+    div[data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+    }
     .st-key-chat_list {
         max-height: 430px !important;
         overflow-y: scroll !important;
-        padding-right: 0.5rem !important;
+        padding-right: 1rem !important;
         padding-bottom: 0rem !important;
     }
     div[data-testid="stPopoverBody"],
