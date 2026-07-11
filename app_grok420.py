@@ -29,9 +29,6 @@ st.markdown("""
         max-width: 86% !important;
         min-width: 86% !important;
     }
-    .st-key-chat_list [class*="st-key-chat_item_"] {
-        padding-right: 0rem !important;
-    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
@@ -358,7 +355,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):                
+            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):                
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
