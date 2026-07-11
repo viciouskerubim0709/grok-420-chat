@@ -32,7 +32,7 @@ st.markdown("""
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
         font-size: 15px !important;
-        background: "#FFF8F5" !important;
+        background: "#FFECE5" !important;
         padding-left: 0rem !important;
         border-radius: 10px !important;
     }
