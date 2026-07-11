@@ -23,12 +23,11 @@ st.markdown("""
     [data-testid="stSidebar"] {
         min-width: 19rem !important;
         max-width: 19rem !important;
-        max-height: auto !important;
     }
     .st-key-chat_list {
-        max-height: 20rem !important;
+        max-height: 22rem !important;
         overflow-y: scroll !important;
-        padding: 0rem !important;
+        padding-right: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
@@ -356,11 +355,11 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", gap=None, horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
-                with st.popover("💕", width="content"):
+                with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
