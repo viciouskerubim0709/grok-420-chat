@@ -30,7 +30,8 @@ st.markdown("""
         overflow-y: scroll !important;
         padding-bottom: 0rem !important;
     }
-    [data-testid="column"] {
+    .st-key-chat_title {
+        background: #ffafa3 !important;
         flex: 1 1 auto !important;
     }
     [data-testid="stHorizontalBlock"] {
@@ -352,7 +353,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
 
-            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None, type="secondary"):
+            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None, key="chat_title"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", width="stretch", type="tertiary"):
                     switch_chat(chat_id)
