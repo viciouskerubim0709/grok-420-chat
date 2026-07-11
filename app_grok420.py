@@ -362,7 +362,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", gap="xsmall"):
+    with st.container(key="chat_list", gap="small"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
