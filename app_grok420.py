@@ -25,8 +25,8 @@ st.markdown("""
         max-width: 19rem !important;
     }
     .st-key-chat_list {
-        min-width: 16rem !important;
-        max-width: 16rem !important;
+        min-width: 17rem !important;
+        max-width: 17rem !important;
         max-height: 22rem !important;
         overflow-y: scroll !important;
         padding-right: 0rem !important;
@@ -353,11 +353,11 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", gap="xsmall"):
+    with st.container(key="chat_list", horizontal_alignment="center", gap="xsmall"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(key=f"chat_item_{chat_id}", gap=None, horizontal=True, horizontal_alignment="center", vertical_alignment="center"):
+            with st.container(key=f"chat_item_{chat_id}", gap=None, horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
                 label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
