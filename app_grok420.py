@@ -27,6 +27,13 @@ st.markdown("""
         overflow-y: scroll !important;
         padding-right: 1rem !important;
     }
+    @media (max-width: 768px) {
+        .st-key-chat_list {
+            max-height: 24rem !important;
+            overflow-y: scroll !important;
+            padding-right: 0rem !important;
+        }
+    }    
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
