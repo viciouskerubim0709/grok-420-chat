@@ -53,6 +53,12 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
+    .st-key-current_down {
+        background-color: #ffafa3 !important;
+    }
+    .st-key-all_down {
+        background-color: #ffafa3 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -410,7 +416,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True):
+    if st.button("💾 현재 대화 다운로드", use_container_width=True, key="current_down", border=None):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -421,7 +427,7 @@ with st.sidebar:
             use_container_width=True
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True):
+    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, key="all_down", border=None):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
