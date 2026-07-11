@@ -34,11 +34,14 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .st-key-convo_save, .st-key-chat_convo_save, .st-key-all_convo_save {
+    .st-key-convo_save {
         background: #FFAFA3 !important;
         border-radius: 10px !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
+    }
+    .st-key-chat_convo_save, .st-key-all_convo_save {
+        border: 1px solid #FFAFA3 !important;
     }
     </style>
 """, unsafe_allow_html=True)
