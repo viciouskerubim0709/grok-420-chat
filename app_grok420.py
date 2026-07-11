@@ -27,7 +27,7 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 20rem !important;
         overflow-y: scroll !important;
-        padding-right: 1rem !important;
+        padding-right: 0rem !important;
         padding-bottom: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
