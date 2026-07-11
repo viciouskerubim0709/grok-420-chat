@@ -25,7 +25,7 @@ st.markdown("""
         min-width: 110% !important;
         max-height: 24rem !important;
         overflow-y: scroll !important;
-        padding-right: 0rem !important;
+        padding-right: 1rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
