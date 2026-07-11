@@ -59,6 +59,7 @@ st.markdown("""
         background: #FDA996 !important;
         border-radius: 10px !important;
         border: 1px solid #D8C2BA !important;
+        padding: 1rem !important;
         justify-content: center
     }
 """, unsafe_allow_html=True)
