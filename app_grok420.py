@@ -352,7 +352,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
 
-            with st.container(key="chat_list", gap="xsmall"):
+            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
                 col1, col2 = st.columns([7.5, 1.2])
         
                 with col1:
