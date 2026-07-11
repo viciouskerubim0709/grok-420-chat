@@ -52,8 +52,6 @@ st.markdown("""
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
-        min-width: 14rem !important;
-        max-width: 14rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -367,7 +365,7 @@ with st.sidebar:
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
-                with st.popover("", width="content"):
+                with st.popover("", width=208):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
