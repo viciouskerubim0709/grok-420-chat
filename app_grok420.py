@@ -54,7 +54,8 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-current_convo_save, .st-key-all_convo_save {
-        border: 3px solid #FF7E6B !important;
+        border: 2px solid #FF7E6B !important;
+        border-radius: 10px !important;
     </style>
 """, unsafe_allow_html=True)
 
