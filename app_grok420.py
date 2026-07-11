@@ -48,7 +48,7 @@ st.markdown("""
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
-        background: #FFA996 !important;
+        background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
@@ -56,7 +56,7 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-current_convo_save, .st-key-all_convo_save {
-        background: #FFA996 !important;
+        background: #FFAFA3 !important;
         border-radius: 10px !important;
         border: 1px solid #D8C2BA !important;
         padding-left: 1rem !important;
