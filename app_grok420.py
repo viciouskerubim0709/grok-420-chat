@@ -22,6 +22,8 @@ st.markdown("""
     }
     .st-key-chat_list {
         border: 0 !important;
+        padding-top: 0rem;
+        padding-bottom: 0rem;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
