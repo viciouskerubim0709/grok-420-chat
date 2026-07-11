@@ -47,13 +47,12 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-convo_save {
-        background: #FFAFA3 !important;
+        background: #FFD3C6 !important;
         border-radius: 10px !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
     .st-key-chat_convo_save, .st-key-all_convo_save {
-        background: #FFD3C6 !important;
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
     }
