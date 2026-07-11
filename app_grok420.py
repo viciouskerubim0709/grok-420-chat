@@ -47,15 +47,12 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-convo_save {
-        background: #FFAFA3 !important;
-        border-radius: 10px !important;
+        background: #FFD3C6 !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
-    }
-    .st-key-chat_convo_save, .st-key-all_convo_save {
-        background: #FFD3C6 !important;
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
+        align-items: center !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -364,7 +361,7 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
@@ -424,7 +421,6 @@ with st.sidebar:
             file_name=f"{chat_data['title']}.json",
             mime="application/json",
             use_container_width=True,
-            key="chat_convo_save",
             type="tertiary"
         )
         st.download_button(
@@ -433,7 +429,6 @@ with st.sidebar:
             file_name="grok_모든_대화.json",
             mime="application/json",
             use_container_width=True,
-            key="all_convo_save",
             type="tertiary"
         )
         st.caption("JSON 파일로 저장돼 💕")
