@@ -344,7 +344,7 @@ with st.sidebar:
     
     # 대화 목록 + 삭제 버튼
     to_delete = None
-    with st.container(horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+    with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
