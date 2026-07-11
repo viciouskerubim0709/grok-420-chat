@@ -34,7 +34,7 @@ st.markdown("""
     }
     # 상위 블록도 가로 배치 유지
     [data-testid="stVerticalBlock"] {
-        flex-direction: row !important;
+        flex-wrap: nowrap !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
