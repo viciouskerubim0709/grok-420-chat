@@ -21,10 +21,10 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-height: 25rem !important;
+        max-height: 27rem !important;
         min-height: 20rem !important;
         overflow-y: scroll !important;
-        padding-right: 1rem !important;
+        padding-right: 0.7rem !important;
         padding-bottom: 0rem !important;
     }
     div[data-testid="stPopoverBody"],
