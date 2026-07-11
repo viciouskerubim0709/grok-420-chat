@@ -21,8 +21,7 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-width: 110% !important;
-        flex: 1 1 auto;
+        margin: 0;
         max-height: 24rem !important;
         overflow-x: hidden !important;
         overflow-y: scroll !important;
