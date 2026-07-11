@@ -347,7 +347,7 @@ with st.sidebar:
             
             with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                if st.button(label, key=f"chat_{chat_id}", width="stretch"):
                     switch_chat(chat_id)
     
                 with st.popover("💕", width="content"):
@@ -360,7 +360,7 @@ with st.sidebar:
                         label_visibility="collapsed"
                     )
     
-                    if st.button("💖 저장", key=f"save_title_{chat_id}", use_container_width=True):
+                    if st.button("💖 저장", key=f"save_title_{chat_id}", width="stretch"):
                         if new_title.strip():
                             new_title_clean = new_title.strip()
     
@@ -375,7 +375,7 @@ with st.sidebar:
                     st.divider()
     
                     # ==================== 삭제 ====================
-                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", width="stretch"):
                         delete_chat_from_db(chat_id)
     
                         # session_state에서도 삭제
