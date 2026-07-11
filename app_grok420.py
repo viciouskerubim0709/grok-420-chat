@@ -27,7 +27,6 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 430px !important;
         overflow-y: scroll !important;
-        padding-right: 0.5rem !important;
         padding-bottom: 0rem !important;
     }
     div[data-testid="stPopoverBody"],
