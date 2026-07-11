@@ -20,6 +20,9 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
+    .st-key-chat_list {
+        max-height: 400px !important;
+    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
@@ -322,7 +325,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    with st.container():
+    with st.container(key="chat_list"):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
