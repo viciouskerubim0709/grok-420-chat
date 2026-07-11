@@ -31,7 +31,6 @@ st.markdown("""
         overflow-y: scroll !important;
         align-items: center;
         padding-right: 0.5rem !important;
-        padding-bottom: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
@@ -40,8 +39,6 @@ st.markdown("""
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
         border-radius: 10px !important;
-        text-align: left !important;
-        justify-content: flex-start !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
@@ -55,14 +52,12 @@ st.markdown("""
         background-color: transparent !important;
         border: 0 !important;
     }
-    .st-key-current_convo_save, .st-key-all_convo_save {
+    .st-key-convo_save {
         background: #FFAFA3 !important;
         border-radius: 10px !important;
         border: 1px solid #D8C2BA !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
-        display: flex !important;
-        justify-content: center !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -421,6 +416,7 @@ with st.sidebar:
 
     # 저장 / 내보내기 버튼
     if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
+        st.caption('JSON 파일로 저장돼요')
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
