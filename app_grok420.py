@@ -27,6 +27,15 @@ st.markdown("""
         padding-right: 1rem !important;
         padding-bottom: 0rem !important;
     }
+    # 컬럼 컨테이너의 flex 방향을 가로(row)로 강제 고정
+    [data-testid="column"] {
+        flex-direction: row !important;
+        flex: 1 !important;
+    }
+    # 상위 블록도 가로 배치 유지
+    [data-testid="stVerticalBlock"] {
+        flex-direction: row !important;
+    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
