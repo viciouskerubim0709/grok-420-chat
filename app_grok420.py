@@ -21,7 +21,7 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-height: 35rem !important;
+        max-height: 23rem !important;
         overflow-y: scroll !important;
         padding-right: 0.3rem !important;
     }
@@ -33,12 +33,6 @@ st.markdown("""
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
-    }
-    .st-key-convo_save {
-        background: #FFAFA3 !important;
-        border-radius: 10px !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -401,7 +395,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 저장 ", width="stretch", key="convo_save", type="tertiary"):
+    if st.button("📥 대화 저장 ", width="stretch", key="convo_save"):
         st.caption('JSON 파일로 저장돼 💕')
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
