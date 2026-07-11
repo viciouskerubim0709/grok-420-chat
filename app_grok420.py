@@ -27,8 +27,7 @@ st.markdown("""
         padding-bottom: 0rem !important;
     }
     [data-testid="column"] {
-        flex-grow: 1 !important;
-        flex-basis: auto !important;
+        flex: 1 1 auto !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
