@@ -21,22 +21,23 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-width: 108% !important;
-        min-width: 108% !important;
-        max-height: 24rem !important;
+        max-height: 25rem !important;\
         overflow-y: scroll !important;
-        padding-right: 1rem !important;
     }
-    @media (max-width: 768px) {
-        .st-key-chat_list {
-            max-width: 100% !important;
-            min-width: 100% !important;
-            padding-right: 0rem !important;
-        }
-    }    
+    .st-key-chat_list [class*="st-key-chat_item_"] {
+        flex: 1 1 auto !important;
+        background-color: #ffece5 !important;
+        padding-left: 1rem !important;
+        padding-bottom: 0.2rem !important;
+        padding-top: 0.2rem !important;
+        border-radius: 10px !important;
+    }
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
-        background: #ffafa3 !important;
+        background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button,
     [data-testid="stFileUploaderDropzone"] {
@@ -53,8 +54,7 @@ st.markdown("""
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
     }
-    </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True) 
 
 
 # 한국 시간 기준
@@ -356,19 +356,16 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list"):
+    with st.container(key="chat_list", gap="small"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            col1, col2 = st.columns([7.5, 1.2])
-    
-            with col1:
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+            with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
+                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
-            with col2:
-                with st.popover("💕", width="content"):
+                with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
@@ -389,7 +386,27 @@ with st.sidebar:
     
                             st.success("제목이 수정되었습니다.")
                             st.rerun()
-                
+    
+                    st.divider()
+    
+                    # ==================== 삭제 ====================
+                    if st.button("🗑️ 이 대화 삭제", key=f"del_{chat_id}", use_container_width=True):
+                        delete_chat_from_db(chat_id)
+    
+                        # session_state에서도 삭제
+                        if chat_id in st.session_state.chats:
+                            del st.session_state.chats[chat_id]
+    
+                        # 현재 보고 있던 채팅을 지웠을 때
+                        if chat_id == st.session_state.current_session:
+                            if st.session_state.chats:
+                                st.session_state.current_session = list(st.session_state.chats.keys())[0]
+                            else:
+                                # 마지막 채팅이었을 경우 새로 생성 + 저장
+                                create_default_chat()
+    
+                        st.rerun()
+                    
     st.divider()
 
     # 저장 / 내보내기 버튼
