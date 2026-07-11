@@ -26,6 +26,9 @@ st.markdown("""
         padding-right: 1rem !important;
         padding-bottom: 0rem !important;
     }
+    .st-key-chat_list .st-key-chat_title {
+        flex: 1 1 auto !important;
+    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
@@ -342,14 +345,11 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            col1, col2 = st.columns([7.5, 1.2])
-    
-            with col1:
+            with st.container(horizontal_alignment="left", vertical_alignment="center", gap="xsmall", key="chat_title"):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
     
-            with col2:
                 with st.popover("💕", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
