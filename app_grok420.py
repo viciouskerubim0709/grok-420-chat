@@ -51,7 +51,6 @@ st.markdown("""
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         border-radius: 10px !important;
-        align-items: center !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -409,29 +408,28 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    with st.container(key="convo_save", width="content"):
-        if st.button("📥 대화 저장 ", type="tertiary"):
-            chat_data = st.session_state.chats[current]
-            all_data = st.session_state.chats
-            json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
-            json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-            st.download_button(
-                label="💾 현재 대화 다운로드",
-                data=json_str_chat,
-                file_name=f"{chat_data['title']}.json",
-                mime="application/json",
-                use_container_width=True,
-                type="tertiary"
-            )
-            st.download_button(
-                label="📦 모든 대화 한 번에 다운로드",
-                data=json_str_all,
-                file_name="grok_모든_대화.json",
-                mime="application/json",
-                use_container_width=True,
-                type="tertiary"
-            )
-            st.caption("JSON 파일로 저장돼 💕")
+    if st.button("📥 대화 저장 ", key="convo_save", type="tertiary"):
+        chat_data = st.session_state.chats[current]
+        all_data = st.session_state.chats
+        json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
+        json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
+        st.download_button(
+            label="💾 현재 대화 다운로드",
+            data=json_str_chat,
+            file_name=f"{chat_data['title']}.json",
+            mime="application/json",
+            use_container_width=True,
+            type="tertiary"
+        )
+        st.download_button(
+            label="📦 모든 대화 한 번에 다운로드",
+            data=json_str_all,
+            file_name="grok_모든_대화.json",
+            mime="application/json",
+            use_container_width=True,
+            type="tertiary"
+        )
+        st.caption("JSON 파일로 저장돼 💕")
 
 
 # ====================== 타이틀 꾸미기 ======================
