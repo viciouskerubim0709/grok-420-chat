@@ -23,7 +23,7 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 25rem !important;
         overflow-y: scroll !important;
-        flex: 1 1 auto !important;
+        flex-shrink: 1 !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
