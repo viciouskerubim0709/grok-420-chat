@@ -21,7 +21,7 @@ st.markdown("""
         max-height: 150px !important;
     }
     .st-key-chat_list {
-        max-height: 400px !important;
+        border: 0 !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
