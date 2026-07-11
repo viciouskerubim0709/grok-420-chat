@@ -20,6 +20,10 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
+    [data - testid = "stSidebar"] {
+        min-width: 19rem !important;
+        max-width: 19rem !important;
+    }
     .st-key-chat_list {
         max-height: 20rem !important;
         overflow-y: scroll !important;
@@ -28,6 +32,9 @@ st.markdown("""
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
+    }
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -345,7 +352,7 @@ with st.sidebar:
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
-            with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
+            with st.container(key=f"chat_item_{chat_id}", gap=None):
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
