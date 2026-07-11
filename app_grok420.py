@@ -417,7 +417,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True, key="current_convo_save", type="tertiary"):
+    if st.button("💾 현재 대화 다운로드", width="content", key="current_convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
         json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
         st.download_button(
@@ -428,7 +428,7 @@ with st.sidebar:
             use_container_width=True
         )
 
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True, key="all_convo_save", type="tertiary"):
+    if st.button("📦 모든 대화 한 번에 다운로드", width="content", key="all_convo_save", type="tertiary"):
         all_data = st.session_state.chats
         json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
