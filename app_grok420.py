@@ -20,6 +20,11 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
+    [data - testid = "stSidebar"] {
+        min - width: 17rem !important;
+        max - width: 17
+        rem !important;
+        }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #ffafa3 !important;
