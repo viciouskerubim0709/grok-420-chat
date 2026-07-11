@@ -55,7 +55,6 @@ st.markdown("""
     .st-key-convo_save {
         background: #FFAFA3 !important;
         border-radius: 10px !important;
-        border: 1px solid #D8C2BA !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
@@ -416,6 +415,7 @@ with st.sidebar:
 
     # 저장 / 내보내기 버튼
     if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
+        st.caption('JSON 파일로 저장돼 💕')
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
@@ -434,7 +434,7 @@ with st.sidebar:
             mime="application/json",
             use_container_width=True
         )
-        st.caption('JSON 파일로 저장돼요')
+
 
 
 # ====================== 타이틀 꾸미기 ======================
