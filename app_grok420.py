@@ -365,7 +365,7 @@ with st.sidebar:
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
-                with st.popover("", width=208):
+                with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
