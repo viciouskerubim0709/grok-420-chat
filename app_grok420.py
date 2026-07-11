@@ -25,8 +25,6 @@ st.markdown("""
         max-width: 17rem !important;
     }
     .st-key-chat_list {
-        max-height: 430px !important;
-        overflow-y: scroll !important;
         padding-bottom: 0rem !important;
     }
     div[data-testid="stPopoverBody"],
@@ -332,7 +330,7 @@ with st.sidebar:
 
     st.divider()
     
-    with st.container(key="chat_list"):
+    with st.container(key="chat_list", height=430):
     
         sorted_chats = sorted(
         st.session_state.chats.items(),
