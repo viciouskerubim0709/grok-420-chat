@@ -27,7 +27,7 @@ st.markdown("""
         padding-bottom: 0rem !important;
     }
     .st-key-chat_list .st-key-chat_title {
-        flex: 1 1 auto !important;
+
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
