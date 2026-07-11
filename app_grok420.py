@@ -23,7 +23,6 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 25rem !important;
         overflow-y: scroll !important;
-        padding-right: 0.3rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -346,7 +345,7 @@ with st.sidebar:
     
             with col1:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
+                if st.button(label, key=f"chat_{chat_id}", width="stretch"):
                     switch_chat(chat_id)
     
             with col2:
