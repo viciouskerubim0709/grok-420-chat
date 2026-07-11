@@ -27,14 +27,14 @@ st.markdown("""
     .st-key-chat_list {
         min-width: 17rem !important;
         max-width: 17rem !important;
-        max-height: 22rem !important;
+        max-height: 22rem !important;\
         overflow-y: scroll !important;
+        align-items: center;
         padding-right: 0rem !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
-        font-size: 15px !important;
         padding-left: 1rem !important;
         border-radius: 10px !important;
     }
@@ -353,7 +353,7 @@ with st.sidebar:
     # 대화 목록 + 삭제 버튼
     to_delete = None
 
-    with st.container(key="chat_list", horizontal_alignment="center", gap="xsmall"):
+    with st.container(key="chat_list", gap="xsmall"):
         for chat_id, chat in list(sorted_chats):
             is_current = (chat_id == current)
     
