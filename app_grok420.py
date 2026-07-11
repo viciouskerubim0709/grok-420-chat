@@ -333,12 +333,12 @@ with st.sidebar:
     
         # 대화 목록 + 삭제 버튼
         to_delete = None
-
-        with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
-        
-            for chat_id, chat in list(sorted_chats):
-                is_current = (chat_id == current)
-        
+    
+        for chat_id, chat in list(sorted_chats):
+            is_current = (chat_id == current)
+            
+            with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
+    
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
