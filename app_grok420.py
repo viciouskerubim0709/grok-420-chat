@@ -23,6 +23,7 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 25rem !important;
         overflow-y: scroll !important;
+        padding-right: 0.5rem !important;
     }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
@@ -32,6 +33,12 @@ st.markdown("""
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
+    }
+    .st-key-convo_save {
+        background: #FFAFA3 !important;
+        border-radius: 10px !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -345,7 +352,7 @@ with st.sidebar:
     
             with col1:
                 label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", width="stretch"):
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True):
                     switch_chat(chat_id)
     
             with col2:
@@ -394,27 +401,27 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("💾 현재 대화 다운로드", use_container_width=True):
+    if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
+        st.caption('JSON 파일로 저장돼 💕')
         chat_data = st.session_state.chats[current]
-        json_str = json.dumps(chat_data, ensure_ascii=False, indent=2)
+        all_data = st.session_state.chats
+        json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
+        json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
-            label="📥 JSON 파일로 저장",
-            data=json_str,
+            label="💾 현재 대화 다운로드",
+            data=json_str_chat,
             file_name=f"{chat_data['title']}.json",
             mime="application/json",
             use_container_width=True
         )
-
-    if st.button("📦 모든 대화 한 번에 다운로드", use_container_width=True):
-        all_data = st.session_state.chats
-        json_str = json.dumps(all_data, ensure_ascii=False, indent=2)
         st.download_button(
-            label="📥 전체 JSON 다운로드",
-            data=json_str,
+            label="📦 모든 대화 한 번에 다운로드",
+            data=json_str_all,
             file_name="grok_모든_대화.json",
             mime="application/json",
             use_container_width=True
         )
+
 
 
 # ====================== 타이틀 꾸미기 ======================
