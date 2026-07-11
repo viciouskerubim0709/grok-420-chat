@@ -20,6 +20,9 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
+    [data-testid="stSidebar"] {
+        min-width: 10rem !important;
+    }
     .st-key-chat_list {
         max-height: 430px !important;
         overflow-y: scroll !important;
