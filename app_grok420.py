@@ -25,7 +25,7 @@ st.markdown("""
         overflow-y: scroll !important;
         padding-right: 0rem !important;
     }
-    .st-key-chat_list [class*="st-key-chat_item_"] {
+    .st-key-chat_list [class*="st-key-chat_"] {
         max-width: 86px !important;
     }
     
