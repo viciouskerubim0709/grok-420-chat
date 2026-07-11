@@ -37,8 +37,8 @@ st.markdown("""
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
         padding-left: 1rem !important;
-        padding-bottom: 0.1rem !important;
-        padding-top: 0.1rem !important;
+        padding-bottom: 0.2rem !important;
+        padding-top: 0.2rem !important;
         border-radius: 10px !important;
         text-align: left !important;
         justify-content: flex-start !important;
