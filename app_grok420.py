@@ -24,13 +24,13 @@ st.markdown("""
         min-width: 19rem !important;
         max-width: 19rem !important;
     }
-    .st-key-chat_list {
+    div[data-testid="stElementContainer"]:has(div[data-keys*="chat_list"]) {
         max-height: 25rem !important;
         min-height: 20rem !important;
         overflow-y: scroll !important;
         padding-bottom: 0rem !important;
     }
-    [data-testid="column"] {
+    div[data-testid="stElementContainer"]:has(div[data-keys*="chat_title"]) {
         flex: 1 1 auto !important;
     }
     [data-testid="stHorizontalBlock"] {
