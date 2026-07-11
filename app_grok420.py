@@ -23,6 +23,7 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 25rem !important;\
         overflow-y: scroll !important;
+        float: left !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
