@@ -32,7 +32,7 @@ st.markdown("""
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
         border-radius: 10px !important;
-        border: 1.5px solid #D5C2BB !important;
+        border: 1.5px solid #FFAFA3 !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
@@ -47,13 +47,13 @@ st.markdown("""
         border: 0 !important;
     }
     .st-key-convo_save {
-        background: #FFD3C6 !important;
+        background: #FFAFA3 !important;
         border-radius: 10px !important;
-        border: 1.5px solid #FFAFA3 !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
-    .st-key-convo_save_option {
+    .st-key-chat_convo_save, .st-key-all_convo_save {
+        background: #FFD3C6 !important;
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
     }
@@ -348,8 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    st.markdown("💖💖💖", text_alignment="center")
-
+    st.divider()
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
@@ -365,7 +364,7 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
@@ -411,32 +410,33 @@ with st.sidebar:
     
                         st.rerun()
                     
-
     st.divider()
-    
+
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary"):
+    if st.button("📥 대화 저장 ", width="content", key="convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        with st.container(key="convo_save_option"):
-            st.download_button(
-                label="💾 현재 대화 다운로드",
-                data=json_str_chat,
-                file_name=f"{chat_data['title']}.json",
-                mime="application/json",
-                use_container_width=True,
-                type="tertiary"
-            )
-            st.download_button(
-                label="📦 모든 대화 한 번에 다운로드",
-                data=json_str_all,
-                file_name="grok_모든_대화.json",
-                mime="application/json",
-                use_container_width=True,
-                type="tertiary"
-            )
+        st.download_button(
+            label="💾 현재 대화 다운로드",
+            data=json_str_chat,
+            file_name=f"{chat_data['title']}.json",
+            mime="application/json",
+            use_container_width=True,
+            key="chat_convo_save",
+            type="tertiary"
+        )
+        st.download_button(
+            label="📦 모든 대화 한 번에 다운로드",
+            data=json_str_all,
+            file_name="grok_모든_대화.json",
+            mime="application/json",
+            use_container_width=True,
+            key="all_convo_save",
+            type="tertiary"
+        )
+        st.caption("JSON 파일로 저장돼 💕")
 
 
 # ====================== 타이틀 꾸미기 ======================
