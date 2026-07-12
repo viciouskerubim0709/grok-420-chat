@@ -28,7 +28,6 @@ st.markdown("""
         flex: 1 1 auto !important;
         word-break: keep-all !important;
         background-color: #ffece5 !important;
-        padding-right: 0.7rem !important;
         padding-left: 0rem !important;        
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
