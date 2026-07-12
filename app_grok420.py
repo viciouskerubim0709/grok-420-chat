@@ -43,8 +43,8 @@ st.markdown("""
         background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button {
-        padding-right: 0rem !important;
-        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        padding-left: 0rem !important;
         background-color: transparent !important;
         border: 0 !important;
     }
