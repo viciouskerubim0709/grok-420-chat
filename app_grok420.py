@@ -348,7 +348,12 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    st.divider()
+    col1, col2, col3 = st.columns([4, 2, 4])
+    
+    with col1 and col3:
+        st.markdown("💖")
+    with col2:
+        st.divider()
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
