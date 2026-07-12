@@ -20,7 +20,6 @@ st.markdown("""
         font-size: 16px !important;
         max-height: 150px !important;
     }
-    # 여기서부터 사이드바 설정
     .st-key-chat_list {
         max-height: 25rem !important;\
         overflow-y: scroll !important;
