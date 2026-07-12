@@ -62,7 +62,7 @@ st.markdown("""
     .st-key-convo_save_option {
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
-        padding: 1rem !important;
+        padding: 0.5rem !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -419,7 +419,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary"):
+    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary", gap=None):
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
