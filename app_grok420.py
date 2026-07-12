@@ -348,7 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    st.markdown("🌸🌸🌸", text_alignment="center")
+    st.markdown("💕💕💕", text_alignment="center")
 
 
     sorted_chats = sorted(
@@ -365,7 +365,7 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
                 if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
                     switch_chat(chat_id)
     
