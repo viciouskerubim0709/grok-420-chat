@@ -348,7 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    st.markdown("💖💖💖", text_alignment="center")
+    st.markdown("💖💖", text_alignment="center")
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
@@ -410,7 +410,8 @@ with st.sidebar:
     
                         st.rerun()
                     
-    st.divider()
+
+    st.markdown("💖💖", text_alignment="center")
 
     # 저장 / 내보내기 버튼
     if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary"):
