@@ -62,6 +62,7 @@ st.markdown("""
     .st-key-convo_save_option {
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
+        padding: 1rem !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -423,7 +424,7 @@ with st.sidebar:
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        with st.container(key="convo_save_option", gap=None):
+        with st.container(key="convo_save_option"):
             st.download_button(
                 label="💾 현재 대화 다운로드",
                 data=json_str_chat,
