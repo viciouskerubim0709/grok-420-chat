@@ -27,7 +27,7 @@ st.markdown("""
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
-        padding-left: 0.25rem !important;
+        padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
@@ -43,7 +43,7 @@ st.markdown("""
         background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button {
-        padding-right: 0.25rem !important;
+        padding-right: 0rem !important;
         padding-left: 0.5rem !important;
         background-color: transparent !important;
         border: 0 !important;
