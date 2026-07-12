@@ -413,7 +413,7 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 저장 ", width="stretch", key="convo_save", type="tertiary"):
+    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
@@ -435,7 +435,6 @@ with st.sidebar:
                 use_container_width=True,
                 type="tertiary"
             )
-            st.caption("JSON 파일로 저장돼 💕")
 
 
 # ====================== 타이틀 꾸미기 ======================
