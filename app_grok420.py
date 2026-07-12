@@ -43,7 +43,7 @@ st.markdown("""
         background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button {
-        padding-right: 1rem !important;
+        padding-right: 0.8rem !important;
         padding-left: 0rem !important;
         background-color: transparent !important;
         border: 0 !important;
@@ -424,7 +424,7 @@ with st.sidebar:
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        with st.container(key="convo_save_option", gap=None):
+        with st.container(key="convo_save_option"):
             st.download_button(
                 label="💾 현재 대화 다운로드",
                 data=json_str_chat,
