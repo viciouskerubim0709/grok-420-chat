@@ -49,10 +49,11 @@ st.markdown("""
     .st-key-convo_save {
         background: #FFD3C6 !important;
         border-radius: 10px !important;
+        border: 1.5px solid #FFAFA3 !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
-    .st-key-chat_convo_save, .st-key-all_convo_save {
+    .st-key-convo_save_option {
         border: 1.5px solid #FFAFA3 !important;
         border-radius: 10px !important;
     }
@@ -417,25 +418,24 @@ with st.sidebar:
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        st.download_button(
-            label="💾 현재 대화 다운로드",
-            data=json_str_chat,
-            file_name=f"{chat_data['title']}.json",
-            mime="application/json",
-            use_container_width=True,
-            key="chat_convo_save",
-            type="tertiary"
-        )
-        st.download_button(
-            label="📦 모든 대화 한 번에 다운로드",
-            data=json_str_all,
-            file_name="grok_모든_대화.json",
-            mime="application/json",
-            use_container_width=True,
-            key="all_convo_save",
-            type="tertiary"
-        )
-        st.caption("JSON 파일로 저장돼 💕")
+        with st.containter(key="convo_save_option")
+            st.download_button(
+                label="💾 현재 대화 다운로드",
+                data=json_str_chat,
+                file_name=f"{chat_data['title']}.json",
+                mime="application/json",
+                use_container_width=True,
+                type="tertiary"
+            )
+            st.download_button(
+                label="📦 모든 대화 한 번에 다운로드",
+                data=json_str_all,
+                file_name="grok_모든_대화.json",
+                mime="application/json",
+                use_container_width=True,
+                type="tertiary"
+            )
+            st.caption("JSON 파일로 저장돼 💕")
 
 
 # ====================== 타이틀 꾸미기 ======================
