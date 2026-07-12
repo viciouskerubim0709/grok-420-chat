@@ -418,7 +418,7 @@ with st.sidebar:
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        with st.containter(key="convo_save_option"):
+        with st.container(key="convo_save_option"):
             st.download_button(
                 label="💾 현재 대화 다운로드",
                 data=json_str_chat,
