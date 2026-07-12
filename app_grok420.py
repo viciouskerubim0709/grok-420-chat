@@ -43,7 +43,7 @@ st.markdown("""
         background: #FFAFA3 !important;
     }
     div[data-testid*="Popover"] > div > button {
-        padding-right: 0.5rem !important;
+        padding-right: 1rem !important;
         padding-left: 0rem !important;
         background-color: transparent !important;
         border: 0 !important;
@@ -419,12 +419,12 @@ with st.sidebar:
     st.divider()
 
     # 저장 / 내보내기 버튼
-    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary", gap=None):
+    if st.button("📥 대화 JSON 저장 ", width="stretch", key="convo_save", type="tertiary"):
         chat_data = st.session_state.chats[current]
         all_data = st.session_state.chats
         json_str_chat = json.dumps(chat_data, ensure_ascii=False, indent=2)
         json_str_all = json.dumps(all_data, ensure_ascii=False, indent=2)
-        with st.container(key="convo_save_option"):
+        with st.container(key="convo_save_option", gap=None):
             st.download_button(
                 label="💾 현재 대화 다운로드",
                 data=json_str_chat,
