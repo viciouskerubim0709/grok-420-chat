@@ -348,12 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col1 and col3:
-        st.markdown("💖")
-    with col2:
-        st.divider()
+    st.divider()
 
     sorted_chats = sorted(
     st.session_state.chats.items(),
@@ -369,10 +364,6 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                label = "**[현재💕]** " + chat["title"] if is_current else chat["title"]
-                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
-                    switch_chat(chat_id)
-    
                 with st.popover("", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
@@ -414,6 +405,9 @@ with st.sidebar:
                                 create_default_chat()
     
                         st.rerun()
+                label = "**[현재✨]** " + chat["title"] if is_current else chat["title"]
+                if st.button(label, key=f"chat_{chat_id}", use_container_width=True, type="tertiary"):
+                    switch_chat(chat_id)
                     
     st.divider()
 
