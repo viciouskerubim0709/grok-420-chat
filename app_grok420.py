@@ -46,6 +46,7 @@ st.markdown("""
     [data-testid="stFileUploaderDropzone"] {
         background-color: transparent !important;
         border: 0 !important;
+        padding-right: 0rem !important;
     }
     .st-key-convo_save {
         background: #FFD3C6 !important;
