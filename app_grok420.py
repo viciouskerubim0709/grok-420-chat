@@ -348,7 +348,7 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
-    col1, col2, col3 = st.columns([4, 2, 4])
+    col1, col2, col3 = st.columns([1, 2, 1])
     
     with col1 and col3:
         st.markdown("💖")
