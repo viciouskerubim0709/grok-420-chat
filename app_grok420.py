@@ -363,7 +363,7 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                with st.popover(icon="💕", width="content"):
+                with st.popover(*, icon="💕", width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
