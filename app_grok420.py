@@ -33,7 +33,7 @@ st.markdown("""
         padding-top: 0.3rem !important;
         word-break: keep-all !important;
         border-radius: 10px !important;
-        border: 1.2px solid #D5C2BB !important;
+        border: 1.2px solid #FFAFA3 !important;
     }
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
