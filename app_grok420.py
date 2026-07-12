@@ -23,12 +23,11 @@ st.markdown("""
     .st-key-chat_list {
         max-height: 25rem !important;\
         overflow-y: scroll !important;
-        float: left !important;
     }
     .st-key-chat_list [class*="st-key-chat_item_"] {
         flex: 1 1 auto !important;
         background-color: #ffece5 !important;
-        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         padding-bottom: 0.2rem !important;
         padding-top: 0.2rem !important;
         border-radius: 10px !important;
@@ -364,7 +363,7 @@ with st.sidebar:
             is_current = (chat_id == current)
     
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
-                with st.popover("", width="content"):
+                with st.popover(width="content"):
                     # ==================== 제목 수정 ====================
                     st.write("**제목 수정**")
                     new_title = st.text_input(
