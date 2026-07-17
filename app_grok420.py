@@ -373,7 +373,7 @@ with st.sidebar:
             with st.container(key=f"chat_item_{chat_id}", horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap=None):
                 with st.popover("💕", icon=None, width="content"):
                     # ==================== 제목 수정 ====================
-                    st.write("**제목 수정**")
+                    st.markdown("**제목 수정**")
                     new_title = st.text_input(
                         "새 제목",
                         value=chat["title"],
@@ -646,7 +646,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
                 use_tools=use_tools
             )
 
-            st.write(answer)
+            st.markdown(answer)
             if tool_calls:
                 st.info(f"Tool 호출됨: {tool_calls}")
 
