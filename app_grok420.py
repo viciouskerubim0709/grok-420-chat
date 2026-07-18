@@ -641,7 +641,7 @@ if send_button and (prompt.strip() or (uploaded_files and len(uploaded_files) > 
         with st.spinner("아기 생각 중... 사진들 보고, 웹도 뒤지고, X도 찾아보고 있어! 🍼✨"):
             answer, tool_calls = call_grok_with_vision(
                 api_messages,
-                model="grok-4.20-0309-reasoning",
+                model="grok-4.20-0309-non-reasoning",
                 use_tools=use_tools
             )
 
