@@ -36,6 +36,9 @@ st.markdown("""
         border-radius: 10px !important;
         border: 1.2px solid #FFAFA3 !important;
     }
+    .st-key-chat_list [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+    }
     div[data-testid="stPopoverBody"],
     div[data-testid*="Popover"] > div:not(:has(> button)){
         background: #FFAFA3 !important;
