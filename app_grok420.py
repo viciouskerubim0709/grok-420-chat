@@ -76,15 +76,16 @@ time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 # ====================== 앱 방치 시 자동 새로고침 ======================
 components.html("""
 <script>
-const THRESHOLD = 3 * 60 * 1000; // 3분 이상 백그라운드였으면
+const THRESHOLD = 3 * 60 * 1000; // 3분
 let hiddenTime = null;
 
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
+// 반드시 window.parent 를 써야 메인 페이지에 적용됨
+window.parent.document.addEventListener('visibilitychange', () => {
+  if (window.parent.document.hidden) {
     hiddenTime = Date.now();
   } else if (hiddenTime && (Date.now() - hiddenTime > THRESHOLD)) {
-    // 오래 방치됐다가 돌아옴 → 강제 새로고침
-    window.location.reload();
+    // 강제 새로고침 (캐시 무시)
+    window.parent.location.reload(true);
   }
 });
 </script>
