@@ -4,4 +4,3 @@ streamlit_javascript
 pytz
 st-copy
 clipboard
-psutil
