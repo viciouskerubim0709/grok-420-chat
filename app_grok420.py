@@ -580,7 +580,7 @@ uploaded_files = st.file_uploader(
 # 미리보기 (여러 장 지원)
 if uploaded_files:
     st.caption(f"📤 전송될 사진 ({len(uploaded_files)}장) — '보내기' 버튼을 누르면 업로드돼요")
-    preview_cols = st.columns(min(len(uploaded_files), 4))
+    preview_cols = st.columns(min(len(uploaded_files), 4), gap="xxsmall")
     for idx, file in enumerate(uploaded_files):
         with preview_cols[idx % 4]:
             st.image(file, width=160, caption=file.name[:18])
