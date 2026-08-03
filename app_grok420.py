@@ -17,7 +17,7 @@ import psutil
 process = psutil.Process(os.getpid())
 mem = process.memory_info().rss / 1024 / 1024  # MB 단위
 
-st.wriet("현재 메모리 사용량", f"{mem:.1f} MB")
+st.write("현재 메모리 사용량", f"{mem:.1f} MB")
 
 
 
