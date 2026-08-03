@@ -12,12 +12,12 @@ import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
-import psutil
+#import psutil
 
-process = psutil.Process(os.getpid())
-mem = process.memory_info().rss / 1024 / 1024  # MB 단위
-
-st.write("현재 메모리 사용량", f"{mem:.1f} MB")
+# ==================== 디버깅용 메모리 ======================
+#process = psutil.Process(os.getpid())
+#mem = process.memory_info().rss / 1024 / 1024  # MB 단위
+#st.write("현재 메모리 사용량", f"{mem:.1f} MB")
 
 
 
