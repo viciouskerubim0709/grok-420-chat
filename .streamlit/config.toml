@@ -6,4 +6,4 @@ textColor = "#2C1810"              # 글자색 (따뜻한 다크 브라운)
 base = "light"
 
 [server]
-disconnectedSessionTTL = 900    #웹소켓끊긴 후 세션보존기간
+disconnectedSessionTTL = 1260    #웹소켓끊긴 후 세션보존기간
