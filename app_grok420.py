@@ -84,7 +84,7 @@ time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 # ====================== 앱 방치 시 자동 새로고침 ======================
 components.html("""
 <script>
-const THRESHOLD = 15 * 60 * 1000; // 15분
+const THRESHOLD = 20 * 60 * 1000; // 15분
 let hiddenTime = null;
 
 // 반드시 window.parent 를 써야 메인 페이지에 적용됨
