@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from openai import OpenAI
 import uuid
 import json
@@ -71,6 +72,23 @@ st.markdown("""
 kst = pytz.timezone('Asia/Seoul')
 current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
+
+# ====================== 앱 방치 시 자동 새로고침 ======================
+components.html("""
+<script>
+const THRESHOLD = 3 * 60 * 1000; // 3분 이상 백그라운드였으면
+let hiddenTime = null;
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    hiddenTime = Date.now();
+  } else if (hiddenTime && (Date.now() - hiddenTime > THRESHOLD)) {
+    // 오래 방치됐다가 돌아옴 → 강제 새로고침
+    window.location.reload();
+  }
+});
+</script>
+""", height=0)
 
 
 # ====================== Supabase 연결 ======================
