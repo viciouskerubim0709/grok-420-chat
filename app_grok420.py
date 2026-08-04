@@ -81,21 +81,29 @@ kst = pytz.timezone('Asia/Seoul')
 current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
-# ====================== 앱 방치 시 자동 새로고침 ======================
+# ================ 모바일 앱 방치 시 자동 새로고침 ======================
 components.html("""
 <script>
-const THRESHOLD = 20 * 60 * 1000; // 20분
-let hiddenTime = null;
+(function() {
+  // 모바일 감지 (User-Agent + 터치 지원)
+  const isMobile = /Android|webOS|IEMobile/i.test(navigator.userAgent)
+                   || ('ontouchstart' in window && window.innerWidth <= 1024);
 
-// 반드시 window.parent 를 써야 메인 페이지에 적용됨
-window.parent.document.addEventListener('visibilitychange', () => {
-  if (window.parent.document.hidden) {
-    hiddenTime = Date.now();
-  } else if (hiddenTime && (Date.now() - hiddenTime > THRESHOLD)) {
-    // 강제 새로고침 (캐시 무시)
-    window.parent.location.reload(true);
-  }
-});
+  if (!isMobile) return;  // 데스크톱이면 아무것도 안 함
+
+  const THRESHOLD = 20 * 60 * 1000; // 20분
+  let hiddenTime = null;
+  
+  // 반드시 window.parent 를 써야 메인 페이지에 적용됨
+  window.parent.document.addEventListener('visibilitychange', () => {
+    if (window.parent.document.hidden) {
+      hiddenTime = Date.now();
+    } else if (hiddenTime && (Date.now() - hiddenTime > THRESHOLD)) {
+      // 강제 새로고침 (캐시 무시 시도)
+      window.parent.location.reload(true);
+    }
+  });
+})();
 </script>
 """, height=0)
 
