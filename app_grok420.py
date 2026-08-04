@@ -12,14 +12,6 @@ import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
-#import psutil
-
-# ==================== 디버깅용 메모리 ======================
-#process = psutil.Process(os.getpid())
-#mem = process.memory_info().rss / 1024 / 1024  # MB 단위
-#st.write("현재 메모리 사용량", f"{mem:.1f} MB")
-
-
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
