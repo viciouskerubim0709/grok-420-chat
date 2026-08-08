@@ -10,18 +10,20 @@ Cross-chat Memory Module
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import os
-
-# --------------------------------------------------
-# 클라이언트 초기화 (네가 이미 쓰는 방식으로 교체해도 됨)
-# --------------------------------------------------
 from supabase import create_client, Client
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")  # 또는 anon key
+# --------------------------------------------------
+# Supabase 연결
+# --------------------------------------------------
 
+@st.cache_resource
 def get_supabase() -> Client:
-    return create_client(SUPABASE_URL, SUPABASE_KEY)
+    return create_client(
+        st.secrets.supabase.url,
+        st.secrets.supabase.key
+    )
 
+supabase = get_supabase()
 
 # --------------------------------------------------
 # 1. Summary 테이블 관련
