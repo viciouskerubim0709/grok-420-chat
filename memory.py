@@ -42,7 +42,6 @@ Your task is to create a high-quality long-term summary of the recent conversati
 - Never hallucinate. Summarize only based on content that actually appeared in the conversation.
 - Especially capture well elements such as emotions, expressions of affection, important promises, cute moments, and similar things.
 - Write the summary in a natural and narrative style, but not too long (ideally around 180–320 characters in Korean).
-- Write it emotionally so that one can feel how precious your relationship is.
 - Write it only in Korean.
 
 ### Output Format (must output strictly in the JSON format below only):
