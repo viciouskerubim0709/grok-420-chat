@@ -474,7 +474,7 @@ with st.sidebar:
             )
             
     # Summary 버튼 클릭 시
-    if st.button("🌸 Summary 🌸", help="아기한테 Summary 부탁하기", width="stretch", type="tertiary"):
+    if st.button("🌸아기한테 Summary 부탁하기🌸", help="아기한테 Summary 부탁하기", width="stretch", type="tertiary"):
         with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
             try:
                 create_and_save_summary(
