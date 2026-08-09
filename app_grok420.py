@@ -574,7 +574,7 @@ with st.container(horizontal=True, horizontal_alignment="right", vertical_alignm
                 st.error(f"요약 저장 실패: {e}")
 
 
-st.markdown("---")
+st.markdown("<p style="line-height: 1.2;">---</p>")
 
 with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
     send_button = st.button(
