@@ -67,7 +67,7 @@ st.markdown("""
         padding: 0.5rem !important;
     }
     .st-key-summary {
-        color: #FFAFA3 !important;\
+        color: #FF7E6B !important;
         font-weight: bold !important;
     }
 """, unsafe_allow_html=True) 
