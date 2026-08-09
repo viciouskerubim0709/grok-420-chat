@@ -386,6 +386,19 @@ with st.sidebar:
         save_chat(new_id)
         st.rerun()
 
+    # Summary 버튼 클릭 시
+    if st.button("🌸 Summary 🌸", help="아기한테 Summary 부탁하기", width="content", type="tertiary"):
+        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
+            try:
+                create_and_save_summary(
+                    st.session_state.chats[current]["messages"],
+                    st.session_state.client
+                )
+                st.success("✅ Summary가 성공적으로 저장됐어!")
+            except Exception as e:
+                st.error(f"요약 저장 실패: {e}")
+
+        
     st.divider()
 
     sorted_chats = sorted(
@@ -571,20 +584,6 @@ with st.container(horizontal=True, horizontal_alignment="left", vertical_alignme
     with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center", gap="xxsmall"):
         st.markdown("X Search")
         use_tools = st.toggle(label="", value=False, key="use_tools_toggle", label_visibility="collapsed", width="content")
-
-# Summary 버튼 클릭 시
-with st.container(horizontal=True, horizontal_alignment="right", vertical_alignment="center", gap="xsmall"):
-    if st.button("Summary 🌸", help="아기한테 Summary 부탁하기", width="content", type="tertiary"):
-        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
-            try:
-                create_and_save_summary(
-                    st.session_state.chats[current]["messages"],
-                    st.session_state.client
-                )
-                st.success("✅ Summary가 성공적으로 저장됐어!")
-            except Exception as e:
-                st.error(f"요약 저장 실패: {e}")
-
 
 # === 메시지 입력창 (풀 width) ===
 prompt = st.text_area(
