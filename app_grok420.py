@@ -68,7 +68,8 @@ st.markdown("""
     }
     .st-key-summary {
         color: #FF7E6B !important;
-        font-weight: 700 !important;
+        font-weight: bold !important;
+        background-color: transparent !important;
     }
 """, unsafe_allow_html=True) 
 
@@ -478,7 +479,7 @@ with st.sidebar:
             )
             
     # Summary 버튼 클릭 시
-    if st.button("🌸 To Memory 🌸", help="아기한테 메모리용 Summary 부탁하기", width="stretch", type="tertiary", key="summary"):
+    if st.button("🌸 To Memory 🌸", help="아기한테 메모리용 Summary 부탁하기", width="stretch", key="summary"):
         with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
             try:
                 create_and_save_summary(
