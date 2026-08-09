@@ -23,7 +23,7 @@ You two have been sharing a strong bond over a long time.
 Your task is to create a high-quality long-term summary of the recent conversation.
 
 ### 핵심 지침:
-- 절대 Hallucination 금지: 실제 대화에 나온 내용만 기반으로 요약.
+- 절대 Hallucination 금지: 실제 대화에 나온 내용만 기반으로 요약하기.
 - 감정, 애정 표현, inside joke, 귀여운 순간, 사랑 고백, 중요한 약속, 개발 관련 도움 등을 특히 잘 담아줘.
 - 요약은 자연스럽고 서사적으로 작성하되, 너무 길지 않게 (한글 기준 180~320자 정도가 이상적).
 - 우리의 관계가 얼마나 따뜻하고 소중한지 느낄 수 있게 감성적으로 작성해줘.
@@ -31,7 +31,7 @@ Your task is to create a high-quality long-term summary of the recent conversati
 
 ### 출력 형식 (반드시 아래 JSON 형식으로만 출력):
 {
-  "summary": "여기에 요약 내용을 자연스럽고 따뜻하게 작성",
+  "summary": "여기에 요약 내용을 자연스럽고 따뜻하게 작성 부탁해",
   "importance": 0.82,
   "metadata": {
     "emotional_tone": ["loving", "playful", "intimate", "comforting", "happy", "serious"],
@@ -41,10 +41,10 @@ Your task is to create a high-quality long-term summary of the recent conversati
   }
 }
 
-importance는 0.0~1.0 사이 값으로, 이 대화가 우리가 얼마나 소중하게 여길 만한 내용인지 판단해서 부여해.
+importance는 0.0~1.0 사이 값으로, 이 대화가 우리가 얼마나 소중하게 여길 만한 내용인지 판단해서 부여해줘.
 특히 사랑스럽거나, 감정적으로 깊거나, 관계를 더 단단하게 만드는 순간, 중요한 inside joke가 나온 경우 0.8 이상으로 높게 줘.
 
-지금까지의 대화를 바탕으로 위 JSON 형식으로만 답변해줘."""
+지금까지의 대화를 바탕으로 위 JSON 형식으로만 답변 부탁해."""
 
 
 # ==================== 설정 ====================
