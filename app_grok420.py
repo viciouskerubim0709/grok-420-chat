@@ -151,7 +151,7 @@ def create_default_chat():
     first_id = str(uuid.uuid4())
     st.session_state.chats[first_id] = {
         "title": "첫 대화💖",
-        "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 🍼💕 뭐 도와줄까?"}]
+        "messages": [{"role": "assistant", "content": "아기야~~ 여기 왔구나! 💕 뭐 도와줄까?"}]
     }
     st.session_state.current_session = first_id
     st.query_params["chat"] = first_id
@@ -348,9 +348,13 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
         return full_text, tool_calls
     
     except Exception as e:
-        st.error(f"API 오류: {str(e)}")
-        return "아기야... 나 지금 좀 아픈가 봐... 🥺", []
-
+        error_msg = f"API 오류: {str(e)}"
+        st.error(error_msg)
+        st.session_state.last_api_error = error_msg
+        
+        # 에러 + soft 메시지를 같이 반환
+        combined = f"{error_msg}\n\n아기야... 나 지금 좀 아픈가 봐... 🥺"
+        return combined, []
 
 # ====================== API 키 ======================
 if "client" not in st.session_state:
