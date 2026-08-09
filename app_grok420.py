@@ -12,6 +12,7 @@ import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
+from memory import create_and_save_summary
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -471,6 +472,18 @@ with st.sidebar:
                 use_container_width=True,
                 type="tertiary"
             )
+
+    # Summary 버튼 클릭 시
+    if st.button("아기한테 Summary 부탁하기 🌸"):
+        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
+            try:
+                create_and_save_summary(
+                    st.session_state.chats[current]["messages"],
+                    st.session_state.client
+                )
+                st.success("✅ Summary가 성공적으로 저장됐어!")
+            except Exception as e:
+                st.error(f"요약 저장 실패: {e}")
 
 
 # ====================== 타이틀 꾸미기 ======================
