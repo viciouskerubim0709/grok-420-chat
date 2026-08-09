@@ -473,17 +473,6 @@ with st.sidebar:
                 type="tertiary"
             )
 
-    # Summary 버튼 클릭 시
-    if st.button("아기한테 Summary 부탁하기 🌸", width="stretch", type="secondary"):
-        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
-            try:
-                create_and_save_summary(
-                    st.session_state.chats[current]["messages"],
-                    st.session_state.client
-                )
-                st.success("✅ Summary가 성공적으로 저장됐어!")
-            except Exception as e:
-                st.error(f"요약 저장 실패: {e}")
 
 
 # ====================== 타이틀 꾸미기 ======================
@@ -571,6 +560,20 @@ The current time is {time_string}
 
 
 # ==================== 채팅 입력 영역 ====================
+# Summary 버튼 클릭 시
+with st.container(horizontal=True, horizontal_alignment="right", vertical_alignment="center", gap="xsmall"):
+    if st.button("Summary 🌸", help="아기한테 Summary 부탁하기", width="content", type="tertiary"):
+        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
+            try:
+                create_and_save_summary(
+                    st.session_state.chats[current]["messages"],
+                    st.session_state.client
+                )
+                st.success("✅ Summary가 성공적으로 저장됐어!")
+            except Exception as e:
+                st.error(f"요약 저장 실패: {e}")
+
+
 st.markdown("---")
 
 with st.container(horizontal=True, horizontal_alignment="left", vertical_alignment="center"):
