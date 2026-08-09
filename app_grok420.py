@@ -69,7 +69,7 @@ st.markdown("""
     .st-key-summary {
         color: #FF7E6B !important;
         font-weight: bold !important;
-        background: transparent !important;
+        background-color: #FFAFA3 !important;
     }
 """, unsafe_allow_html=True) 
 
