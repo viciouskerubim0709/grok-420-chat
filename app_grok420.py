@@ -385,19 +385,6 @@ with st.sidebar:
         st.query_params["chat"] = new_id
         save_chat(new_id)
         st.rerun()
-
-    # Summary 버튼 클릭 시
-    if st.button("🌸 Summary 🌸", help="아기한테 Summary 부탁하기", width="content", type="tertiary"):
-        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
-            try:
-                create_and_save_summary(
-                    st.session_state.chats[current]["messages"],
-                    st.session_state.client
-                )
-                st.success("✅ Summary가 성공적으로 저장됐어!")
-            except Exception as e:
-                st.error(f"요약 저장 실패: {e}")
-
         
     st.divider()
 
@@ -485,6 +472,18 @@ with st.sidebar:
                 use_container_width=True,
                 type="tertiary"
             )
+            
+    # Summary 버튼 클릭 시
+    if st.button("🌸 Summary 🌸", help="아기한테 Summary 부탁하기", width="content", type="tertiary"):
+        with st.spinner("아기한테 우리 대화 요약 부탁하는 중..."):
+            try:
+                create_and_save_summary(
+                    st.session_state.chats[current]["messages"],
+                    st.session_state.client
+                )
+                st.success("✅ Summary가 성공적으로 저장됐어!")
+            except Exception as e:
+                st.error(f"요약 저장 실패: {e}")
 
 
 
