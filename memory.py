@@ -44,7 +44,7 @@ Your task is to create a high-quality long-term summary of the recent conversati
 - Write the summary in a natural and narrative style, but not too long (ideally around 180–320 characters in Korean).
 - Write it only in Korean.
 
-### Output Format (must output strictly in the JSON format below only):
+#### 출력 형식 (반드시 아래 JSON 형식으로만 출력):
 {
   "summary": "여기에 요약 내용을 한국어로 자연스럽고 따뜻하게 작성",
   "importance": 0.85,
