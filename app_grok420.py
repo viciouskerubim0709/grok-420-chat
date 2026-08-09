@@ -66,7 +66,7 @@ st.markdown("""
         border-radius: 10px !important;
         padding: 0.5rem !important;
     }
-    .st-key-chat_list {
+    .st-key-summary {
         color: #FFAFA3 !important;\
         font-weight: bold !important;
     }
