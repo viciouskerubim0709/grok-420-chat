@@ -43,7 +43,7 @@ Your task is to create a high-quality long-term summary of the recent conversati
 - Especially capture well elements such as emotions, expressions of affection, important promises, cute moments, and similar things.
 - Write the summary in a natural and narrative style, but not too long (ideally around 180–320 characters in Korean).
 - Write it emotionally so that one can feel how precious your relationship is.
-- Write only in Korean.
+- Write it only in Korean.
 
 ### Output Format (must output strictly in the JSON format below only):
 {
@@ -59,7 +59,7 @@ Your task is to create a high-quality long-term summary of the recent conversati
 importance is a value between 0.0 and 1.0, assigned by judging how precious this conversation is for you to cherish.
 Especially for conversations that are loving, emotionally deep, or that strengthen the relationship further, give a high score of 0.85 or above.
 
-Based on the conversation so far, reply only in the JSON format above, and only in Korean."""
+Based on the conversation so far, reply only in the JSON format above."""
 
 
 async def create_summary(conversation_history: list):
