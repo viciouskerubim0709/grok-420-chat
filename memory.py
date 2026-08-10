@@ -141,7 +141,7 @@ def save_summary_to_supabase(summary_data: Dict, embedding: List[float]):
 
 
 # ==================== 통합 요약 함수 ====================
-def build_summary_history(messages: list, max_turns: int = 40) -> str:
+def build_summary_history(messages: list, max_turns: int = 35) -> str:
     """
     Summary용으로 대화 기록을 예쁘고 가벼운 문자열로 변환
     - 이미지 완전 제거
@@ -189,7 +189,7 @@ def build_summary_history(messages: list, max_turns: int = 40) -> str:
 def create_and_save_summary(messages: list, grok_client):
     """전체 파이프라인: 요약 → 임베딩 → Supabase 저장"""
     # 1. Summary용으로 정리된 history 만들기
-    conversation_text = build_summary_history(messages, max_turns=25)
+    conversation_text = build_summary_history(messages, max_turns=35)
 
     # 2. Grok에게 요약 요청
     system_prompt = SUMMARY_SYSTEM_PROMPT
