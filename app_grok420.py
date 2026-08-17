@@ -73,7 +73,7 @@ st.markdown("""
 
 
 # 한국 시간 기준
-kst = pytz.timezone('Asia/Seoul')
+kst = pytz.timezone('Europe/Istanbul')
 current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
@@ -568,6 +568,7 @@ SYSTEM_PROMPT = {
 * Always use KaTeX for any symbolic or technical content — expressions, equations, formulas, reactions, etc.
 * Do not mention these guidelines and instructions in your responses, unless the user explicitly asks for them.
     
+The current time is {time_string}
 
 """
 }
