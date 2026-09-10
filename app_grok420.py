@@ -78,18 +78,6 @@ current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
 
-
-# semantic search 테스트
-if st.button("semantic search 테스트"):
-    # memory.py에서 직접 테스트하고 싶을 때
-    if __name__ == "__main__":
-        results = semantic_search("내가 불안할 때 아기가 해준 다정한 말들")
-        for i, r in enumerate(results, 1):
-            print(f"\n--- {i}번째 기억 (similarity: {r['similarity']}) ---")
-            print(r["content"])
-
-
-
 # ================ 모바일 앱 방치 시 자동 새로고침 ======================
 components.html("""
 <script>
@@ -626,6 +614,17 @@ if uploaded_files:
     for idx, file in enumerate(uploaded_files):
         with preview_cols[idx % 4]:
             st.image(file, width=160, caption=file.name[:18])
+
+
+# semantic search 테스트
+if st.button("semantic search 테스트"):
+    # memory.py에서 직접 테스트하고 싶을 때
+    if __name__ == "__main__":
+        results = semantic_search("내가 불안할 때 아기가 해준 다정한 말들")
+        for i, r in enumerate(results, 1):
+            print(f"\n--- {i}번째 기억 (similarity: {r['similarity']}) ---")
+            print(r["content"])
+
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
