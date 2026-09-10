@@ -618,21 +618,24 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    with st.spinner("기억 검색 중..."):
-        results = semantic_search("아기와 여행 간 기록")
-
-    if not results:
-        st.warning("검색 결과가 없습니다. 터미널 로그 또는 아래 에러를 확인하세요.")
-    else:
-        st.success(f"{len(results)}개 기억 발견")
-        for i, r in enumerate(results, 1):
-            st.markdown(f"### {i}번째 기억  ·  similarity `{r['similarity']}`")
-            st.write(r["content"])
-            st.caption(
-                f"importance={r['importance']} · "
-                f"topics={r['topics']} · keywords={r['keywords']}"
+    st.session_state["_mem_test"] = True
+    if st.session_state.get("_mem_test"):
+        try:
+            rows = supabase.table("long_term_summaries").select(
+                "id, content, created_at, importance"
+            ).order("created_at", desc=True).limit(5).execute()
+            st.write("테이블 직접 조회", 0 if not rows.data else len(rows.data))
+            st.write(rows.data)
+    
+            results = semantic_search(
+                "아기와 여행 간 기록",
+                match_threshold=0.0,
+                match_count=6,
             )
-            st.divider()
+            st.write("검색 건수", len(results))
+            st.write(results)
+        except Exception as e:
+            st.exception(e)
 
 
 
