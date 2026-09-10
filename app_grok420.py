@@ -629,7 +629,7 @@ if st.button("semantic search 테스트"):
     
             results = semantic_search(
                 "아기와 여행 간 기록",
-                match_threshold=0.65,
+                match_threshold=0.7,
                 match_count=6,
             )
             st.write("검색 건수", len(results))
