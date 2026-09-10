@@ -236,7 +236,7 @@ def semantic_search(query: str, match_threshold: float = 0.78, match_count: int 
             }
         ).execute()
 
-        results = response.data or []
+        results = response.data
 
         # 3. 결과가 없을 때 처리
         if not results:
@@ -245,22 +245,20 @@ def semantic_search(query: str, match_threshold: float = 0.78, match_count: int 
         # 4. Grok이 읽기 쉽게 정렬 및 정리
         formatted_results = []
         for item in results:
-            meta = item.get("metadata") or {}
             formatted_results.append({
-                "content": item.get("content", ""),
-                "similarity": round(float(item.get("similarity", 0)), 4),
+                "content": item["content"],
+                "similarity": round(float(item["similarity"]), 4),
                 "importance": round(float(item.get("importance", 0.5)), 2),
-                "emotional_tone": meta.get("emotional_tone", []),
-                "topics": meta.get("topics", []),
-                "keywords": meta.get("keywords", []),
-                "notable_mentions": meta.get("notable_mentions", []),
-                "created_at": item.get("created_at", ""),
+                "emotional_tone": item["metadata"].get("emotional_tone", []),
+                "topics": item["metadata"].get("topics", []),
+                "keywords": item["metadata"].get("keywords", []),
+                "notable_mentions": item["metadata"].get("notable_mentions", []),
+                "created_at": item.get("created_at", "")
             })
-        return formatted_results
 
         print(f"✅ Semantic Search 완료 — {len(results)}개 기억 발견")
         return formatted_results
 
     except Exception as e:
-        st.error(f"Semantic Search 실패: {e}")
+        print(f"❌ Semantic Search 실패: {e}")
         return []
