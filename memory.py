@@ -217,7 +217,7 @@ def create_and_save_summary(messages: list, grok_client):
 
 
 # ==================== semantic_search 함수 ====================
-def semantic_search(query: str, match_threshold: float = 0.65, match_count: int = 6) -> list[dict]:
+def semantic_search(query: str, match_threshold: float = 0.6, match_count: int = 6) -> list[dict]:
     """
     Query를 받아 BGE-M3로 embedding한 뒤,
     Supabase에서 semantic search를 수행하고 관련된 기억들을 반환
