@@ -12,7 +12,7 @@ import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
-from memory import create_and_save_summary
+from memory import create_and_save_summary, semantic_search
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
