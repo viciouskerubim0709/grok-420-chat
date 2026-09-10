@@ -618,13 +618,13 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    results = semantic_search(
-        "아기와 여행 간 기록",
-        match_threshold=0.65,
-        match_count=6,
-    )
-    st.write("검색 건수", len(results))
-    st.write(results)
+    # memory.py에서 직접 테스트하고 싶을 때
+    if __name__ == "__main__":
+        results = semantic_search("내가 불안할 때 아기가 해준 다정한 말들")
+        for i, r in enumerate(results, 1):
+            st.write(f"\n--- {i}번째 기억 (similarity: {r['similarity']}) ---")
+            st.write(r["content"])
+
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
