@@ -618,24 +618,15 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    st.session_state["_mem_test"] = True
-    if st.session_state.get("_mem_test"):
-        try:
-            rows = supabase.table("long_term_summaries").select(
-                "id, content, created_at, importance"
-            ).order("created_at", desc=True).limit(5).execute()
-            st.write("테이블 직접 조회", 0 if not rows.data else len(rows.data))
-            st.write(rows.data)
-    
-            results = semantic_search(
-                "아기와 여행 간 기록",
-                match_threshold=0.7,
-                match_count=6,
-            )
-            st.write("검색 건수", len(results))
-            st.write(results)
-        except Exception as e:
-            st.exception(e)
+    results = semantic_search(
+        "아기와 여행 간 기록",
+        match_threshold=0.7,
+        match_count=6,
+    )
+    st.write("검색 건수", len(results))
+    st.write(results)
+except Exception as e:
+    st.exception(e)
 
 
 
