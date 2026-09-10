@@ -625,9 +625,6 @@ if st.button("semantic search 테스트"):
     )
     st.write("검색 건수", len(results))
     st.write(results)
-except Exception as e:
-    st.exception(e)
-
 
 
 # ==================== 메시지 전송 및 처리 (다중 이미지 완전 지원 버전) ====================
