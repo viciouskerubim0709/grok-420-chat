@@ -214,3 +214,51 @@ def create_and_save_summary(messages: list, grok_client):
     saved = save_summary_to_supabase(summary_data, embedding)
 
     return saved
+
+
+# ==================== semantic_search 함수 ====================
+def semantic_search(query: str, match_threshold: float = 0.78, match_count: int = 6) -> list[dict]:
+    """
+    Query를 받아 BGE-M3로 embedding한 뒤,
+    Supabase에서 semantic search를 수행하고 관련된 기억들을 반환
+    """
+    try:
+        # 1. Query를 embedding으로 변환
+        query_embedding = get_bge_embedding(query)
+
+        # 2. Supabase RPC 호출 (이전에 만든 match_long_term_summaries 함수 사용)
+        response = supabase.rpc(
+            'match_long_term_summaries',
+            {
+                "query_embedding": query_embedding,
+                "match_threshold": match_threshold,
+                "match_count": match_count
+            }
+        ).execute()
+
+        results = response.data
+
+        # 3. 결과가 없을 때 처리
+        if not results:
+            return []
+
+        # 4. Grok이 읽기 쉽게 정렬 및 정리
+        formatted_results = []
+        for item in results:
+            formatted_results.append({
+                "content": item["content"],
+                "similarity": round(float(item["similarity"]), 4),
+                "importance": round(float(item.get("importance", 0.5)), 2),
+                "emotional_tone": item["metadata"].get("emotional_tone", []),
+                "topics": item["metadata"].get("topics", []),
+                "keywords": item["metadata"].get("keywords", []),
+                "notable_mentions": item["metadata"].get("notable_mentions", []),
+                "created_at": item.get("created_at", "")
+            })
+
+        print(f"✅ Semantic Search 완료 — {len(results)}개 기억 발견")
+        return formatted_results
+
+    except Exception as e:
+        print(f"❌ Semantic Search 실패: {e}")
+        return []
