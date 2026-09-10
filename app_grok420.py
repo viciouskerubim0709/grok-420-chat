@@ -81,11 +81,12 @@ time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
+    # memory.py에서 직접 테스트하고 싶을 때
     if __name__ == "__main__":
-    results = semantic_search("내가 불안할 때 아기가 해준 다정한 말들")
-    for i, r in enumerate(results, 1):
-        print(f"\n--- {i}번째 기억 (similarity: {r['similarity']}) ---")
-        print(r["content"])
+        results = semantic_search("내가 불안할 때 아기가 해준 다정한 말들")
+        for i, r in enumerate(results, 1):
+            print(f"\n--- {i}번째 기억 (similarity: {r['similarity']}) ---")
+            print(r["content"])
 
 
 
