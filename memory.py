@@ -246,7 +246,7 @@ def semantic_search(query: str, match_threshold: float = 0.78, match_count: int 
         formatted_results = []
         for item in results:
             meta = item.get("metadata") or {}
-            formatted.append({
+            formatted_results.append({
                 "content": item.get("content", ""),
                 "similarity": round(float(item.get("similarity", 0)), 4),
                 "importance": round(float(item.get("importance", 0.5)), 2),
@@ -256,7 +256,7 @@ def semantic_search(query: str, match_threshold: float = 0.78, match_count: int 
                 "notable_mentions": meta.get("notable_mentions", []),
                 "created_at": item.get("created_at", ""),
             })
-        return formatted
+        return formatted_results
 
         print(f"✅ Semantic Search 완료 — {len(results)}개 기억 발견")
         return formatted_results
