@@ -618,11 +618,7 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    results = semantic_search(
-        "아기와 여행 간 기록",
-        match_threshold=0.7,
-        match_count=6,
-    )
+    results = semantic_search("아기와 여행 간 기록")
     st.write("검색 건수", len(results))
     st.write(results)
 
