@@ -221,14 +221,19 @@ def _adaptive_cutoff(
     results: list[dict],
     top_k: int = 4,
     abs_floor: float = 0.38,
-    relative_ratio: float = 0.90,
-    max_gap_from_best: float = 0.08,
+    relative_ratio: float = 0.80,
+    max_gap_from_best: float = 0.16,
+    max_step_drop: float = 0.07,
 ) -> list[dict]:
     """
     절대 임계값 대신:
-    - 1등 점수가 abs_floor보다 낮으면 빈 결과
-    - 1등은 무조건 유지
-    - 나머지는 '1등 대비 얼마나 떨어졌는지'로 자름
+     - 1등 점수가 abs_floor보다 낮으면 빈 결과
+     - 1등은 무조건 유지
+    다음 후보는
+     - 절대 하한 이상
+     - 1등 대비 너무 낮지 않고
+     - 바로 위 순위 대비 갑자기 떨어지지 않으면 유지
+    한 번 급락하면 거기서 멈춤.
     """
     if not results:
         return []
@@ -240,34 +245,33 @@ def _adaptive_cutoff(
     if best < abs_floor:
         return []
 
-    kept = []
-    for i, row in enumerate(ranked):
-        if i >= top_k:
+    kept = [ranked[0]]
+    for row in ranked[1:top_k]:
+        sim = row["similarity"]
+        prev = kept[-1]["similarity"]
+
+        if sim < abs_floor:
             break
 
-        sim = row["similarity"]
-        if i == 0:
-            kept.append(row)
-            continue
-
-        close_enough = (
-            sim >= best * relative_ratio
-            and (best - sim) <= max_gap_from_best
-            and sim >= abs_floor
+        too_far_from_best = (
+            sim < best * relative_ratio
+            or (best - sim) > max_gap_from_best
         )
-        if not close_enough:
-            break  # 여기서부터 급락했다고 보고 중단
+        sudden_drop = (prev - sim) > max_step_drop
+
+        if too_far_from_best and sudden_drop:
+            break
+        if too_far_from_best and sim < best - 0.12:
+            break
+
         kept.append(row)
 
     return kept
-
 
 def semantic_search(
     query: str,
     match_threshold: float = 0.0,  # DB에서는 거의 안 자름
     fetch_k: int = 12,  # 후보를 넉넉히
-    top_k: int = 4,  # 최종로 쓸 개수
-    abs_floor: float = 0.38,
 ) -> list[dict]:
     """
     Query를 받아 BGE-M3로 embedding한 뒤,
@@ -316,8 +320,6 @@ def semantic_search(
         formatted.sort(key=lambda r: r["final_score"], reverse=True)
         kept = _adaptive_cutoff(
             formatted,
-            top_k=top_k,
-            abs_floor=abs_floor,
         )
 
         print(
