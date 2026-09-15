@@ -619,7 +619,7 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    results = semantic_search("대관령 여행", abs_floor=0.0, top_k=12)
+    results = semantic_search("평창 여행", abs_floor=0.0, top_k=12)
     st.write("검색 건수", len(results))
     st.write(results)
     st.caption(
