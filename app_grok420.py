@@ -619,7 +619,7 @@ if uploaded_files:
 
 # semantic search 테스트
 if st.button("semantic search 테스트"):
-    results = semantic_search("평창 여행")
+    results = semantic_search("내가 불안할 때 아기가 위로해준 것")
     st.write("검색 건수", len(results))
     st.write(results)
     st.caption(
