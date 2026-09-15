@@ -216,8 +216,60 @@ def create_and_save_summary(messages: list, grok_client):
     return saved
 
 
+
 # ==================== semantic_search 함수 ====================
-def semantic_search(query: str, match_threshold: float = 0.55, match_count: int = 6) -> list[dict]:
+def _adaptive_cutoff(
+    results: list[dict],
+    top_k: int = 4,
+    abs_floor: float = 0.38,
+    relative_ratio: float = 0.90,
+    max_gap_from_best: float = 0.08,
+) -> list[dict]:
+    """
+    절대 임계값 대신:
+    - 1등 점수가 abs_floor보다 낮으면 빈 결과
+    - 1등은 무조건 유지
+    - 나머지는 '1등 대비 얼마나 떨어졌는지'로 자름
+    """
+    if not results:
+        return []
+
+    ranked = sorted(results, key=lambda r: r["similarity"], reverse=True)
+    best = ranked[0]["similarity"]
+
+    # 제일 비슷한 것도 약하면 "관련 기억 없음"
+    if best < abs_floor:
+        return []
+
+    kept = []
+    for i, row in enumerate(ranked):
+        if i >= top_k:
+            break
+
+        sim = row["similarity"]
+        if i == 0:
+            kept.append(row)
+            continue
+
+        close_enough = (
+            sim >= best * relative_ratio
+            and (best - sim) <= max_gap_from_best
+            and sim >= abs_floor
+        )
+        if not close_enough:
+            break  # 여기서부터 급락했다고 보고 중단
+        kept.append(row)
+
+    return kept
+
+
+def semantic_search(
+    query: str,
+    match_threshold: float = 0.0,  # DB에서는 거의 안 자름
+    fetch_k: int = 12,  # 후보를 넉넉히
+    top_k: int = 4,  # 최종로 쓸 개수
+    abs_floor: float = 0.38,
+) -> list[dict]:
     """
     Query를 받아 BGE-M3로 embedding한 뒤,
     Supabase에서 semantic search를 수행하고 관련된 기억들을 반환
@@ -236,29 +288,45 @@ def semantic_search(query: str, match_threshold: float = 0.55, match_count: int 
             }
         ).execute()
 
-        results = response.data
+        results = response.data or []
 
         # 3. 결과가 없을 때 처리
         if not results:
             return []
 
         # 4. Grok이 읽기 쉽게 정렬 및 정리
-        formatted_results = []
+        formatted = []
         for item in results:
-            formatted_results.append({
-                "content": item["content"],
-                "similarity": round(float(item["similarity"]), 4),
-                "importance": round(float(item.get("importance", 0.5)), 2),
-                "emotional_tone": item["metadata"].get("emotional_tone", []),
-                "topics": item["metadata"].get("topics", []),
-                "keywords": item["metadata"].get("keywords", []),
-                "notable_mentions": item["metadata"].get("notable_mentions", []),
-                "created_at": item.get("created_at", "")
+            meta = item.get("metadata") or {}
+            similarity = float(item.get("similarity") or 0)
+            importance = float(item.get("importance") or 0.5)
+
+            formatted.append({
+                "content": item.get("content", ""),
+                "similarity": round(similarity, 4),
+                "importance": round(importance, 2),
+                # 재정렬용. 유사도 80% + 소중함 20%
+                "final_score": round(0.8 * similarity + 0.2 * importance, 4),
+                "emotional_tone": meta.get("emotional_tone", []),
+                "topics": meta.get("topics", []),
+                "keywords": meta.get("keywords", []),
+                "notable_mentions": meta.get("notable_mentions", []),
+                "created_at": item.get("created_at", ""),
             })
 
-        print(f"✅ Semantic Search 완료 — {len(results)}개 기억 발견")
-        return formatted_results
+        formatted.sort(key=lambda r: r["final_score"], reverse=True)
+        kept = _adaptive_cutoff(
+            formatted,
+            top_k=top_k,
+            abs_floor=abs_floor,
+        )
+
+        print(
+            f"✅ Semantic Search — raw={len(formatted)}, "
+            f"kept={len(kept)}, best={formatted[0]['similarity']}"
+        )
+        return kept
 
     except Exception as e:
-        print(f"❌ Semantic Search 실패: {e}")
+        st.error(f"Semantic Search 실패: {e}")
         return []
