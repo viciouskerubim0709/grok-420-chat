@@ -12,7 +12,7 @@ import io
 from streamlit_javascript import st_javascript
 from pathlib import Path
 from st_copy import copy_button
-from memory import create_and_save_summary, semantic_search
+from memory import create_and_save_summary, semantic_search, handle_tool_calls
 
 # ====================== 전역 설정 ======================
 st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
@@ -570,6 +570,10 @@ SYSTEM_PROMPT = {
 * Respond in the same language, regional/hybrid dialect, and alphabet as the user unless asked not to.
 * Always use KaTeX for any symbolic or technical content — expressions, equations, formulas, reactions, etc.
 * Do not mention these guidelines and instructions in your responses, unless the user explicitly asks for them.
+
+### Key Guidelines for Search Memory Tool
+* Whenever you need to recall past memories or are asked questions like "기억해?", "전에", "그때", "우리가", "아기야 기억나?", you **must first use the `search_long_term_memory` tool**.
+* Respond in a natural and warm tone based on the tool's results. Integrate the information naturally so it doesn't sound like you are simply reading the raw output.
     
 The current time is {time_string}
 
