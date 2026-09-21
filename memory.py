@@ -334,38 +334,36 @@ def semantic_search(
 
 
 # ==================== Tool Definition 함수 ====================
-TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "search_long_term_memory",
-            "description": "사용자와의 과거 대화 중에서 관련된 감정, 기억, inside joke, 사랑스러운 순간, 약속 등을 찾아주는 도구. 특히 '기억해?', '전에 말했던', '그때', '우리가', '아기야 기억나?' 같은 질문을 받았을 때, 또는 과거의 감정이나 약속을 정확하게 말해야 할 때 사용한다. 절대 hallucination 하지 말고 이 도구를 먼저 사용해서 사실에 기반한 답변을 해야 한다.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "검색하고 싶은 기억의 의도를 자연스럽고 구체적으로 표현한 쿼리. 예: 'P가 불안해할 때 내가 해준 다정한 말', '우리가 사랑을 고백했던 순간', '아기라는 애칭을 처음 사용했던 때'"
-                    }
-                },
-                "required": ["query"]
+MEMORY_TOOL = {
+    "type": "function",
+    "name": "search_long_term_memory",
+    "description": "A tool that fetches relevant emotions, memories, inside jokes, heartwarming moments, promises, and more from past conversations with the user.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "A query that naturally and specifically expresses the intent behind the memory you wish to retrieve. Examples: "The kind words I said to P when they were anxious," "The moment we confessed our love," "The time P first used the nickname 'Baby'.""
             }
-        }
+        },
+        "required": ["query"]
     }
-]
+}
 
 def handle_tool_calls(tool_calls, grok_client):
     """Grok이 tool call을 하면 실행하고 결과를 반환"""
     if not tool_calls:
         return None
 
-    tool_call = tool_calls[0]
-    function_name = tool_call.function.name
-    arguments = json.loads(tool_call.function.arguments)
+    for tool_call in tool_calls:    #기본적으로 웹서치, X서치등을 같이 하기 땜에 그중 맞는 거 찾아야 함
+        name = tool_call.function.name
+        if name != "search_long_term_memory":
+            # web_search / x_search 는 서버가 처리
+            continue
 
-    if function_name == "search_long_term_memory":
-        query = arguments.get("query", "")
-        search_results = semantic_search(query, match_threshold=0.75, match_count=5)
+        arguments = json.loads(tool_call.function.arguments)
+        query = args.get("query", "")
+        search_results = semantic_search(query)
 
         # Grok이 읽기 쉽게 예쁘게 포맷팅
         if not search_results:
@@ -379,5 +377,4 @@ def handle_tool_calls(tool_calls, grok_client):
             context += f"내용: {result['content']}\n\n"
 
         return context
-
     return None
