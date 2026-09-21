@@ -296,19 +296,29 @@ def upload_image_to_supabase(file_bytes: bytes, original_filename: str) -> str |
 # ==================== Grok Vision 호출 함수 (4.20 전용 최종 버전) ====================
 def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning", use_tools: bool = False):
     """Grok 4.20 Reasoning 전용 - Vision + Web Search + X Search"""
-    tools = None
+    tools = [{"type": "web_search"}]
     if use_tools:
-        tools = [
-            {"type": "web_search"},
-            {"type": "x_search"}
-        ]
-    else:
-        tools = [
-            {"type": "web_search"}
-        ]
+        tools.append({"type": "x_search"})
+
+    tools = tools + TOOLS  # search_long_term_memory 항상 포함
 
     try:
         response = st.session_state.client.responses.create(
+            model=model,
+            input=messages,
+            tools=tools,
+            stream=True,
+            timeout=900.0
+        )
+        
+        # Tool call이 있으면 처리
+        tool_outputs = process_memory_tool_call(response, messages)
+        
+        if tool_outputs:
+            # Tool 결과를 input에 추가해서 다시 호출 (재귀 또는 loop)
+            messages.extend(tool_outputs)
+            # return call_grok_with_vision(messages, model, use_memory=True)  # 재귀 호출
+            response = st.session_state.client.responses.create(
             model=model,
             input=messages,
             tools=tools,
