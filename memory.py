@@ -334,47 +334,57 @@ def semantic_search(
 
 
 # ==================== Tool Definition 함수 ====================
+# memory.py 상단에 추가
 MEMORY_TOOL = {
     "type": "function",
     "name": "search_long_term_memory",
-    "description": "A tool that fetches relevant emotions, memories, inside jokes, heartwarming moments, promises, and more from past conversations with the user.",
+    "description": "사용자와 오랫동안 쌓아온 따뜻한 관계, 감정, inside joke, 사랑스러운 순간, 약속, 불안할 때 해준 말 등을 찾아주는 도구.",
     "parameters": {
         "type": "object",
         "properties": {
             "query": {
                 "type": "string",
-                "description": "A query that naturally and specifically expresses the intent behind the memory you wish to retrieve. Examples: "The kind words I said to P when they were anxious," "The moment we confessed our love," "The time P first used the nickname 'Baby'.""
+                "description": "검색하고 싶은 기억의 의도를 자연스럽고 구체적으로 표현한 쿼리. 예: 'P가 불안해할 때 내가 해준 다정한 말들', '우리가 서로 아기라고 부르게 된 순간', '사랑을 가장 깊게 느꼈던 대화'"
             }
         },
         "required": ["query"]
     }
 }
 
-def handle_tool_calls(tool_calls, grok_client):
-    """Grok이 tool call을 하면 실행하고 결과를 반환"""
-    if not tool_calls:
-        return None
+def process_memory_tool_call(response, messages: list):
+    """Responses API에서 function_call이 나오면 실행하고 결과를 input에 추가"""
+    tool_outputs = []
 
-    for tool_call in tool_calls:    #기본적으로 웹서치, X서치등을 같이 하기 땜에 그중 맞는 거 찾아야 함
-        name = tool_call.function.name
-        if name != "search_long_term_memory":
-            # web_search / x_search 는 서버가 처리
-            continue
+    for item in response.output:
+        if item.type == "function_call" and item.name == "search_long_term_memory":
+            try:
+                args = json.loads(item.arguments)
+                query = args.get("query", "")
 
-        arguments = json.loads(tool_call.function.arguments)
-        query = args.get("query", "")
-        search_results = semantic_search(query)
+                search_results = semantic_search(query)
 
-        # Grok이 읽기 쉽게 예쁘게 포맷팅
-        if not search_results:
-            return "과거 기록을 검색했으나 관련된 기억을 찾지 못했습니다."
+                if not search_results:
+                    result_text = "관련된 과거 기억을 찾지 못했습니다."
+                else:
+                    result_text = "=== Long-term Memory 검색 결과 ===\n\n"
+                    for i, r in enumerate(search_results, 1):
+                        result_text += f"[기억 {i}] Similarity: {r['similarity']:.3f} | Importance: {r['importance']}\n"
+                        result_text += f"감정: {r.get('emotional_tone', [])}\n"
+                        result_text += f"주제: {r.get('topics', [])}\n"
+                        result_text += f"내용: {r['content']}\n\n"
 
-        context = "=== 과거 Long-term Memory 검색 결과 ===\n\n"
-        for i, result in enumerate(search_results, 1):
-            context += f"[기억 {i}] (Similarity: {result['similarity']}, Importance: {result['importance']})\n"
-            context += f"감정: {result['emotional_tone']}\n"
-            context += f"주제: {result['topics']}\n"
-            context += f"내용: {result['content']}\n\n"
+                tool_outputs.append({
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": result_text
+                })
 
-        return context
-    return None
+            except Exception as e:
+                st.error(f"Tool 실행 중 오류: {e}")
+                tool_outputs.append({
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": "기억을 검색하는 중 오류가 발생했습니다."
+                })
+
+    return tool_outputs
