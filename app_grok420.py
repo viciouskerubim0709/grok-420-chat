@@ -345,7 +345,7 @@ def consume_stream(stream):
     completed = None
     placeholder = st.empty()
     
-    for event in response:
+    for event in stream:
         if event.type == "response.output_text.delta":
             if hasattr(event, 'delta') and event.delta:
                 full_text += event.delta
