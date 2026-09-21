@@ -300,7 +300,7 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
     if use_tools:
         tools.append({"type": "x_search"})
 
-    tools = tools + MEMORY_TOOL  # search_long_term_memory 항상 포함
+    tools.append(MEMORY_TOOL)  # search_long_term_memory 항상 포함
 
     try:
         response = st.session_state.client.responses.create(
