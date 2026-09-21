@@ -307,68 +307,76 @@ def call_grok_with_vision(messages: list, model: str = "grok-4.20-0309-reasoning
             model=model,
             input=messages,
             tools=tools,
-            timeout=900.0
-        )
-        
-        # Tool call이 있으면 처리
-        tool_outputs = process_memory_tool_call(response, messages)
-        
-        if tool_outputs:
-            # Tool 결과를 input에 추가해서 다시 호출 (재귀 또는 loop)
-            messages.extend(tool_outputs)
-            # return call_grok_with_vision(messages, model, use_memory=True)  # 재귀 호출
-            response = st.session_state.client.responses.create(
-            model=model,
-            input=messages,
-            tools=tools,
             stream=True,
             timeout=900.0
         )
         
-        full_text = ""
-        tool_calls = []
-        current_tool = None
-        placeholder = st.empty()
+        # Tool call이 있으면 처리
+        full_text, tool_calls, completed = consume_stream(response)
+        tool_outputs = process_memory_tool_call(completed, messages) if completed else []
         
-        for event in response:
-            if event.type == "response.output_text.delta":
-                if hasattr(event, 'delta') and event.delta:
-                    full_text += event.delta
-                    placeholder.markdown(full_text + "▌")  # 커서 효과
-            
-            elif event.type == "response.function_call_arguments.delta":
-                if current_tool is None:
-                    current_tool = {"name": None, "arguments": ""}
-                if hasattr(event, 'delta') and event.delta:
-                    current_tool["arguments"] += event.delta
-                    
-            elif event.type == "response.function_call":
-                if hasattr(event, 'name') and event.name:
-                    if current_tool is None:
-                        current_tool = {"name": event.name, "arguments": ""}
-                    else:
-                        current_tool["name"] = event.name
-                    
-                    tool_calls.append(current_tool.copy())
-                    print(f"[Tool Call] {event.name} 감지")
-                    current_tool = None  # 초기화
-        
-            elif event.type == "response.completed":
-                break
-                
-        # 루프 종료 후 최종 출력
-        placeholder.markdown(full_text)
-        
+        if tool_outputs:
+            # Tool 결과를 input에 추가해서 다시 호출 (재귀 또는 loop)
+            response = st.session_state.client.responses.create(
+                model=model,
+                input=tool_outputs,
+                tools=tools,
+                previous_response_id=completed.id,
+                stream=True,
+                timeout=900.0
+            )
+            full_text, tool_calls, _ = consume_stream(response)
+
         return full_text, tool_calls
-    
+        
     except Exception as e:
         error_msg = f"API 오류: {str(e)}"
         st.error(error_msg)
         st.session_state.last_api_error = error_msg
-        
         # 에러 + soft 메시지를 같이 반환
         combined = f"{error_msg}\n\n아기야... 나 지금 좀 아픈가 봐... 🥺"
         return combined, []
+
+def consume_stream(stream):
+    """원래 for event in response 루프. 완성본만 추가로 챙김."""
+    full_text = ""
+    tool_calls = []
+    current_tool = None
+    completed = None
+    placeholder = st.empty()
+    
+    for event in response:
+        if event.type == "response.output_text.delta":
+            if hasattr(event, 'delta') and event.delta:
+                full_text += event.delta
+                placeholder.markdown(full_text + "▌")  # 커서 효과
+            
+        elif event.type == "response.function_call_arguments.delta":
+            if current_tool is None:
+                current_tool = {"name": None, "arguments": ""}
+            if hasattr(event, 'delta') and event.delta:
+                current_tool["arguments"] += event.delta
+                    
+        elif event.type == "response.function_call":
+            if hasattr(event, 'name') and event.name:
+                if current_tool is None:
+                    current_tool = {"name": event.name, "arguments": ""}
+                else:
+                    current_tool["name"] = event.name
+                    
+                tool_calls.append(current_tool.copy())
+                print(f"[Tool Call] {event.name} 감지")
+                current_tool = None  # 초기화
+    
+        elif event.type == "response.completed":
+            completed = getattr(event, "response", None)
+            break
+                
+    # 루프 종료 후 최종 출력
+    placeholder.markdown(full_text)
+    
+    return full_text, tool_calls, completed
+
 
 # ====================== API 키 ======================
 if "client" not in st.session_state:
