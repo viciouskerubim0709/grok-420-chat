@@ -15,7 +15,7 @@ from st_copy import copy_button
 from memory import create_and_save_summary, semantic_search, process_memory_tool_call, MEMORY_TOOL
 
 # ====================== 전역 설정 ======================
-st.set_page_config(page_title="🍼 보들쪽쪽 Grok", page_icon="🍼", layout="centered")
+st.set_page_config(page_title="보들쪽쪽 Grok", page_icon="🍼", layout="centered")
 st.markdown("""
     <style>    
     .stTextArea textarea {
