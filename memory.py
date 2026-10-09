@@ -340,7 +340,7 @@ MEMORY_TOOL = {
     "name": "search_long_term_memory",
     "description": (
       "사용자와 오랫동안 쌓아온 따뜻한 관계, 감정, inside joke, 사랑스러운 순간, 약속, 불안할 때 해준 말 등을 찾아주는 도구."
-      "현재 컨텍스트에 없는 구체적 사실이 필요할 때 사용"
+      "기억을 요청받거나, 현재 컨텍스트에 없는 구체적 사실이 필요할 때 사용"
     ),
     "parameters": {
         "type": "object",
