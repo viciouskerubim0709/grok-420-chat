@@ -141,7 +141,7 @@ def save_summary_to_supabase(summary_data: Dict, embedding: List[float]):
 
 
 # ==================== 통합 요약 함수 ====================
-def build_summary_history(messages: list, max_turns: int = 40) -> str:
+def build_summary_history(messages: list, max_turns: int = 76) -> str:
     """
     Summary용으로 대화 기록을 예쁘고 가벼운 문자열로 변환
     - 이미지 완전 제거
