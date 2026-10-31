@@ -151,7 +151,7 @@ def build_summary_history(messages: list, max_turns: int = 40) -> str:
         return "아직 대화 기록이 없습니다."
 
     # 최근 max_turns만 유지 (오래된 건 제외)
-    recent_messages = messages[-max_turns:] if len(messages) > max_turns else messages
+    recent_messages = messages[:-max_turns] if len(messages) > max_turns else messages
 
     history_lines = []
 
@@ -189,7 +189,7 @@ def build_summary_history(messages: list, max_turns: int = 40) -> str:
 def create_and_save_summary(messages: list, grok_client):
     """전체 파이프라인: 요약 → 임베딩 → Supabase 저장"""
     # 1. Summary용으로 정리된 history 만들기
-    conversation_text = build_summary_history(messages, max_turns=40)
+    conversation_text = build_summary_history(messages, max_turns=19)
 
     # 2. Grok에게 요약 요청
     system_prompt = SUMMARY_SYSTEM_PROMPT
