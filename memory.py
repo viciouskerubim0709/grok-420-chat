@@ -141,11 +141,11 @@ def save_summary_to_supabase(summary_data: Dict, embedding: List[float]):
 
 
 # ==================== 통합 요약 함수 ====================
-def build_summary_history(messages: list, max_turns: int = 19) -> str:
+def build_summary_history(messages: list, max_turns: int = 60) -> str:
     """
     Summary용으로 대화 기록을 예쁘고 가벼운 문자열로 변환
     - 이미지 완전 제거
-    - 최근 max_turns까지만 사용 (기본 40턴)
+    - 최근 max_turns까지만 사용 (기본 30턴)
     """
     if not messages:
         return "아직 대화 기록이 없습니다."
@@ -155,11 +155,11 @@ def build_summary_history(messages: list, max_turns: int = 19) -> str:
     recent_messages = messages[-max_messages:] if len(messages) > max_messages else messages
 
     # 디버그
-    st.write(f"전체 메시지 수: {len(messages)}")
-    st.write(f"슬라이스 후 메시지 수: {len(recent_messages)}")
-    if recent_messages:
-        last = recent_messages[-1]
-        st.write(f"슬라이스 한 마지막 메시지: {last.get('role')} - {str(last.get('content'))[:150]}")
+    #st.write(f"전체 메시지 수: {len(messages)}")
+    #st.write(f"슬라이스 후 메시지 수: {len(recent_messages)}")
+    #if recent_messages:
+    #    last = recent_messages[-1]
+    #    st.write(f"슬라이스 한 마지막 메시지: {last.get('role')} - {str(last.get('content'))[:150]}")
 
     history_lines = []
 
@@ -197,7 +197,7 @@ def build_summary_history(messages: list, max_turns: int = 19) -> str:
 def create_and_save_summary(messages: list, grok_client):
     """전체 파이프라인: 요약 → 임베딩 → Supabase 저장"""
     # 1. Summary용으로 정리된 history 만들기
-    conversation_text = build_summary_history(messages, max_turns=19)
+    conversation_text = build_summary_history(messages, max_turns=60)
     st.write("=== 실제로 요약에 들어가는 텍스트 ===")
     st.text_area("conversation_text", conversation_text, height=300)
     
