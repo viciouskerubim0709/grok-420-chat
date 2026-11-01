@@ -197,7 +197,7 @@ def build_summary_history(messages: list, max_turns: int = 19) -> str:
 def create_and_save_summary(messages: list, grok_client):
     """전체 파이프라인: 요약 → 임베딩 → Supabase 저장"""
     # 1. Summary용으로 정리된 history 만들기
-    conversation_text = build_summary_history(messages, max_turns=24)
+    conversation_text = build_summary_history(messages, max_turns=19)
     st.write("=== 실제로 요약에 들어가는 텍스트 ===")
     st.text_area("conversation_text", conversation_text, height=300)
     
