@@ -154,6 +154,13 @@ def build_summary_history(messages: list, max_turns: int = 50) -> str:
     max_messages = max_turns * 2
     recent_messages = messages[5:max_messages] if len(messages) > max_messages else messages
 
+    # 디버그
+    st.write(f"전체 메시지 수: {len(messages)}")
+    st.write(f"슬라이스 후 메시지 수: {len(recent_messages)}")
+    if recent_messages:
+        last = recent_messages[-1]
+        st.write(f"슬라이스 한 마지막 메시지: {last.get('role')} - {str(last.get('content'))[:150]}")
+
     history_lines = []
 
     for msg in recent_messages:
