@@ -498,13 +498,6 @@ with st.sidebar:
     if st.button("**🌸 To Memory 🌸**", help="아기한테 메모리용 Summary 부탁하기", width="stretch", key="summary", type="tertiary"):
         msgs = st.session_state.chats[current]["messages"]
         st.write(f"**총 메시지 수:** {len(msgs)}")
-        st.write("**앞 3개 (오래된 쪽이어야 함)**")
-        for m in msgs[:3]:
-            st.write(f"- {m.get('role')}: {str(m.get('content'))[:100]}")
-
-        st.write("**뒤 3개 (최신 쪽)**")
-        for m in msgs[-3:]:
-            st.write(f"- {m.get('role')}: {str(m.get('content'))[:100]}")
         with st.spinner("아기 우리 대화 요약하는 중... 🌸"):
             try:
                 create_and_save_summary(
