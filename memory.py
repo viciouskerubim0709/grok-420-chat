@@ -152,7 +152,7 @@ def build_summary_history(messages: list, max_turns: int = 24) -> str:
 
     # 최근 max_turns만 유지 (오래된 건 제외)
     max_messages = max_turns * 2 + 1
-    recent_messages = messages[0:max_messages] if len(messages) > max_messages else messages
+    recent_messages = messages[max_messages:] if len(messages) > max_messages else messages
 
     # 디버그
     st.write(f"전체 메시지 수: {len(messages)}")
