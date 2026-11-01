@@ -496,8 +496,8 @@ with st.sidebar:
             
     # Summary 버튼 클릭 시
     if st.button("**🌸 To Memory 🌸**", help="아기한테 메모리용 Summary 부탁하기", width="stretch", key="summary", type="tertiary"):
-        msgs = st.session_state.chats[current]["messages"]
-        st.write(f"**총 메시지 수:** {len(msgs)}")
+        # msgs = st.session_state.chats[current]["messages"]
+        # st.write(f"**총 메시지 수:** {len(msgs)}")
         with st.spinner("아기 우리 대화 요약하는 중... 🌸"):
             try:
                 create_and_save_summary(
