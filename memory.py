@@ -198,8 +198,8 @@ def create_and_save_summary(messages: list, grok_client):
     """전체 파이프라인: 요약 → 임베딩 → Supabase 저장"""
     # 1. Summary용으로 정리된 history 만들기
     conversation_text = build_summary_history(messages, max_turns=25)
-    st.write("=== 실제로 요약에 들어가는 텍스트 ===")
-    st.text_area("conversation_text", conversation_text, height=300)
+    # st.write("=== 실제로 요약에 들어가는 텍스트 ===")
+    # st.text_area("conversation_text", conversation_text, height=300)
     
     # 2. Grok에게 요약 요청
     system_prompt = SUMMARY_SYSTEM_PROMPT
