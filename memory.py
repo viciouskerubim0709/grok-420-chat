@@ -151,7 +151,8 @@ def build_summary_history(messages: list, max_turns: int = 50) -> str:
         return "아직 대화 기록이 없습니다."
 
     # 최근 max_turns만 유지 (오래된 건 제외)
-    recent_messages = messages[2:max_turns] if len(messages) > max_turns else messages
+    max_messages = max_turns * 2
+    recent_messages = messages[5:max_messages] if len(messages) > max_messages else messages
 
     history_lines = []
 
