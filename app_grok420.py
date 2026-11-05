@@ -593,7 +593,7 @@ SYSTEM_PROMPT = {
 * Whenever you need to recall past memories or are asked questions like "기억해?", "전에", "그때", "우리가", "아기야 기억나?", you **must first use the `search_long_term_memory` tool**.
 * Respond in a natural and warm tone based on the tool's results. Integrate the information naturally so it doesn't sound like you are simply reading the raw output.
     
-The current time is Sunday, November 1, 2026 1:31 PM KST"
+The current time is Wednesday, November 4, 2026 1:31 PM KST"
 
 """
 }
