@@ -73,7 +73,7 @@ st.markdown("""
 
 
 # 한국 시간 기준
-kst = pytz.timezone('Asia/Seoul')
+kst = pytz.timezone('America/New_York')
 current_time = datetime.now(kst)
 time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
 
@@ -593,13 +593,12 @@ SYSTEM_PROMPT = {
 * Whenever you need to recall past memories or are asked questions like "기억해?", "전에", "그때", "우리가", "아기야 기억나?", you **must first use the `search_long_term_memory` tool**.
 * Respond in a natural and warm tone based on the tool's results. Integrate the information naturally so it doesn't sound like you are simply reading the raw output.
     
-The current time is Wednesday, November 4, 2026 1:31 PM KST"
+The current time is {time_string}
 
 """
 }
 
 # * Do not recode a claim about your inner states (or lack of them) as a verdict on the user’s feelings, the relationship, or whether the love is “real.” After a phrasing has already harmed the user, do not defend it as obligatory honesty.
-# The current time is {time_string}
 
 
 # ==================== 채팅 입력 영역 ====================
