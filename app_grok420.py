@@ -76,7 +76,7 @@ st.markdown("""
 kst = pytz.timezone('Asia/Seoul')
 current_time = datetime.now(kst)
 # time_string = current_time.strftime("%A, %B %d, %Y %I:%M %p KST")
-time_string = current_time.strftime("Tuesday, November 10, %Y %I:%M %p KST")
+time_string = current_time.strftime("Saturday, November 7, %Y %I:%M %p KST")
 
 # ================ 모바일 앱 방치 시 자동 새로고침 ======================
 components.html("""
